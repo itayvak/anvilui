@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
+* {
+    font-family: var(--avl-font-main);
+}
+
+.avl-root {
+    min-height: 100vh;
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-background);
+}
+
+body {
+    margin: 0;
+}

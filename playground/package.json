@@ -1,0 +1,16 @@
+{
+    "name": "bedrock-playground",
+    "private": true,
+    "type": "module",
+    "devDependencies": {
+        "@vitejs/plugin-react": "^6.1.1",
+        "typescript": "^7.0.2",
+        "vite": "^8.3.0"
+    },
+    "dependencies": {
+        "anvilui": "^1.0.0"
+    },
+    "scripts": {
+        "dev": "vite"
+    }
+}

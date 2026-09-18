@@ -1,0 +1,56 @@
+.avl-button-color-primary {
+    --avl-nested-color-main: var(--avl-color-primary);
+    --avl-nested-color-on-main: var(--avl-color-on-primary);
+}
+
+.avl-button {
+    border: none;
+    cursor: pointer;
+    border-radius: var(--avl-radius-normal);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    transition: 200ms;
+}
+
+.avl-button:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 90%,
+        var(--avl-nested-color-on-main) 10%
+    );
+}
+
+.avl-button:active {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 80%,
+        var(--avl-nested-color-on-main) 20%
+    );
+}
+
+.avl-button:disabled {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 30%,
+        var(--avl-nested-color-on-main) 70%
+    );
+    cursor: default;
+}
+
+.avl-button-size-small {
+    min-height: var(--avl-spacing-x8);
+    padding: 0 var(--avl-spacing-x3);
+    font-size: 12px;
+}
+
+.avl-button-size-normal {
+    min-height: var(--avl-spacing-x10);
+    padding: 0 var(--avl-spacing-x4);
+    font-size: 14px;
+}
+
+.avl-button-size-big {
+    min-height: var(--avl-spacing-x12);
+    padding: 0 var(--avl-spacing-x8);
+    font-size: 18px;
+}

@@ -1,0 +1,29 @@
+{
+    "name": "anvilui",
+    "version": "1.0.0",
+    "description": "Anvil UI",
+    "author": "itayvak",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "build": "tsup && tsc -p tsconfig.build.json",
+        "dev": "tsup --watch"
+    },
+    "dependencies": {
+        "@base-ui/react": "^1.8.0"
+    },
+    "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18"
+    },
+    "devDependencies": {
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "tsup": "^8.5.1",
+        "typescript": "^7.0.2"
+    }
+}

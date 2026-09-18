@@ -1,0 +1,15 @@
+{
+    "name": "anvil-monorepo",
+    "author": "itayvak",
+    "private": true,
+    "workspaces": [
+        "core",
+        "playground"
+    ],
+    "scripts": {
+        "format": "npx prettier . --write"
+    },
+    "devDependencies": {
+        "prettier": "^3.9.8"
+    }
+}
