@@ -1,0 +1,86 @@
+.pg-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: var(--avl-spacing-x3) var(--avl-spacing-x6);
+    background-color: var(--avl-color-container);
+    color: var(--avl-color-on-container);
+    border-bottom: 1px solid var(--avl-color-outline);
+}
+
+.pg-header label {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.pg-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x8);
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--avl-spacing-x6);
+}
+
+.pg-section > * + * {
+    margin-top: var(--avl-spacing-x3);
+}
+
+.pg-control {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+.pg-checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.pg-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+}
+
+.pg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--avl-spacing-x6) var(--avl-spacing-x3);
+}
+
+.pg-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+.pg-matrix {
+    border-collapse: collapse;
+}
+
+.pg-matrix th {
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+    font-weight: 500;
+    text-align: left;
+}
+
+.pg-matrix td {
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+}
+
+select {
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-background);
+    font-size: var(--avl-font-size-body);
+}

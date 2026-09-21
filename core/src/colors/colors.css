@@ -1,0 +1,74 @@
+/* Backstop so the pair is never undefined if a class is missing or misspelled */
+.avl-root {
+    --avl-nested-color-main: var(--avl-color-primary);
+    --avl-nested-color-on-main: var(--avl-color-on-primary);
+    --avl-nested-color-text: var(--avl-color-on-background);
+}
+
+.avl-fill-filled {
+    --avl-nested-color-text: var(--avl-nested-color-on-main);
+}
+
+.avl-color-primary.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-primary);
+    --avl-nested-color-on-main: var(--avl-color-on-primary);
+}
+
+.avl-color-secondary.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-secondary);
+    --avl-nested-color-on-main: var(--avl-color-on-secondary);
+}
+
+.avl-color-success.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-success);
+    --avl-nested-color-on-main: var(--avl-color-on-success);
+}
+
+.avl-color-warning.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-warning);
+    --avl-nested-color-on-main: var(--avl-color-on-warning);
+}
+
+.avl-color-error.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-error);
+    --avl-nested-color-on-main: var(--avl-color-on-error);
+}
+
+.avl-color-container.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-container);
+    --avl-nested-color-on-main: var(--avl-color-on-container);
+}
+
+*:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-text: var(--avl-color-on-background);
+}
+
+.avl-color-primary:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-primary);
+}
+
+.avl-color-secondary:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-on-secondary);
+}
+
+.avl-color-success:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-success);
+}
+
+.avl-color-warning:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-warning);
+}
+
+.avl-color-error:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-error);
+}
+
+.avl-color-container:is(.avl-fill-outlined, .avl-fill-text) {
+    --avl-nested-color-main: transparent;
+    --avl-nested-color-on-main: var(--avl-color-on-container);
+}

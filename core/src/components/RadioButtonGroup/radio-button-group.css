@@ -1,0 +1,36 @@
+/* Each radio is followed by a hidden <input>, so the last button is never
+   :last-child and ButtonGroup would leave it without its outer radius and its
+   press transform. Keep the values in sync with button-group.css. */
+.avl-button-group[role='radiogroup'] > .avl-button:last-of-type {
+    border-start-end-radius: var(--avl-button-group-outer-radius);
+    border-end-end-radius: var(--avl-button-group-outer-radius);
+    --avl-button-active-transform: scaleX(0.97) scaleY(1.03) translateX(-2%);
+}
+
+.avl-button-group[role='radiogroup'] > .avl-button.avl-fill-filled {
+    opacity: 0.5;
+}
+
+.avl-button-group[role='radiogroup']
+    > .avl-button[data-checked].avl-fill-filled {
+    opacity: 1;
+}
+
+.avl-button-group[role='radiogroup']
+    > .avl-button:is(.avl-fill-outlined, .avl-fill-text) {
+    background-color: var(--avl-nested-color-main);
+}
+
+.avl-button-group[role='radiogroup']
+    > .avl-button[data-checked]:is(.avl-fill-outlined, .avl-fill-text) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 70%,
+        var(--avl-nested-color-on-main) 30%
+    );
+    border-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 70%,
+        var(--avl-nested-color-on-main) 30%
+    );
+}

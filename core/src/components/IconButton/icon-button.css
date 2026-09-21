@@ -1,0 +1,44 @@
+.avl-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* also read by ButtonGroup to cap its outer radius */
+    --avl-button-height: var(--avl-spacing-x10);
+    width: var(--avl-button-height);
+    height: var(--avl-button-height);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-button);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    cursor: pointer;
+    transition: 200ms var(--avl-ease-out);
+    --avl-button-active-transform: scale(0.97);
+}
+
+.avl-icon-button:hover:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 90%,
+        var(--avl-nested-color-on-main) 10%
+    );
+}
+
+.avl-icon-button:active:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 80%,
+        var(--avl-nested-color-on-main) 20%
+    );
+    transform: var(--avl-button-active-transform);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-icon-button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.avl-icon-button.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}

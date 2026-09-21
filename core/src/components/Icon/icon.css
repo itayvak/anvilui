@@ -1,0 +1,8 @@
+.avl-icon {
+    flex-shrink: 0;
+    user-select: none;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0;
+}

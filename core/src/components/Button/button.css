@@ -1,18 +1,19 @@
-.avl-button-color-primary {
-    --avl-nested-color-main: var(--avl-color-primary);
-    --avl-nested-color-on-main: var(--avl-color-on-primary);
-}
-
 .avl-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--avl-spacing-x2);
     border: none;
+    outline: none;
     cursor: pointer;
-    border-radius: var(--avl-radius-normal);
+    border-radius: var(--avl-radius-button);
     background-color: var(--avl-nested-color-main);
     color: var(--avl-nested-color-on-main);
-    transition: 200ms;
+    transition: 200ms var(--avl-ease-out);
+    --avl-button-active-transform: scale(0.98);
 }
 
-.avl-button:hover {
+.avl-button:hover:not(:disabled) {
     background-color: color-mix(
         in srgb,
         var(--avl-nested-color-main) 90%,
@@ -20,37 +21,47 @@
     );
 }
 
-.avl-button:active {
+.avl-button:active:not(:disabled) {
     background-color: color-mix(
         in srgb,
         var(--avl-nested-color-main) 80%,
         var(--avl-nested-color-on-main) 20%
     );
+    transform: var(--avl-button-active-transform);
+    transition: 10ms var(--avl-ease-out);
 }
 
 .avl-button:disabled {
-    background-color: color-mix(
-        in srgb,
-        var(--avl-nested-color-main) 30%,
-        var(--avl-nested-color-on-main) 70%
-    );
+    opacity: 0.5;
     cursor: default;
 }
 
+.avl-button.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-button .avl-icon {
+    font-size: 1.25em;
+}
+
+/* --avl-button-height is also read by ButtonGroup to cap its outer radius. */
 .avl-button-size-small {
-    min-height: var(--avl-spacing-x8);
+    --avl-button-height: var(--avl-spacing-x8);
+    min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x3);
     font-size: 12px;
 }
 
 .avl-button-size-normal {
-    min-height: var(--avl-spacing-x10);
+    --avl-button-height: var(--avl-spacing-x10);
+    min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x4);
     font-size: 14px;
 }
 
 .avl-button-size-big {
-    min-height: var(--avl-spacing-x12);
+    --avl-button-height: var(--avl-spacing-x12);
+    min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x8);
     font-size: 18px;
 }

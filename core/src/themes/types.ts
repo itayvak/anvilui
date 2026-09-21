@@ -5,6 +5,8 @@ export type Theme = {
     onBackground: string
     container: string
     onContainer: string
+    surfaceVariant: string
+    onSurfaceVariant: string
     outline: string
     primary: string
     onPrimary: string

@@ -1,0 +1,63 @@
+.avl-checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: var(--avl-spacing-x5);
+    height: var(--avl-spacing-x5);
+    padding: 0;
+    cursor: pointer;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-primary);
+    transition: 200ms var(--avl-ease-out);
+}
+
+/* invisible click area */
+.avl-checkbox::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--avl-spacing-x10);
+    height: var(--avl-spacing-x10);
+    transform: translate(-50%, -50%);
+}
+
+.avl-checkbox[data-checked],
+.avl-checkbox[data-indeterminate] {
+    border-color: var(--avl-color-primary);
+    background-color: var(--avl-color-primary);
+}
+
+/* Pressing a <label> makes the hidden input :active, not this span */
+.avl-checkbox:is(:active, :has(~ input:active)):not([data-disabled]) {
+    transform: scale(0.95);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-checkbox:focus-visible {
+    outline-width: 0px;
+    outline-offset: 2px;
+}
+
+.avl-checkbox[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.avl-checkbox-indicator {
+    display: flex;
+    transition: 200ms var(--avl-ease-out);
+}
+
+.avl-checkbox-indicator[data-starting-style] {
+    transform: scale(0);
+}
+
+.avl-checkbox .avl-icon {
+    font-size: 22px;
+}

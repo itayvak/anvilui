@@ -1,0 +1,121 @@
+.avl-menu-positioner {
+    z-index: 1000;
+}
+
+.avl-menu-popup {
+    display: flex;
+    flex-direction: column;
+    min-width: calc(var(--avl-spacing-x20) * 2.5);
+    outline: none;
+    transition: 200ms var(--avl-ease-out);
+}
+
+/* The visible container: one per group, or the popup itself when it has none */
+.avl-menu-group,
+.avl-menu-popup:not(:has(> .avl-menu-group)) {
+    padding: var(--avl-spacing-x1);
+    border-radius: var(--avl-radius-medium);
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+}
+
+.avl-menu-group + .avl-menu-group {
+    margin-top: var(--avl-spacing-x1);
+}
+
+/* Corners that face another group are small */
+.avl-menu-group:not(:last-child) {
+    border-end-start-radius: var(--avl-radius-small);
+    border-end-end-radius: var(--avl-radius-small);
+}
+
+.avl-menu-group:not(:first-child) {
+    border-start-start-radius: var(--avl-radius-small);
+    border-start-end-radius: var(--avl-radius-small);
+}
+
+/* Base UI sets these while the popup mounts and unmounts, and waits for the
+   transition to finish before removing it */
+.avl-menu-popup[data-starting-style],
+.avl-menu-popup[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.95, 0.8)
+        translate(var(--avl-menu-shift-x, 0), var(--avl-menu-shift-y, 0));
+}
+
+/* The popup starts nudged toward the trigger, so it slides out of it */
+.avl-menu-popup[data-side='bottom'] {
+    --avl-menu-shift-y: -15%;
+}
+
+.avl-menu-popup[data-side='top'] {
+    --avl-menu-shift-y: 15%;
+}
+
+.avl-menu-popup[data-side='right'],
+.avl-menu-popup[data-side='inline-end']:dir(ltr),
+.avl-menu-popup[data-side='inline-start']:dir(rtl) {
+    --avl-menu-shift-x: -15%;
+}
+
+.avl-menu-popup[data-side='left'],
+.avl-menu-popup[data-side='inline-start']:dir(ltr),
+.avl-menu-popup[data-side='inline-end']:dir(rtl) {
+    --avl-menu-shift-x: 15%;
+}
+
+.avl-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+    min-height: var(--avl-spacing-x11);
+    padding: 0 var(--avl-spacing-x3);
+    border-radius: var(--avl-radius-small);
+    font-size: var(--avl-font-size-body);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+}
+
+/* "First/last item", not first/last child: an open submenu leaves hidden focus
+   guard spans next to its trigger, which would otherwise stop it being last */
+.avl-menu-item:nth-child(1 of .avl-menu-item) {
+    border-start-start-radius: var(--avl-radius-medium);
+    border-start-end-radius: var(--avl-radius-medium);
+}
+
+.avl-menu-item:nth-last-child(1 of .avl-menu-item) {
+    border-end-start-radius: var(--avl-radius-medium);
+    border-end-end-radius: var(--avl-radius-medium);
+}
+
+/* The items in those corners follow the group */
+.avl-menu-group:not(:last-child) > :nth-last-child(1 of .avl-menu-item) {
+    border-end-start-radius: var(--avl-radius-small);
+    border-end-end-radius: var(--avl-radius-small);
+}
+
+.avl-menu-group:not(:first-child) > :nth-child(1 of .avl-menu-item) {
+    border-start-start-radius: var(--avl-radius-small);
+    border-start-end-radius: var(--avl-radius-small);
+}
+
+.avl-menu-item[data-highlighted],
+.avl-menu-item[data-popup-open] {
+    background-color: var(--avl-color-secondary);
+    color: var(--avl-color-on-secondary);
+}
+
+.avl-menu-item[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.avl-menu-item .avl-icon {
+    font-size: 1.25em;
+}
+
+.avl-menu-item-label {
+    flex: 1;
+}

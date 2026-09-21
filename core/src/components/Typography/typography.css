@@ -1,0 +1,46 @@
+.avl-typography {
+    margin: 0;
+}
+
+.avl-typography-body {
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-typography-caption {
+    font-size: var(--avl-font-size-caption);
+}
+
+.avl-typography-h1,
+.avl-typography-h2,
+.avl-typography-h3,
+.avl-typography-h4,
+.avl-typography-h5,
+.avl-typography-h6 {
+    font-family: var(--avl-font-title);
+    font-weight: normal;
+}
+
+.avl-typography-h1 {
+    font-size: var(--avl-font-size-h1);
+    font-weight: bold;
+}
+
+.avl-typography-h2 {
+    font-size: var(--avl-font-size-h2);
+}
+
+.avl-typography-h3 {
+    font-size: var(--avl-font-size-h3);
+}
+
+.avl-typography-h4 {
+    font-size: var(--avl-font-size-h4);
+}
+
+.avl-typography-h5 {
+    font-size: var(--avl-font-size-h5);
+}
+
+.avl-typography-h6 {
+    font-size: var(--avl-font-size-h6);
+}

@@ -12,8 +12,17 @@ export function tokensToCssVariables(
     for (const [category, values] of Object.entries(tokens)) {
         if (category === 'spacing') continue
 
+        const kebabCategory = category
+            .replace(/([a-z])([A-Z])/g, '$1-$2')
+            .toLowerCase()
+
+        if (typeof values === 'string') {
+            cssVars[`--avl-${kebabCategory}`] = values
+            continue
+        }
+
         for (const [key, value] of Object.entries(values)) {
-            cssVars[`--avl-${category}-${key}`] = String(value)
+            cssVars[`--avl-${kebabCategory}-${key}`] = String(value)
         }
     }
 

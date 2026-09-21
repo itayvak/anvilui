@@ -1,0 +1,61 @@
+.avl-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-radio {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: var(--avl-spacing-x5);
+    height: var(--avl-spacing-x5);
+    padding: 0;
+    cursor: pointer;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-background);
+    transition: 200ms var(--avl-ease-out);
+}
+
+/* invisible click area */
+.avl-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--avl-spacing-x10);
+    height: var(--avl-spacing-x10);
+    transform: translate(-50%, -50%);
+}
+
+.avl-radio[data-checked] {
+    border-color: var(--avl-color-primary);
+}
+
+/* Pressing a <label> makes the hidden input :active, not this span */
+.avl-radio:is(:active, :has(~ input:active)):not([data-disabled]) {
+    transform: scale(0.95);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-radio[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.avl-radio-indicator {
+    width: var(--avl-spacing-x3);
+    height: var(--avl-spacing-x3);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-primary);
+    transition: 200ms var(--avl-ease-out);
+}
+
+.avl-radio-indicator[data-starting-style],
+.avl-radio-indicator[data-ending-style] {
+    transform: scale(0);
+}

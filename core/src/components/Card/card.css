@@ -1,0 +1,54 @@
+.avl-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x3);
+    padding: var(--avl-spacing-x5);
+    border-radius: var(--avl-radius-medium);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-text);
+}
+
+.avl-card.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-card-clickable {
+    cursor: pointer;
+    /* so `render={<a />}` doesn't get underlined */
+    text-decoration: none;
+    transition: 200ms var(--avl-ease-out);
+}
+
+.avl-card-clickable:hover:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 90%,
+        var(--avl-nested-color-on-main) 10%
+    );
+}
+
+.avl-card-clickable:active:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 80%,
+        var(--avl-nested-color-on-main) 20%
+    );
+    transform: scale(1.01, 0.98);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-card-clickable[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.avl-card-content {
+    flex: 1;
+}
+
+.avl-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--avl-spacing-x2);
+}
