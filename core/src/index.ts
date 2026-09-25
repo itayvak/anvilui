@@ -60,11 +60,23 @@ export type {
     RadioProps,
 } from './components/RadioGroup/RadioGroup'
 
+export { Switch } from './components/Switch/Switch'
+export type { SwitchProps } from './components/Switch/Switch'
+
 export { Typography } from './components/Typography/Typography'
 export type {
     TypographyProps,
     TypographyType,
 } from './components/Typography/Typography'
+
+export {
+    NavigationRail,
+    NavigationRailItem,
+} from './components/NavigationRail/NavigationRail'
+export type {
+    NavigationRailProps,
+    NavigationRailItemProps,
+} from './components/NavigationRail/NavigationRail'
 
 export type { ComponentColor } from './colors/colors'
 export type { ComponentFillType } from './colors/colors'

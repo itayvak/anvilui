@@ -152,7 +152,9 @@ export function MenuPlayground() {
                     ))}
                 </RadioGroup>
             </Row>
-            <Row>
+            {/* Padding so the popup has room to open on every side without
+                Base UI flipping it to fit the viewport */}
+            <Row style={{ padding: '8rem', justifyContent: 'center' }}>
                 <Menu>
                     <MenuTrigger render={<Button endIcon="arrow_drop_down" />}>
                         Open menu

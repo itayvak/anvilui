@@ -1,0 +1,56 @@
+.avl-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: var(--avl-spacing-x13);
+    height: var(--avl-spacing-x8);
+    padding: var(--avl-spacing-x1);
+    cursor: pointer;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-button);
+    background-color: var(--avl-color-surface-variant);
+    transition: 200ms var(--avl-ease-out);
+}
+
+.avl-switch[data-checked] {
+    border-color: var(--avl-color-primary);
+    background-color: var(--avl-color-primary);
+}
+
+.avl-switch:is(:active, :has(~ input:active)):not([data-disabled]) {
+    transform: scale(0.97);
+}
+
+.avl-switch:is(:active, :has(~ input:active)):not([data-disabled]) .avl-switch-thumb {
+    width: var(--avl-spacing-x6);
+    height: var(--avl-spacing-x6);
+    transform: translateX(-5%);
+}
+
+.avl-switch[data-checked]:is(:active, :has(~ input:active)):not([data-disabled]) .avl-switch-thumb {
+    width: var(--avl-spacing-x7);
+    height: var(--avl-spacing-x7);
+    transform: translateX(calc(var(--avl-spacing-x5) - 10%));
+}
+
+.avl-switch[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.avl-switch-thumb {
+    width: var(--avl-spacing-x4);
+    height: var(--avl-spacing-x4);
+    border-radius: var(--avl-radius-button);
+    background-color: var(--avl-color-outline);
+    transition: 200ms var(--avl-ease-out);
+}
+
+.avl-switch[data-checked] .avl-switch-thumb {
+    width: var(--avl-spacing-x6);
+    height: var(--avl-spacing-x6);
+    transform: translateX(var(--avl-spacing-x5));
+    background-color: var(--avl-color-on-primary);
+}

@@ -1,0 +1,165 @@
+.avl-navigation-rail {
+    /* read by NavigationRail.tsx so the FLIP animation matches the width transition */
+    --avl-navigation-rail-duration: 300ms;
+    --avl-navigation-rail-ease: var(--avl-ease-out);
+    --avl-navigation-rail-width: calc(var(--avl-spacing-x1) * 24);
+
+    width: var(--avl-navigation-rail-width);
+    box-sizing: border-box;
+    padding: var(--avl-spacing-x4);
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-on-color-surface-variant);
+    overflow: clip;
+    transition: width var(--avl-navigation-rail-duration)
+        var(--avl-navigation-rail-ease);
+}
+
+.avl-navigation-rail[data-expanded='true'] {
+    --avl-navigation-rail-width: calc(var(--avl-spacing-x1) * 90);
+}
+
+/* the content snaps straight to the target layout while only the rail box
+   animates its width, so the FLIP measurements in NavigationRail.tsx are taken
+   against a settled layout instead of one still being resized under them */
+.avl-navigation-rail-content {
+    width: calc(var(--avl-navigation-rail-width) - var(--avl-spacing-x4) * 2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .avl-navigation-rail {
+        --avl-navigation-rail-duration: 0ms;
+        transition: none;
+    }
+}
+
+.avl-navigation-rail-expand-button .avl-icon {
+    transition: transform 400ms var(--avl-ease-out);
+}
+
+.avl-navigation-rail-expand-button[data-expanded='true'] .avl-icon {
+    transform: rotate(0deg);
+}
+
+.avl-navigation-rail-expand-button[data-expanded='false'] .avl-icon {
+    transform: rotate(180deg);
+}
+
+.avl-navigation-rail-item-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.avl-navigation-rail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-on-color-surface-variant);
+    cursor: pointer;
+    /* colors get a plain ease-out: --avl-ease-out overshoots, which reads as a
+       flash on a color but is the wanted bounce on transform */
+    transition:
+        transform 400ms var(--avl-ease-out),
+        background-color 400ms ease-out,
+        color 400ms ease-out;
+    --avl-navigation-rail-item-hover: color-mix(
+        in srgb,
+        var(--avl-color-on-surface-variant) 8%,
+        var(--avl-color-surface-variant) 92%
+    );
+}
+
+.avl-navigation-rail-item:active:not(:disabled) {
+    transform: scale(0.99);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-navigation-rail-item-icon {
+    border-radius: var(--avl-radius-button);
+    background-color: transparent;
+    transition:
+        transform 400ms var(--avl-ease-out),
+        background-color 400ms ease-out,
+        color 400ms ease-out;
+}
+
+.avl-navigation-rail[data-expanded='true'] .avl-navigation-rail-item {
+    flex-direction: row;
+    gap: var(--avl-spacing-x4);
+    padding: var(--avl-spacing-x4);
+    border-radius: var(--avl-radius-button);
+}
+
+.avl-navigation-rail[data-expanded='true']
+    .avl-navigation-rail-item:hover:not(:disabled) {
+    background-color: var(--avl-navigation-rail-item-hover);
+}
+
+.avl-navigation-rail[data-expanded='true']
+    .avl-navigation-rail-item[data-pressed]:not(:disabled) {
+    background-color: var(--avl-color-secondary-container);
+    color: var(--avl-color-on-secondary-container);
+}
+
+.avl-navigation-rail-item-text {
+    flex: 1;
+    min-width: 0;
+    overflow: visible;
+    white-space: nowrap;
+    text-align: start;
+}
+
+.avl-navigation-rail[data-expanded='true'] .avl-navigation-rail-item-text {
+    width: 10px;
+    overflow: clip;
+    text-overflow: clip;
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-expand-button {
+    display: flex;
+    margin-inline: auto;
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item {
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item-icon {
+    width: 100%;
+    padding: var(--avl-spacing-x1) 0;
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item-text {
+    margin-bottom: var(--avl-spacing-x4);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+.avl-navigation-rail[data-expanded='false']
+    .avl-navigation-rail-item:active:not(:disabled) {
+    transform: none;
+}
+
+.avl-navigation-rail[data-expanded='false']
+    .avl-navigation-rail-item:active:not(:disabled)
+    .avl-navigation-rail-item-icon {
+    transform: scale(1.05, 0.93);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-navigation-rail[data-expanded='false']
+    .avl-navigation-rail-item:hover:not(:disabled)
+    .avl-navigation-rail-item-icon {
+    background-color: var(--avl-navigation-rail-item-hover);
+}
+
+.avl-navigation-rail[data-expanded='false']
+    .avl-navigation-rail-item[data-pressed]:not(:disabled)
+    .avl-navigation-rail-item-icon {
+    background-color: var(--avl-color-secondary-container);
+    color: var(--avl-color-on-secondary-container);
+}

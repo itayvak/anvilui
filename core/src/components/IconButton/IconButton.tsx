@@ -25,8 +25,7 @@ export function IconButton({
     fillType,
     ...props
 }: IconButtonProps) {
-    const className = 'avl-icon-button ' + colorClass(color, fillType)
-
+    const className = `avl-icon-button ${props.className} ${colorClass(color, fillType)}`
     return (
         <BaseButton {...props} className={className}>
             <Icon name={icon} />

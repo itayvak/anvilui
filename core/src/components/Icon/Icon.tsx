@@ -14,7 +14,7 @@ export function Icon({ name, ...props }: IconProps) {
             aria-hidden={labelled ? undefined : true}
             role={labelled ? 'img' : undefined}
             {...props}
-            className="avl-icon material-symbols-rounded"
+            className={`avl-icon material-symbols-rounded ${props.className}`}
         >
             {name}
         </span>

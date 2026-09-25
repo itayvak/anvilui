@@ -8,7 +8,9 @@ import { IconButtonPlayground } from './IconButtonPlayground'
 import { MenuPlayground } from './MenuPlayground'
 import { RadioButtonGroupPlayground } from './RadioButtonGroupPlayground'
 import { RadioGroupPlayground } from './RadioGroupPlayground'
+import { SwitchPlayground } from './SwitchPlayground'
 import { TypographyPlayground } from './TypographyPlayground'
+import { NavigationRailPlayground } from './NavigationRailPlayground'
 
 // One entry per AnvilUI component. The key is what shows up in the select.
 export const playgrounds: Record<string, ComponentType> = {
@@ -21,5 +23,7 @@ export const playgrounds: Record<string, ComponentType> = {
     Menu: MenuPlayground,
     RadioButtonGroup: RadioButtonGroupPlayground,
     RadioGroup: RadioGroupPlayground,
+    Switch: SwitchPlayground,
     Typography: TypographyPlayground,
+    NavigationRail: NavigationRailPlayground,
 }

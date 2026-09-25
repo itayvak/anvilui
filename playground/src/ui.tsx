@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Typography } from 'anvilui'
 
 export function Section(props: { title: string; children: ReactNode }) {
@@ -10,8 +10,12 @@ export function Section(props: { title: string; children: ReactNode }) {
     )
 }
 
-export function Row(props: { children: ReactNode }) {
-    return <div className="pg-row">{props.children}</div>
+export function Row(props: { children: ReactNode; style?: CSSProperties }) {
+    return (
+        <div className="pg-row" style={props.style}>
+            {props.children}
+        </div>
+    )
 }
 
 export function Grid(props: { children: ReactNode }) {
