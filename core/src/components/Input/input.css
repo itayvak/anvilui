@@ -1,0 +1,75 @@
+.avl-input-root {
+    position: relative;
+    display: inline-flex;
+    /* The floated label plugs the gap it makes in the outline with this color,
+       so set it to whatever surface the input sits on. */
+    --avl-input-background: var(--avl-color-background);
+}
+
+.avl-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--avl-spacing-x12);
+    padding: 0 var(--avl-spacing-x4);
+    outline: none;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    background-color: transparent;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+    transition: border-color 200ms var(--avl-ease-out);
+}
+
+.avl-input::placeholder {
+    color: var(--avl-color-outline);
+}
+
+.avl-input-label {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--avl-spacing-x4) - var(--avl-spacing-x1));
+    padding: 0 var(--avl-spacing-x1);
+    transform: translateY(-50%);
+    transform-origin: left center;
+    pointer-events: none;
+    white-space: nowrap;
+    background-color: var(--avl-input-background);
+    color: var(--avl-color-outline);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+    transition: 200ms var(--avl-ease-out);
+}
+
+/* Float once the field has a value or focus. A field with its own placeholder
+   floats from the start, so the two never overlap. */
+.avl-input-root:is([data-filled], [data-focused]) .avl-input-label,
+.avl-input-root:has(.avl-input[placeholder]) .avl-input-label {
+    top: 0;
+    transform: translateY(-50%) scale(0.75);
+}
+
+.avl-input-root:hover:not([data-disabled]) .avl-input {
+    border-color: var(--avl-color-on-background);
+}
+
+.avl-input-root[data-focused] .avl-input {
+    border-color: var(--avl-color-primary);
+}
+
+.avl-input-root[data-focused] .avl-input-label {
+    color: var(--avl-color-primary);
+}
+
+.avl-input-root[data-invalid] :is(.avl-input, .avl-input-label) {
+    border-color: var(--avl-color-error);
+    color: var(--avl-color-error);
+}
+
+.avl-input-root[data-disabled] {
+    opacity: 0.5;
+}
+
+.avl-input-root[data-disabled] .avl-input {
+    cursor: default;
+}

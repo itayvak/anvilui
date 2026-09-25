@@ -1,10 +1,13 @@
 .avl-navigation-rail {
     /* read by NavigationRail.tsx so the FLIP animation matches the width transition */
-    --avl-navigation-rail-duration: 300ms;
-    --avl-navigation-rail-ease: var(--avl-ease-out);
+    --avl-navigation-rail-duration: 320ms;
+    /* a plain decelerate curve rather than --avl-ease-out: that token
+       overshoots, and on a box this size the overshoot reads as a bounce */
+    --avl-navigation-rail-ease: cubic-bezier(0.2, 0, 0, 1);
     --avl-navigation-rail-width: calc(var(--avl-spacing-x1) * 24);
 
     width: var(--avl-navigation-rail-width);
+    height: 100%;
     box-sizing: border-box;
     padding: var(--avl-spacing-x4);
     background-color: var(--avl-color-surface-variant);
@@ -33,7 +36,8 @@
 }
 
 .avl-navigation-rail-expand-button .avl-icon {
-    transition: transform 400ms var(--avl-ease-out);
+    transition: transform var(--avl-navigation-rail-duration)
+        var(--avl-navigation-rail-ease);
 }
 
 .avl-navigation-rail-expand-button[data-expanded='true'] .avl-icon {

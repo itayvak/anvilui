@@ -26,6 +26,9 @@ export type { IconProps } from './components/Icon/Icon'
 export { IconButton } from './components/IconButton/IconButton'
 export type { IconButtonProps } from './components/IconButton/IconButton'
 
+export { Input } from './components/Input/Input'
+export type { InputProps } from './components/Input/Input'
+
 export {
     Menu,
     MenuTrigger,

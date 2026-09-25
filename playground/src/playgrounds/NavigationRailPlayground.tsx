@@ -6,7 +6,7 @@ export function NavigationRailPlayground() {
     const [expanded, setExpanded] = useState(true)
 
     return (
-        <Section title="Navigation Rail">
+        <div style={{position: "absolute", height: "100dvh", width: "fit-content", top: 0, left: 0, zIndex: 2}}>
             <NavigationRail
                 hasExpandButton
                 expanded={expanded}
@@ -44,6 +44,6 @@ export function NavigationRailPlayground() {
                     title="Settings Really Long"
                 />
             </NavigationRail>
-        </Section>
+        </div>
     )
 }

@@ -76,6 +76,44 @@
     padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
 }
 
+/* Clips a component that fills its parent's height, like the navigation rail */
+.pg-frame {
+    display: flex;
+    width: fit-content;
+    height: calc(var(--avl-spacing-x1) * 80);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    overflow: hidden;
+}
+
+.pg-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--avl-spacing-x3);
+    margin-top: var(--avl-spacing-x1);
+}
+
+.pg-swatch {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+.pg-swatch-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--avl-spacing-x1) * 16);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    font-size: var(--avl-font-size-h6);
+}
+
+.pg-swatch-value {
+    font-family: var(--avl-font-mono);
+    text-transform: uppercase;
+}
+
 select {
     padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
     border: 1px solid var(--avl-color-outline);

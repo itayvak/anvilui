@@ -10,7 +10,7 @@
     cursor: pointer;
     border: var(--avl-outline-size) solid var(--avl-color-outline);
     border-radius: var(--avl-radius-button);
-    background-color: var(--avl-color-surface-variant);
+    background-color: rgba(0,0,0,0 );
     transition: 200ms var(--avl-ease-out);
 }
 

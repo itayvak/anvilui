@@ -25,7 +25,8 @@ type FlipPart = {
     el: HTMLElement
     /** ancestor that is animated too, whose transform this one compounds with */
     parent?: HTMLElement
-    fade?: boolean
+    /** opacity this part cross-fades up from; 1 means it does not fade */
+    fadeFrom?: number
 }
 
 function collectParts(rail: HTMLElement): FlipPart[] {
@@ -45,10 +46,11 @@ function collectParts(rail: HTMLElement): FlipPart[] {
         const text = item.querySelector<HTMLElement>(
             '.avl-navigation-rail-item-text'
         )
-        if (icon) parts.push({ el: icon, parent: item })
+        // the icon only slides, so a partial fade is enough to soften the move
+        if (icon) parts.push({ el: icon, parent: item, fadeFrom: 0.4 })
         // the label re-wraps between the two layouts, so it cross-fades on top
         // of the move instead of visibly reflowing
-        if (text) parts.push({ el: text, parent: item, fade: true })
+        if (text) parts.push({ el: text, parent: item, fadeFrom: 0 })
     }
     return parts
 }
@@ -100,7 +102,7 @@ export function NavigationRail<Value extends string = string>({
 
         if (!before.size || !duration) return
 
-        for (const { el, parent, fade } of parts) {
+        for (const { el, parent, fadeFrom = 1 } of parts) {
             const from = before.get(el)
             if (!from) continue
             const to = after.get(el)!
@@ -114,13 +116,13 @@ export function NavigationRail<Value extends string = string>({
                 x -= parentFrom.left - parentTo.left
                 y -= parentFrom.top - parentTo.top
             }
-            if (!x && !y && !fade) continue
+            if (!x && !y && fadeFrom === 1) continue
 
             el.animate(
                 [
                     {
                         transform: `translate(${x}px, ${y}px)`,
-                        opacity: fade ? 0 : 1,
+                        opacity: fadeFrom,
                     },
                     { transform: 'none', opacity: 1 },
                 ],
