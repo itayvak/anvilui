@@ -13,7 +13,7 @@
     border-radius: var(--avl-radius-small);
     background-color: var(--avl-color-background);
     color: var(--avl-color-on-primary);
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 /* invisible click area */
@@ -39,11 +39,6 @@
     transition: 10ms var(--avl-ease-out);
 }
 
-.avl-checkbox:focus-visible {
-    outline-width: 0px;
-    outline-offset: 2px;
-}
-
 .avl-checkbox[data-disabled] {
     opacity: 0.5;
     cursor: default;
@@ -51,7 +46,7 @@
 
 .avl-checkbox-indicator {
     display: flex;
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 .avl-checkbox-indicator[data-starting-style] {

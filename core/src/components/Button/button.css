@@ -9,7 +9,7 @@
     border-radius: var(--avl-radius-button);
     background-color: var(--avl-nested-color-main);
     color: var(--avl-nested-color-on-main);
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
     --avl-button-active-transform: scale(0.98);
 }
 
@@ -49,19 +49,19 @@
     --avl-button-height: var(--avl-spacing-x8);
     min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x3);
-    font-size: 12px;
+    font-size: var(--avl-font-size-label-small);
 }
 
 .avl-button-size-normal {
     --avl-button-height: var(--avl-spacing-x10);
     min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x4);
-    font-size: 14px;
+    font-size: var(--avl-font-size-label);
 }
 
 .avl-button-size-big {
     --avl-button-height: var(--avl-spacing-x12);
     min-height: var(--avl-button-height);
     padding: 0 var(--avl-spacing-x8);
-    font-size: 18px;
+    font-size: var(--avl-font-size-label-large);
 }

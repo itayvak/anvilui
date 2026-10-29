@@ -1,22 +1,21 @@
-import { Dispatch, SetStateAction, useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import type { MaterialSymbol } from 'material-symbols'
+import { useRender } from '@base-ui/react/use-render'
+import { mergeProps } from '@base-ui/react/merge-props'
 import { IconButton } from '../IconButton/IconButton'
-import { Toggle } from '@base-ui/react/toggle'
-import { ToggleGroup } from '@base-ui/react/toggle-group'
-import './navigation-rail.css'
 import { Icon } from '../Icon/Icon'
 import { Typography } from '../Typography/Typography'
+import { cx, mergeRefs } from '../../utils'
+import './navigation-rail.css'
 
-export type NavigationRailProps<Value extends string = string> = Omit<
-    React.ComponentProps<'div'>,
-    'onChange' | 'defaultValue'
-> & {
+export type NavigationRailProps = React.ComponentProps<'nav'> & {
+    /** Shows a button that toggles between the collapsed and expanded layouts. */
     hasExpandButton?: boolean
+    /** Controlled expanded state. Pair with `onExpandedChange`. */
     expanded?: boolean
-    setExpanded?: Dispatch<SetStateAction<boolean>>
-    value?: ToggleGroup.Props<Value>['value']
-    defaultValue?: ToggleGroup.Props<Value>['defaultValue']
-    onValueChange?: ToggleGroup.Props<Value>['onValueChange']
+    /** Starting state when `expanded` isn't controlled. */
+    defaultExpanded?: boolean
+    onExpandedChange?: (expanded: boolean) => void
 }
 
 const FLIP_ID = 'avl-navigation-rail-flip'
@@ -53,17 +52,26 @@ function collectParts(rail: HTMLElement): FlipPart[] {
     return parts
 }
 
-export function NavigationRail<Value extends string = string>({
+/**
+ * Side navigation between an app's top-level pages. Fill it with
+ * `NavigationRailItem`s and give it an `aria-label` (e.g. "Main").
+ */
+export function NavigationRail({
     hasExpandButton,
     expanded: expandedProp,
-    setExpanded,
-    value,
-    defaultValue,
-    onValueChange,
+    defaultExpanded = true,
+    onExpandedChange,
     children,
+    className,
+    ref,
     ...props
-}: NavigationRailProps<Value>) {
-    const expanded = expandedProp === null ? true : expandedProp
+}: NavigationRailProps) {
+    const [internalExpanded, setInternalExpanded] = useState(defaultExpanded)
+    const expanded = expandedProp ?? internalExpanded
+    const toggleExpanded = () => {
+        setInternalExpanded(!expanded)
+        onExpandedChange?.(!expanded)
+    }
     const railRef = useRef<HTMLDivElement>(null)
     const lastRects = useRef(new Map<HTMLElement, DOMRect>())
 
@@ -114,15 +122,25 @@ export function NavigationRail<Value extends string = string>({
                 x -= parentFrom.left - parentTo.left
                 y -= parentFrom.top - parentTo.top
             }
-            if (!x && !y && !fade) continue
+            if (fade) {
+                // labels don't slide: they stay hidden while the layout moves,
+                // then fade in where they land
+                el.animate(
+                    [
+                        { opacity: 0 },
+                        { opacity: 0, offset: 0.4 },
+                        { opacity: 1 },
+                    ],
+                    { duration, easing: 'ease-out', id: FLIP_ID }
+                )
+                continue
+            }
+            if (!x && !y) continue
 
             el.animate(
                 [
-                    {
-                        transform: `translate(${x}px, ${y}px)`,
-                        opacity: fade ? 0 : 1,
-                    },
-                    { transform: 'none', opacity: 1 },
+                    { transform: `translate(${x}px, ${y}px)` },
+                    { transform: 'none' },
                 ],
                 { duration, easing, id: FLIP_ID }
             )
@@ -130,10 +148,10 @@ export function NavigationRail<Value extends string = string>({
     }, [expanded])
 
     return (
-        <div
+        <nav
             {...props}
-            ref={railRef}
-            className="avl-navigation-rail"
+            ref={mergeRefs(railRef, ref)}
+            className={cx('avl-navigation-rail', className)}
             data-expanded={expanded}
         >
             <div className="avl-navigation-rail-content">
@@ -141,47 +159,63 @@ export function NavigationRail<Value extends string = string>({
                     <IconButton
                         className="avl-navigation-rail-expand-button"
                         icon={expanded ? 'menu_open' : 'menu'}
-                        aria-label={expanded ? 'Close Menu' : 'Expand Menu'}
+                        aria-label={expanded ? 'Collapse menu' : 'Expand menu'}
+                        aria-expanded={expanded}
                         fillType="text"
                         color="container"
                         data-expanded={expanded}
-                        onClick={() => setExpanded && setExpanded((p) => !p)}
+                        onClick={toggleExpanded}
                     />
                 )}
-                <ToggleGroup
-                    className="avl-navigation-rail-item-list"
-                    value={value}
-                    defaultValue={defaultValue}
-                    onValueChange={onValueChange}
-                >
-                    {children}
-                </ToggleGroup>
+                <div className="avl-navigation-rail-item-list">{children}</div>
             </div>
-        </div>
+        </nav>
     )
 }
 
-export type NavigationRailItemProps<Value extends string = string> =
-    Toggle.Props<Value> & {
-        icon: MaterialSymbol
-        title: string
-    }
+// A link by default. Pass `render` to use a router link instead, e.g.
+// render={<Link to="/photos" />}.
+export type NavigationRailItemProps = useRender.ComponentProps<'a'> & {
+    /** Material Symbol to show. */
+    icon: MaterialSymbol
+    /** Visible text, also the link's accessible name. */
+    label: string
+    /** The current page. Sets aria-current="page". */
+    active?: boolean
+}
 
-export function NavigationRailItem<Value extends string = string>({
+export function NavigationRailItem({
     icon,
-    title,
+    label,
+    active = false,
+    render,
     className,
     ...props
-}: NavigationRailItemProps<Value>) {
-    return (
-        <Toggle
-            {...props}
-            className={'avl-navigation-rail-item ' + (className ?? '')}
-        >
-            <Icon name={icon} className="avl-navigation-rail-item-icon" />
-            <Typography className="avl-navigation-rail-item-text">
-                {title}
-            </Typography>
-        </Toggle>
-    )
+}: NavigationRailItemProps) {
+    return useRender({
+        defaultTagName: 'a',
+        render,
+        state: { active },
+        props: mergeProps<'a'>(
+            {
+                className: cx('avl-navigation-rail-item', className),
+                'aria-current': active ? 'page' : undefined,
+                children: (
+                    <>
+                        <Icon
+                            name={icon}
+                            className="avl-navigation-rail-item-icon"
+                        />
+                        <Typography
+                            as="span"
+                            className="avl-navigation-rail-item-text"
+                        >
+                            {label}
+                        </Typography>
+                    </>
+                ),
+            },
+            props
+        ),
+    })
 }

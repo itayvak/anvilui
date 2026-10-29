@@ -1,48 +1,34 @@
+import { useState } from 'react'
+import type { MaterialSymbol } from 'material-symbols'
 import { NavigationRail, NavigationRailItem } from 'anvilui'
 import { Section } from '../ui'
-import { useState } from 'react'
+
+const pages: { icon: MaterialSymbol; label: string }[] = [
+    { icon: 'person', label: 'My Profile' },
+    { icon: 'photo', label: 'Photos' },
+    { icon: 'settings', label: 'Settings' },
+    { icon: 'help', label: 'Help and feedback' },
+]
 
 export function NavigationRailPlayground() {
-    const [expanded, setExpanded] = useState(true)
+    const [current, setCurrent] = useState('My Profile')
 
     return (
         <Section title="Navigation Rail">
-            <NavigationRail
-                hasExpandButton
-                expanded={expanded}
-                setExpanded={setExpanded}
-                defaultValue={['profile']}
-            >
-                <NavigationRailItem
-                    value="profile"
-                    icon="person"
-                    title="My Profile"
-                />
-                <NavigationRailItem
-                    value="photos"
-                    icon="photo"
-                    title="Photos"
-                />
-                <NavigationRailItem
-                    value="settings"
-                    icon="settings"
-                    title="Settings"
-                />
-                <NavigationRailItem
-                    value="profile1"
-                    icon="person"
-                    title="My Profile"
-                />
-                <NavigationRailItem
-                    value="photos1"
-                    icon="photo"
-                    title="Photos"
-                />
-                <NavigationRailItem
-                    value="settings1"
-                    icon="settings"
-                    title="Settings Really Long"
-                />
+            <NavigationRail hasExpandButton aria-label="Main">
+                {pages.map((page) => (
+                    <NavigationRailItem
+                        key={page.label}
+                        icon={page.icon}
+                        label={page.label}
+                        href="#"
+                        active={current === page.label}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            setCurrent(page.label)
+                        }}
+                    />
+                ))}
             </NavigationRail>
         </Section>
     )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Checkbox, RadioButton, RadioButtonGroup, Typography } from 'anvilui'
-import type { RadioButtonProps } from 'anvilui'
+import type { RadioButtonGroupProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
 import { RangeControl, Row, Section, SelectControl } from '../ui'
 
@@ -10,11 +10,11 @@ const options = ['Day', 'Week', 'Month', 'Year', 'Decade', 'Century']
 
 export function RadioButtonGroupPlayground() {
     const [size, setSize] =
-        useState<NonNullable<RadioButtonProps['size']>>('normal')
+        useState<NonNullable<RadioButtonGroupProps['size']>>('normal')
     const [color, setColor] =
-        useState<NonNullable<RadioButtonProps['color']>>('primary')
+        useState<NonNullable<RadioButtonGroupProps['color']>>('primary')
     const [fillType, setFillType] =
-        useState<NonNullable<RadioButtonProps['fillType']>>('filled')
+        useState<NonNullable<RadioButtonGroupProps['fillType']>>('filled')
     const [count, setCount] = useState(3)
     const [disabled, setDisabled] = useState(false)
     const [icons, setIcons] = useState(false)
@@ -26,9 +26,6 @@ export function RadioButtonGroupPlayground() {
         <RadioButton
             key={option}
             value={option}
-            size={size}
-            color={color}
-            fillType={fillType}
             startIcon={icons ? 'calendar_today' : undefined}
         >
             {option}
@@ -80,6 +77,9 @@ export function RadioButtonGroupPlayground() {
                     aria-label="Uncontrolled"
                     defaultValue="Day"
                     disabled={disabled}
+                    size={size}
+                    color={color}
+                    fillType={fillType}
                 >
                     {buttons}
                 </RadioButtonGroup>
@@ -88,6 +88,9 @@ export function RadioButtonGroupPlayground() {
                     value={value}
                     onValueChange={setValue}
                     disabled={disabled}
+                    size={size}
+                    color={color}
+                    fillType={fillType}
                 >
                     {buttons}
                 </RadioButtonGroup>

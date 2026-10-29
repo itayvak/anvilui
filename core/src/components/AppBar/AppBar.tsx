@@ -1,0 +1,70 @@
+import type { ComponentProps, ReactNode } from 'react'
+import type { ComponentColor, ComponentFillType } from '../../colors/colors'
+import { colorClass } from '../../colors/colors'
+import { Typography, type TypographyTag } from '../Typography/Typography'
+import { cx } from '../../utils'
+import './app-bar.css'
+
+export type AppBarProps = ComponentProps<'header'> & {
+    /** The page or screen title. */
+    label: ReactNode
+    /**
+     * HTML tag for the title. A div by default; use `'h1'` when the bar's
+     * title is the page's main heading. @default 'div'
+     */
+    labelAs?: TypographyTag
+    /** Before the title, usually a navigation `IconButton` (menu or back). */
+    start?: ReactNode
+    /** After the title, usually a few action `IconButton`s. */
+    end?: ReactNode
+    /** `big` puts the title on its own, larger row below the buttons. @default 'normal' */
+    size?: 'normal' | 'big'
+    /** Center the title. Only for `size="normal"`. @default false */
+    centered?: boolean
+    /** Color role from the theme. @default 'container' */
+    color?: ComponentColor
+    /**
+     * `text` is Material 3's flat bar, the same color as the page. `filled`
+     * gives it a solid background, e.g. `color="primary" fillType="filled"`.
+     * @default 'text'
+     */
+    fillType?: ComponentFillType
+}
+
+/** The bar across the top of a page or screen: title, navigation and actions. */
+export function AppBar({
+    label,
+    labelAs = 'div',
+    start,
+    end,
+    size = 'normal',
+    centered = false,
+    // Not the library's usual primary/filled: Material 3's bar is flat
+    color = 'container',
+    fillType = 'text',
+    className,
+    ...props
+}: AppBarProps) {
+    return (
+        <header
+            {...props}
+            className={cx(
+                'avl-app-bar',
+                colorClass(color, fillType),
+                `avl-app-bar-size-${size}`,
+                centered && size === 'normal' && 'avl-app-bar-centered',
+                className
+            )}
+        >
+            <div className="avl-app-bar-start">{start}</div>
+            <Typography
+                as={labelAs}
+                type={size === 'big' ? 'h5' : 'h6'}
+                className="avl-app-bar-label"
+            >
+                {label}
+            </Typography>
+            <div className="avl-app-bar-end">{end}</div>
+        </header>
+    )
+}

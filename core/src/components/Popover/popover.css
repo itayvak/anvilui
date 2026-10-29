@@ -1,0 +1,20 @@
+/* Builds on menu.css's popup. The long selector matches menu.css's container
+   rule plus one class, so this padding wins regardless of file order. */
+.avl-popover-popup.avl-menu-popup:not(:has(> .avl-menu-group)) {
+    gap: var(--avl-spacing-x2);
+    max-width: calc(var(--avl-spacing-x20) * 4);
+    padding: var(--avl-spacing-x4);
+}
+
+.avl-popover-title {
+    margin: 0;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-h6);
+    font-weight: normal;
+}
+
+.avl-popover-description {
+    margin: 0;
+    font-size: var(--avl-font-size-body);
+}

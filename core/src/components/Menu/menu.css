@@ -7,7 +7,7 @@
     flex-direction: column;
     min-width: calc(var(--avl-spacing-x20) * 2.5);
     outline: none;
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 /* The visible container: one per group, or the popup itself when it has none */

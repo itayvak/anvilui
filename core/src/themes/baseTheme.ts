@@ -28,6 +28,9 @@ export const baseLightTheme: Theme = {
     onSuccess: '#FFFFFF',
     successContainer: '#A6F5AE',
     onSuccessContainer: '#00210A',
+    inverseSurface: '#2F3036',
+    inverseOnSurface: '#F1F0F7',
+    inversePrimary: '#B7C3FF',
 }
 
 export const baseDarkTheme: Theme = {
@@ -58,4 +61,7 @@ export const baseDarkTheme: Theme = {
     onSuccess: '#00390F',
     successContainer: '#00531D',
     onSuccessContainer: '#A6F5AE',
+    inverseSurface: '#E2E2E9',
+    inverseOnSurface: '#2F3036',
+    inversePrimary: '#4355B9',
 }

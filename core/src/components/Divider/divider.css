@@ -1,0 +1,15 @@
+.avl-divider {
+    flex-shrink: 0;
+    margin: 0;
+    border: none;
+    background-color: var(--avl-color-outline);
+}
+
+.avl-divider[data-orientation='horizontal'] {
+    height: 1px;
+}
+
+.avl-divider[data-orientation='vertical'] {
+    align-self: stretch;
+    width: 1px;
+}

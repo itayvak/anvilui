@@ -1,0 +1,95 @@
+/* Material 3 primary tabs: equal-width tabs over a divider, with a short
+   rounded underline that slides to the selected one */
+.avl-tabs-list {
+    position: relative;
+    display: flex;
+    /* Too many tabs to fit: scroll sideways instead of squeezing them */
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--avl-color-outline);
+}
+
+.avl-tabs-tab {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--avl-spacing-x12);
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+    border: none;
+    background-color: transparent;
+    color: var(--avl-color-on-surface-variant);
+    font-family: inherit;
+    font-size: var(--avl-font-size-label);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color var(--avl-ease-length-short) linear;
+}
+
+/* Icon and label, with their own tinted background on hover and press */
+.avl-tabs-tab-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x3);
+    border-radius: var(--avl-radius-medium);
+    /* The ease-out overshoot gives the springy release, like Button */
+    transition:
+        background-color var(--avl-ease-length-short) linear,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-tabs-tab:hover:not([data-disabled]) .avl-tabs-tab-content {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 6%,
+        transparent
+    );
+}
+
+.avl-tabs-tab:active:not([data-disabled]) .avl-tabs-tab-content {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 12%,
+        transparent
+    );
+    transform: scale(0.95);
+    transition: 10ms linear;
+}
+
+.avl-tabs-tab[data-active] {
+    color: var(--avl-color-primary);
+}
+
+/* Filled icon for the selected tab, outlined for the rest */
+.avl-tabs-tab[data-active] .avl-icon {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0;
+}
+
+.avl-tabs-tab[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Base UI sets --active-tab-left/width on it: the whole tab. Inset so it
+   doesn't run edge to edge (it can't match the label's width exactly). */
+.avl-tabs-indicator {
+    position: absolute;
+    bottom: 0;
+    left: calc(var(--active-tab-left) + var(--avl-spacing-x4));
+    width: calc(var(--active-tab-width) - var(--avl-spacing-x8));
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background-color: var(--avl-color-primary);
+    transition:
+        left var(--avl-ease-length-normal) var(--avl-ease-out),
+        width var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-tabs-panel {
+    padding-block: var(--avl-spacing-x4);
+}

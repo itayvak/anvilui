@@ -1,0 +1,165 @@
+/* Material 3 outlined text field */
+.avl-input {
+    /* Muted text for placeholder and resting label. Mixed rather than
+       on-surface-variant, which is too close to the text color (identical in dark). */
+    --avl-input-placeholder-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 60%,
+        var(--avl-color-background)
+    );
+    position: relative;
+    display: inline-flex;
+    box-sizing: border-box;
+    min-width: 0;
+    width: 240px;
+    height: var(--avl-spacing-x14);
+    cursor: text;
+}
+
+.avl-input-field {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0 var(--avl-spacing-x4);
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-input-field::placeholder {
+    color: var(--avl-input-placeholder-color);
+}
+
+/* With a label, the placeholder only appears once the label has moved up */
+.avl-input-labeled .avl-input-field:not(:focus)::placeholder {
+    color: transparent;
+}
+
+/* Border, drawn by a fieldset so its legend can cut the notch.
+   top: -5px centers the 11px legend on the top edge. */
+.avl-input-outline {
+    position: absolute;
+    inset: -5px 0 0;
+    margin: 0;
+    padding: 0 var(--avl-spacing-x3);
+    min-width: 0;
+    pointer-events: none;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    transition: border-color var(--avl-ease-length-short) linear;
+}
+
+.avl-input-outline legend {
+    display: block;
+    float: none;
+    width: auto;
+    max-width: 0.01px;
+    height: 11px;
+    padding: 0;
+    overflow: hidden;
+    visibility: hidden;
+    white-space: nowrap;
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-label-small);
+    transition: max-width var(--avl-ease-length-short) linear;
+}
+
+.avl-input-outline legend > span {
+    display: inline-block;
+    padding: 0 var(--avl-spacing-x1);
+}
+
+.avl-input:hover:not(:has(:disabled)) .avl-input-outline {
+    border-color: var(--avl-color-on-background);
+}
+
+.avl-input:focus-within .avl-input-outline {
+    border-width: 2px;
+    border-color: var(--avl-color-primary);
+}
+
+.avl-input-label {
+    position: absolute;
+    top: 50%;
+    left: var(--avl-spacing-x4);
+    max-width: calc(100% - var(--avl-spacing-x8));
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    transform: translateY(-50%);
+    color: var(--avl-input-placeholder-color);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+    transition:
+        top var(--avl-ease-length-normal) var(--avl-ease-out),
+        font-size var(--avl-ease-length-normal) var(--avl-ease-out),
+        color var(--avl-ease-length-short) linear;
+}
+
+/* Float onto the border when focused or filled, and open the notch */
+.avl-input-field:is(:focus, :not(:placeholder-shown)) + .avl-input-label {
+    top: 0;
+    font-size: var(--avl-font-size-label-small);
+}
+
+.avl-input-field:is(:focus, :not(:placeholder-shown))
+    ~ .avl-input-outline
+    legend {
+    max-width: 100%;
+}
+
+.avl-input-field:focus + .avl-input-label {
+    color: var(--avl-color-primary);
+}
+
+/* Small: shorter, tighter, and the label hides on input instead of floating */
+.avl-input-size-small {
+    height: var(--avl-spacing-x10);
+}
+
+.avl-input-size-small .avl-input-field {
+    padding: 0 var(--avl-spacing-x3);
+}
+
+.avl-input-size-small .avl-input-label {
+    left: var(--avl-spacing-x3);
+    max-width: calc(100% - var(--avl-spacing-x6));
+}
+
+.avl-input-size-small .avl-input-field + .avl-input-label {
+    top: 50%;
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-input-size-small
+    .avl-input-field:not(:placeholder-shown)
+    + .avl-input-label {
+    visibility: hidden;
+}
+
+/* Keep the label in place of the placeholder until the user types */
+.avl-input-size-small .avl-input-field::placeholder {
+    color: transparent;
+}
+
+.avl-input-size-small:not(.avl-input-labeled) .avl-input-field::placeholder {
+    color: var(--avl-input-placeholder-color);
+}
+
+/* Invalid: Base UI Field sets data-invalid; aria-invalid works standalone */
+.avl-input:has(:is([data-invalid], [aria-invalid='true'])) .avl-input-outline {
+    border-color: var(--avl-color-error);
+}
+
+.avl-input-field:is([data-invalid], [aria-invalid='true']) + .avl-input-label {
+    color: var(--avl-color-error);
+}
+
+.avl-input:has(:disabled) {
+    opacity: 0.5;
+    cursor: default;
+}

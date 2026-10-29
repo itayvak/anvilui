@@ -9,6 +9,7 @@ import {
     colorClass,
 } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
+import { withClass } from '../../utils'
 import './button.css'
 
 export type ButtonProps = BaseButtonProps & {
@@ -26,15 +27,17 @@ export function Button({
     startIcon,
     endIcon,
     children,
+    className,
     ...props
 }: ButtonProps) {
-    const className =
-        'avl-button ' +
-        `${colorClass(color, fillType)} ` +
-        `avl-button-size-${size || 'normal'} `
-
     return (
-        <BaseButton {...props} className={className}>
+        <BaseButton
+            {...props}
+            className={withClass(
+                `avl-button ${colorClass(color, fillType)} avl-button-size-${size || 'normal'}`,
+                className
+            )}
+        >
             {startIcon && <Icon name={startIcon} />}
             {children}
             {endIcon && <Icon name={endIcon} />}

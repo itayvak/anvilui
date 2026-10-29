@@ -1,36 +1,138 @@
-/* Each radio is followed by a hidden <input>, so the last button is never
-   :last-child and ButtonGroup would leave it without its outer radius and its
-   press transform. Keep the values in sync with button-group.css. */
-.avl-button-group[role='radiogroup'] > .avl-button:last-of-type {
-    border-start-end-radius: var(--avl-button-group-outer-radius);
-    border-end-end-radius: var(--avl-button-group-outer-radius);
-    --avl-button-active-transform: scaleX(0.97) scaleY(1.03) translateX(-2%);
+.avl-radio-button-group {
+    position: relative;
+    display: inline-flex;
+    padding: var(--avl-spacing-x1);
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2 + var(--avl-spacing-x1))
+    );
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
 }
 
-.avl-button-group[role='radiogroup'] > .avl-button.avl-fill-filled {
+.avl-radio-button-group:is(.avl-fill-outlined, .avl-fill-text) {
+    background-color: transparent;
+}
+
+.avl-radio-button-group.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-radio-button-group[data-disabled] {
     opacity: 0.5;
 }
 
-.avl-button-group[role='radiogroup']
-    > .avl-button[data-checked].avl-fill-filled {
-    opacity: 1;
+.avl-radio-button-group-indicator {
+    position: absolute;
+    top: var(--avl-spacing-x1);
+    bottom: var(--avl-spacing-x1);
+    left: 0;
+    /* a radius larger than the pill would get scaled down, so cap it */
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2)
+    );
+    background-color: var(--avl-radio-button-selected);
 }
 
-.avl-button-group[role='radiogroup']
-    > .avl-button:is(.avl-fill-outlined, .avl-fill-text) {
-    background-color: var(--avl-nested-color-main);
+.avl-radio-button[data-checked] {
+    color: var(--avl-radio-button-on-selected);
 }
 
-.avl-button-group[role='radiogroup']
-    > .avl-button[data-checked]:is(.avl-fill-outlined, .avl-fill-text) {
-    background-color: color-mix(
-        in srgb,
-        var(--avl-nested-color-main) 70%,
-        var(--avl-nested-color-on-main) 30%
-    );
-    border-color: color-mix(
-        in srgb,
-        var(--avl-nested-color-main) 70%,
-        var(--avl-nested-color-on-main) 30%
-    );
+/* the selected pill uses each color's container variant */
+.avl-radio-button-group.avl-color-primary {
+    --avl-radio-button-selected: var(--avl-color-primary-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-primary-container);
+}
+
+.avl-radio-button-group.avl-color-secondary {
+    --avl-radio-button-selected: var(--avl-color-secondary-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-secondary-container);
+}
+
+.avl-radio-button-group.avl-color-success {
+    --avl-radio-button-selected: var(--avl-color-success-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-success-container);
+}
+
+.avl-radio-button-group.avl-color-warning {
+    --avl-radio-button-selected: var(--avl-color-warning-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-warning-container);
+}
+
+.avl-radio-button-group.avl-color-error {
+    --avl-radio-button-selected: var(--avl-color-error-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-error-container);
+}
+
+.avl-radio-button-group.avl-color-container {
+    --avl-radio-button-selected: var(--avl-color-container);
+    --avl-radio-button-on-selected: var(--avl-color-on-container);
+}
+
+.avl-radio-button-group[data-ready] .avl-radio-button-group-indicator {
+    transition:
+        transform var(--avl-ease-length-slow) var(--avl-ease-out),
+        width var(--avl-ease-length-slow) var(--avl-ease-out),
+        opacity var(--avl-ease-length-normal) ease-out;
+}
+
+.avl-radio-button {
+    /* above the indicator */
+    position: relative;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--avl-spacing-x2);
+    min-height: var(--avl-button-height);
+    padding: 0 var(--avl-radio-button-padding);
+    border: none;
+    outline: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        color var(--avl-ease-length-normal) ease-out,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-radio-button:focus-visible {
+    /* not the nested main color: outlined/text set it to transparent */
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+    border-radius: var(--avl-radius-small);
+}
+
+.avl-radio-button:active:not([data-disabled]) {
+    transform: scale(0.96);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-radio-button[data-disabled] {
+    cursor: default;
+}
+
+.avl-radio-button .avl-icon {
+    font-size: 1.25em;
+}
+
+.avl-radio-button-group-size-small {
+    --avl-button-height: var(--avl-spacing-x8);
+    --avl-radio-button-padding: var(--avl-spacing-x3);
+    font-size: var(--avl-font-size-label-small);
+}
+
+.avl-radio-button-group-size-normal {
+    --avl-button-height: var(--avl-spacing-x10);
+    --avl-radio-button-padding: var(--avl-spacing-x4);
+    font-size: var(--avl-font-size-label);
+}
+
+.avl-radio-button-group-size-big {
+    --avl-button-height: var(--avl-spacing-x12);
+    --avl-radio-button-padding: var(--avl-spacing-x8);
+    font-size: var(--avl-font-size-label-large);
 }

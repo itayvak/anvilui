@@ -10,11 +10,9 @@ const names = Object.keys(playgrounds)
 export default function App() {
     const [name, setName] = useState(names[0])
     const Playground = playgrounds[name]
-    // AnvilRoot only reads its colorMode prop on mount, so read storage once.
-    const [initialColorMode] = useState(getStoredColorMode)
 
     return (
-        <AnvilRoot colorMode={initialColorMode}>
+        <AnvilRoot defaultColorMode={getStoredColorMode()}>
             <header className="pg-header">
                 <label>
                     <Typography>Component:</Typography>

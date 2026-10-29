@@ -8,6 +8,7 @@ import {
     colorClass,
 } from '../../colors/colors'
 import { Typography, TypographyProps } from '../Typography/Typography'
+import { cx, withClass } from '../../utils'
 import './card.css'
 
 type CardStyleProps = {
@@ -74,9 +75,7 @@ function StaticCard({
     return (
         <div
             {...props}
-            className={
-                'avl-card ' + colorClass(color, fillType) + (className ?? '')
-            }
+            className={cx('avl-card ' + colorClass(color, fillType), className)}
         />
     )
 }
@@ -98,21 +97,21 @@ function ClickableCard({
             onClick={(event) => {
                 if (!isFromNestedControl(event)) onClick?.(event)
             }}
-            className={(state) =>
-                'avl-card avl-card-clickable ' +
-                colorClass(color, fillType) +
-                ((typeof className === 'function'
-                    ? className(state)
-                    : className) ?? '')
-            }
+            className={withClass(
+                'avl-card avl-card-clickable ' + colorClass(color, fillType),
+                className
+            )}
         />
     )
 }
 
 export type CardTitleProps = TypographyProps
 
+// Looks like an h6 but renders a div: the right heading level depends on the
+// page, so pass `as` to make it one.
 export function CardTitle({
     type = 'h6',
+    as = 'div',
     className,
     ...props
 }: CardTitleProps) {
@@ -120,7 +119,8 @@ export function CardTitle({
         <Typography
             {...props}
             type={type}
-            className={'avl-card-title ' + (className ?? '')}
+            as={as}
+            className={cx('avl-card-title', className)}
         />
     )
 }
@@ -128,15 +128,11 @@ export function CardTitle({
 export type CardContentProps = React.ComponentProps<'div'>
 
 export function CardContent({ className, ...props }: CardContentProps) {
-    return (
-        <div {...props} className={'avl-card-content ' + (className ?? '')} />
-    )
+    return <div {...props} className={cx('avl-card-content', className)} />
 }
 
 export type CardActionsProps = React.ComponentProps<'div'>
 
 export function CardActions({ className, ...props }: CardActionsProps) {
-    return (
-        <div {...props} className={'avl-card-actions ' + (className ?? '')} />
-    )
+    return <div {...props} className={cx('avl-card-actions', className)} />
 }

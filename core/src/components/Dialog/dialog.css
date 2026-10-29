@@ -1,0 +1,79 @@
+.avl-dialog-backdrop {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.4);
+    transition: opacity var(--avl-ease-length-normal) linear;
+}
+
+.avl-dialog-popup {
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x4);
+    box-sizing: border-box;
+    width: max-content;
+    min-width: min(
+        calc(var(--avl-spacing-x20) * 3.5),
+        calc(100vw - var(--avl-spacing-x8))
+    );
+    max-width: min(
+        calc(var(--avl-spacing-x20) * 7),
+        calc(100vw - var(--avl-spacing-x8))
+    );
+    max-height: calc(100dvh - var(--avl-spacing-x12));
+    overflow-y: auto;
+    padding: var(--avl-spacing-x6);
+    border-radius: var(--avl-radius-large);
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+    outline: none;
+    transform: translate(-50%, -50%);
+    transition:
+        opacity var(--avl-ease-length-short) linear,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+/* Base UI sets these while it mounts and unmounts: the dialog grows in from
+   slightly smaller, and the backdrop fades */
+.avl-dialog-popup[data-starting-style],
+.avl-dialog-popup[data-ending-style] {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.avl-dialog-backdrop[data-starting-style],
+.avl-dialog-backdrop[data-ending-style] {
+    opacity: 0;
+}
+
+/* A dialog opened from this one sits on top; push this one back a little */
+.avl-dialog-popup[data-nested-dialog-open] {
+    transform: translate(-50%, -50%) scale(0.95);
+    filter: brightness(0.9);
+}
+
+.avl-dialog-title {
+    margin: 0;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-h5);
+    font-weight: normal;
+}
+
+.avl-dialog-description {
+    margin: 0;
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--avl-spacing-x2);
+    margin-top: var(--avl-spacing-x2);
+}

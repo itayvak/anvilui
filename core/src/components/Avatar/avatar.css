@@ -1,0 +1,55 @@
+.avl-avatar {
+    --avl-avatar-size: var(--avl-spacing-x10);
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--avl-avatar-size);
+    height: var(--avl-avatar-size);
+    overflow: hidden;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    font-family: var(--avl-font-main);
+    /* Letters and icon scale with the circle */
+    font-size: calc(var(--avl-avatar-size) * 0.4);
+    font-weight: 500;
+    line-height: 1;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.avl-avatar.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-avatar-size-small {
+    --avl-avatar-size: var(--avl-spacing-x8);
+}
+
+.avl-avatar-size-big {
+    --avl-avatar-size: var(--avl-spacing-x14);
+}
+
+.avl-avatar-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity var(--avl-ease-length-short) linear;
+}
+
+/* Base UI sets this while the image mounts: fade it in over the fallback */
+.avl-avatar-image[data-starting-style] {
+    opacity: 0;
+}
+
+.avl-avatar-fallback {
+    display: inline-flex;
+}
+
+.avl-avatar-fallback .avl-icon {
+    font-size: calc(var(--avl-avatar-size) * 0.6);
+}

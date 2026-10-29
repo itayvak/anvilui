@@ -18,7 +18,7 @@
     border: var(--avl-outline-size) solid var(--avl-color-outline);
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-color-background);
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 /* invisible click area */
@@ -52,7 +52,7 @@
     height: var(--avl-spacing-x3);
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-color-primary);
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 .avl-radio-indicator[data-starting-style],

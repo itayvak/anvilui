@@ -1,0 +1,114 @@
+/* Material 3 list: 56px rows, 72px with a description */
+.avl-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: var(--avl-spacing-x2) 0;
+    list-style: none;
+}
+
+.avl-list-divided > .avl-list-item-wrapper + .avl-list-item-wrapper {
+    border-top: 1px solid var(--avl-color-outline);
+}
+
+.avl-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x4);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--avl-spacing-x14);
+    margin: 0;
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x4);
+    border: none;
+    background-color: transparent;
+    color: var(--avl-color-on-background);
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+}
+
+.avl-list-item-two-line {
+    min-height: var(--avl-spacing-x18);
+}
+
+/* Interactive rows: a link, button or label passed through `render`. The
+   hover tint is a rounded layer inset from the row's edges, so the row's
+   content doesn't move. */
+.avl-list-item:is(a, button, label) {
+    position: relative;
+    /* Keeps the tint (z-index: -1) behind the content but inside the row */
+    isolation: isolate;
+    cursor: pointer;
+}
+
+.avl-list-item:is(a, button, label)::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 2px var(--avl-spacing-x2);
+    border-radius: var(--avl-radius-small);
+    transition: background-color var(--avl-ease-length-short) linear;
+}
+
+.avl-list-item:is(a, button, label):hover::before {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 6%,
+        transparent
+    );
+}
+
+.avl-list-item:is(a, button, label):active::before {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 10%,
+        transparent
+    );
+    transition: 10ms linear;
+}
+
+.avl-list-item-start,
+.avl-list-item-end {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 70%,
+        var(--avl-color-background)
+    );
+}
+
+.avl-list-item-end {
+    font-size: var(--avl-font-size-label-small);
+}
+
+.avl-list-item-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.avl-list-item-label {
+    overflow: hidden;
+    font-size: var(--avl-font-size-body);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Up to two lines, then "…" */
+.avl-list-item-description {
+    display: -webkit-box;
+    overflow: hidden;
+    color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 60%,
+        var(--avl-color-background)
+    );
+    font-size: var(--avl-font-size-label);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}

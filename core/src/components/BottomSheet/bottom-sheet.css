@@ -1,0 +1,122 @@
+/* Material 3 modal bottom sheet, on Base UI's Drawer. Base UI sets
+   --drawer-swipe-movement-y, --drawer-snap-point-offset and
+   --drawer-swipe-progress while it's dragged or snapped. */
+.avl-bottom-sheet-backdrop {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.4);
+    /* Fades as the sheet is dragged away */
+    opacity: calc(1 - var(--drawer-swipe-progress, 0));
+    transition: opacity var(--avl-ease-length-slow) linear;
+}
+
+.avl-bottom-sheet-backdrop[data-starting-style],
+.avl-bottom-sheet-backdrop[data-ending-style] {
+    opacity: 0;
+}
+
+.avl-bottom-sheet-backdrop[data-swiping] {
+    transition: none;
+}
+
+.avl-bottom-sheet-viewport {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    /* Clicks outside the sheet reach the backdrop below */
+    pointer-events: none;
+}
+
+.avl-bottom-sheet-popup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(var(--avl-spacing-x20) * 8);
+    max-height: calc(100dvh - var(--avl-spacing-x12));
+    border-radius: var(--avl-radius-large) var(--avl-radius-large) 0 0;
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
+    box-shadow: 0 -2px 12px rgb(0 0 0 / 0.2);
+    outline: none;
+    pointer-events: auto;
+    touch-action: none;
+    transform: translateY(
+        calc(
+            var(--drawer-snap-point-offset, 0px) +
+                var(--drawer-swipe-movement-y, 0px)
+        )
+    );
+    /* Smooth, not springy: a bounce on something coming in from the screen
+       edge, or springing back after a drag, looks wrong */
+    transition: transform var(--avl-ease-length-slow) var(--avl-ease-smooth);
+}
+
+/* Fills the gap underneath if it's dragged up past its height */
+.avl-bottom-sheet-popup::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: var(--avl-spacing-x12);
+    background-color: inherit;
+    pointer-events: none;
+}
+
+.avl-bottom-sheet-popup[data-starting-style],
+.avl-bottom-sheet-popup[data-ending-style] {
+    transform: translateY(calc(100% + 2px));
+}
+
+/* Thrown down hard: close faster */
+.avl-bottom-sheet-popup[data-ending-style] {
+    transition-duration: calc(
+        var(--drawer-swipe-strength, 1) * var(--avl-ease-length-slow)
+    );
+}
+
+.avl-bottom-sheet-popup[data-swiping] {
+    transition: none;
+}
+
+.avl-bottom-sheet-handle {
+    flex-shrink: 0;
+    width: var(--avl-spacing-x8);
+    height: var(--avl-spacing-x1);
+    margin: var(--avl-spacing-x4) auto var(--avl-spacing-x2);
+    border-radius: var(--avl-radius-full);
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-surface-variant) 40%,
+        transparent
+    );
+    cursor: grab;
+}
+
+.avl-bottom-sheet-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x4);
+    min-height: 0;
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x6) var(--avl-spacing-x6);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.avl-bottom-sheet-title {
+    margin: 0;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-h6);
+    font-weight: normal;
+}
+
+.avl-bottom-sheet-description {
+    margin: 0;
+    font-size: var(--avl-font-size-body);
+}
