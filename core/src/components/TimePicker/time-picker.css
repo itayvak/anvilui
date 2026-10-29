@@ -1,0 +1,145 @@
+/* The field builds on input.css and select.css; the popup on popover.css. */
+.avl-time-picker-icon {
+    display: flex;
+    color: var(--avl-input-placeholder-color);
+}
+
+/* While open, Base UI puts focus guards beside the trigger, which breaks the
+   `trigger + label` rules in input.css and select.css. Match on the field instead. */
+.avl-time-picker:not(.avl-input-size-small):has(> [data-popup-open])
+    .avl-input-label {
+    top: 0;
+    font-size: var(--avl-font-size-label-small);
+    color: var(--avl-color-primary);
+}
+
+/* Small: the label stands in for the value, so hide it once there is one */
+.avl-time-picker.avl-input-size-small:has(
+        > [data-popup-open]:not([data-placeholder])
+    )
+    .avl-input-label {
+    visibility: hidden;
+}
+
+/* Material 3 time picker */
+.avl-time-picker-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--avl-spacing-x6);
+}
+
+.avl-time-picker-header {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-time-picker-box {
+    box-sizing: border-box;
+    width: calc(var(--avl-spacing-x1) * 18);
+    height: calc(var(--avl-spacing-x1) * 18);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-container);
+    color: var(--avl-color-on-container);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-h2);
+    text-align: center;
+    cursor: pointer;
+    transition: background-color var(--avl-ease-length-short) linear;
+}
+
+input.avl-time-picker-box {
+    cursor: text;
+}
+
+.avl-time-picker-box::placeholder {
+    color: color-mix(in srgb, var(--avl-color-on-container) 50%, transparent);
+}
+
+.avl-time-picker-box:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-container) 92%,
+        var(--avl-color-on-container) 8%
+    );
+}
+
+/* The part being picked: the dial's current mode, or the box being typed in */
+.avl-time-picker-box[data-selected],
+input.avl-time-picker-box:focus {
+    background-color: var(--avl-color-primary-container);
+    color: var(--avl-color-on-primary-container);
+}
+
+.avl-time-picker-colon {
+    color: var(--avl-color-on-surface-variant);
+    font-size: var(--avl-font-size-h2);
+}
+
+.avl-time-picker-period {
+    margin-inline-start: var(--avl-spacing-x1);
+}
+
+.avl-time-picker-dial {
+    width: calc(var(--avl-spacing-x1) * 64);
+    height: calc(var(--avl-spacing-x1) * 64);
+    border-radius: var(--avl-radius-full);
+    cursor: pointer;
+    /* Dragging the hand shouldn't scroll the page */
+    touch-action: none;
+}
+
+.avl-time-picker-dial-face {
+    fill: var(--avl-color-container);
+}
+
+/* The hand turns, and in 24-hour mode stretches between rings */
+.avl-time-picker-dial-hand,
+.avl-time-picker-dial-arm,
+.avl-time-picker-dial-tip {
+    transition: transform var(--avl-ease-length-slow) var(--avl-ease-smooth);
+}
+
+/* While dragging, follow the pointer closely */
+.avl-time-picker-dial[data-dragging]
+    :is(
+        .avl-time-picker-dial-hand,
+        .avl-time-picker-dial-arm,
+        .avl-time-picker-dial-tip
+    ) {
+    transition-duration: var(--avl-ease-length-short);
+}
+
+.avl-time-picker-dial-arm {
+    fill: var(--avl-color-primary);
+}
+
+.avl-time-picker-dial-knob {
+    fill: var(--avl-color-primary);
+}
+
+.avl-time-picker-dial-dot {
+    fill: var(--avl-color-on-primary);
+}
+
+.avl-time-picker-dial-label {
+    fill: var(--avl-color-on-container);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+    transition: fill var(--avl-ease-length-slow) var(--avl-ease-smooth);
+}
+
+.avl-time-picker-dial-label-inner {
+    font-size: var(--avl-font-size-label);
+}
+
+.avl-time-picker-dial-label[data-selected] {
+    fill: var(--avl-color-on-primary);
+}

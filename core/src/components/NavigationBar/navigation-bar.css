@@ -60,7 +60,7 @@
     );
 }
 
-/* Press feedback: the pill squishes, like NavigationRail's */
+/* Press feedback: the pill squishes */
 .avl-navigation-bar-item:active .avl-navigation-bar-item-indicator {
     transform: scale(1.05, 0.93);
     transition: 10ms var(--avl-ease-out);

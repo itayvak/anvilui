@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Checkbox, RadioButton, RadioButtonGroup, Typography } from 'anvilui'
 import type { RadioButtonGroupProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { RangeControl, Row, Section, SelectControl } from '../ui'
+import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 
@@ -60,17 +60,15 @@ export function RadioButtonGroupPlayground() {
                     max={options.length}
                     onChange={setCount}
                 />
-                <label className="pg-checkbox">
+                <Labeled label="icons">
                     <Checkbox checked={icons} onCheckedChange={setIcons} />
-                    <Typography type="caption">icons</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
             </Row>
             <Row>
                 <RadioButtonGroup

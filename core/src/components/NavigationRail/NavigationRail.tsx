@@ -1,175 +1,81 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { createContext, useContext, useState, type ComponentProps } from 'react'
 import type { MaterialSymbol } from 'material-symbols'
 import { useRender } from '@base-ui/react/use-render'
 import { mergeProps } from '@base-ui/react/merge-props'
-import { IconButton } from '../IconButton/IconButton'
 import { Icon } from '../Icon/Icon'
-import { Typography } from '../Typography/Typography'
-import { cx, mergeRefs } from '../../utils'
+import { IconButton, type IconButtonProps } from '../IconButton/IconButton'
+import { cx, withClass } from '../../utils'
 import './navigation-rail.css'
 
-export type NavigationRailProps = React.ComponentProps<'nav'> & {
-    /** Shows a button that toggles between the collapsed and expanded layouts. */
-    hasExpandButton?: boolean
-    /** Controlled expanded state. Pair with `onExpandedChange`. */
+const RailContext = createContext<{
+    expanded: boolean
+    setExpanded: (expanded: boolean) => void
+} | null>(null)
+
+/**
+ * Side navigation between an app's top-level pages, for medium and large
+ * screens. Collapsed, it shows icons with small labels under them; expanded,
+ * labels sit next to the icons. Put a `NavigationRailToggle` first, then
+ * `NavigationRailItem`s, and give it an `aria-label` (e.g. "Main").
+ */
+export type NavigationRailProps = ComponentProps<'nav'> & {
+    /** Whether labels sit next to the icons. Pair with `onExpandedChange`. */
     expanded?: boolean
-    /** Starting state when `expanded` isn't controlled. */
+    /** Starting state when `expanded` isn't controlled. @default false */
     defaultExpanded?: boolean
+    /** Called when a `NavigationRailToggle` is pressed. */
     onExpandedChange?: (expanded: boolean) => void
 }
 
-const FLIP_ID = 'avl-navigation-rail-flip'
-
-type FlipPart = {
-    el: HTMLElement
-    /** ancestor that is animated too, whose transform this one compounds with */
-    parent?: HTMLElement
-    fade?: boolean
-}
-
-function collectParts(rail: HTMLElement): FlipPart[] {
-    const parts: FlipPart[] = []
-    const button = rail.querySelector<HTMLElement>(
-        '.avl-navigation-rail-expand-button'
-    )
-    if (button) parts.push({ el: button })
-
-    for (const item of rail.querySelectorAll<HTMLElement>(
-        '.avl-navigation-rail-item'
-    )) {
-        parts.push({ el: item })
-        const icon = item.querySelector<HTMLElement>(
-            '.avl-navigation-rail-item-icon'
-        )
-        const text = item.querySelector<HTMLElement>(
-            '.avl-navigation-rail-item-text'
-        )
-        if (icon) parts.push({ el: icon, parent: item })
-        // the label re-wraps between the two layouts, so it cross-fades on top
-        // of the move instead of visibly reflowing
-        if (text) parts.push({ el: text, parent: item, fade: true })
-    }
-    return parts
-}
-
-/**
- * Side navigation between an app's top-level pages. Fill it with
- * `NavigationRailItem`s and give it an `aria-label` (e.g. "Main").
- */
 export function NavigationRail({
-    hasExpandButton,
     expanded: expandedProp,
-    defaultExpanded = true,
+    defaultExpanded = false,
     onExpandedChange,
-    children,
     className,
-    ref,
     ...props
 }: NavigationRailProps) {
-    const [internalExpanded, setInternalExpanded] = useState(defaultExpanded)
-    const expanded = expandedProp ?? internalExpanded
-    const toggleExpanded = () => {
-        setInternalExpanded(!expanded)
-        onExpandedChange?.(!expanded)
+    const [internal, setInternal] = useState(defaultExpanded)
+    const expanded = expandedProp ?? internal
+    const setExpanded = (next: boolean) => {
+        setInternal(next)
+        onExpandedChange?.(next)
     }
-    const railRef = useRef<HTMLDivElement>(null)
-    const lastRects = useRef(new Map<HTMLElement, DOMRect>())
-
-    // FLIP: the collapsed and expanded layouts differ in ways CSS cannot
-    // interpolate (flex-direction, text wrapping), so the new layout is applied
-    // at once and every moved piece is animated back from where it just was.
-    useLayoutEffect(() => {
-        const rail = railRef.current
-        if (!rail) return
-
-        const style = getComputedStyle(rail)
-        const duration =
-            parseFloat(
-                style.getPropertyValue('--avl-navigation-rail-duration')
-            ) || 0
-        const easing =
-            style.getPropertyValue('--avl-navigation-rail-ease').trim() ||
-            'ease'
-
-        const before = lastRects.current
-        const after = new Map<HTMLElement, DOMRect>()
-        const parts = collectParts(rail)
-
-        // measure everything first: cancelling a running flip changes layout
-        // ponytail: toggling mid-flight restarts from the resting layout (small
-        // pop). Read the live transforms here if that ever shows up in use.
-        for (const { el } of parts) {
-            for (const animation of el.getAnimations()) {
-                if (animation.id === FLIP_ID) animation.cancel()
-            }
-            after.set(el, el.getBoundingClientRect())
-        }
-        lastRects.current = after
-
-        if (!before.size || !duration) return
-
-        for (const { el, parent, fade } of parts) {
-            const from = before.get(el)
-            if (!from) continue
-            const to = after.get(el)!
-            let x = from.left - to.left
-            let y = from.top - to.top
-
-            const parentFrom = parent && before.get(parent)
-            if (parentFrom) {
-                // this transform compounds with the parent's, so take it back out
-                const parentTo = after.get(parent)!
-                x -= parentFrom.left - parentTo.left
-                y -= parentFrom.top - parentTo.top
-            }
-            if (fade) {
-                // labels don't slide: they stay hidden while the layout moves,
-                // then fade in where they land
-                el.animate(
-                    [
-                        { opacity: 0 },
-                        { opacity: 0, offset: 0.4 },
-                        { opacity: 1 },
-                    ],
-                    { duration, easing: 'ease-out', id: FLIP_ID }
-                )
-                continue
-            }
-            if (!x && !y) continue
-
-            el.animate(
-                [
-                    { transform: `translate(${x}px, ${y}px)` },
-                    { transform: 'none' },
-                ],
-                { duration, easing, id: FLIP_ID }
-            )
-        }
-    }, [expanded])
 
     return (
-        <nav
+        <RailContext.Provider value={{ expanded, setExpanded }}>
+            <nav
+                {...props}
+                data-expanded={expanded || undefined}
+                className={cx('avl-navigation-rail', className)}
+            />
+        </RailContext.Provider>
+    )
+}
+
+// The menu button at the top that expands and collapses the rail.
+export type NavigationRailToggleProps = Omit<IconButtonProps, 'icon'>
+
+export function NavigationRailToggle({
+    className,
+    onClick,
+    ...props
+}: NavigationRailToggleProps) {
+    const rail = useContext(RailContext)
+    const expanded = rail?.expanded ?? false
+
+    return (
+        <IconButton
+            fillType="text"
+            color="container"
             {...props}
-            ref={mergeRefs(railRef, ref)}
-            className={cx('avl-navigation-rail', className)}
-            data-expanded={expanded}
-        >
-            <div className="avl-navigation-rail-content">
-                {hasExpandButton && (
-                    <IconButton
-                        className="avl-navigation-rail-expand-button"
-                        icon={expanded ? 'menu_open' : 'menu'}
-                        aria-label={expanded ? 'Collapse menu' : 'Expand menu'}
-                        aria-expanded={expanded}
-                        fillType="text"
-                        color="container"
-                        data-expanded={expanded}
-                        onClick={toggleExpanded}
-                    />
-                )}
-                <div className="avl-navigation-rail-item-list">{children}</div>
-            </div>
-        </nav>
+            icon={expanded ? 'menu_open' : 'menu'}
+            aria-expanded={expanded}
+            onClick={(e) => {
+                onClick?.(e)
+                rail?.setExpanded(!expanded)
+            }}
+            className={withClass('avl-navigation-rail-toggle', className)}
+        />
     )
 }
 
@@ -202,16 +108,11 @@ export function NavigationRailItem({
                 'aria-current': active ? 'page' : undefined,
                 children: (
                     <>
-                        <Icon
-                            name={icon}
-                            className="avl-navigation-rail-item-icon"
-                        />
-                        <Typography
-                            as="span"
-                            className="avl-navigation-rail-item-text"
-                        >
+                        <span className="avl-navigation-rail-item-indicator" />
+                        <Icon name={icon} />
+                        <span className="avl-navigation-rail-item-label">
                             {label}
-                        </Typography>
+                        </span>
                     </>
                 ),
             },

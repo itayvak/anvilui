@@ -11,7 +11,7 @@ import {
     Textarea,
     Typography,
 } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 const plans = { free: 'Free', pro: 'Pro', team: 'Team' }
 
@@ -23,13 +23,12 @@ export function FieldPlayground() {
         <>
             <Section title="Helper text and errors">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="disabled">
                         <Switch
                             checked={disabled}
                             onCheckedChange={setDisabled}
                         />
-                        <Typography type="caption">disabled</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <Field disabled={disabled}>

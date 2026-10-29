@@ -10,6 +10,7 @@ const colors = [
     'warning',
     'error',
     'container',
+    'surface',
 ] as const
 const fills = ['filled', 'outlined', 'text'] as const
 

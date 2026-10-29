@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Slider, Switch, Typography } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 export function SliderPlayground() {
     const [disabled, setDisabled] = useState(false)
@@ -10,10 +10,9 @@ export function SliderPlayground() {
     return (
         <Section title="States">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Switch checked={disabled} onCheckedChange={setDisabled} />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
             </Row>
             <Row>
                 <Slider disabled={disabled} label="Volume" defaultValue={50} />

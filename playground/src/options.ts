@@ -12,6 +12,7 @@ export const colors: ComponentColor[] = [
     'warning',
     'error',
     'container',
+    'surface',
 ]
 
 export const fillTypes: ComponentFillType[] = ['filled', 'outlined', 'text']

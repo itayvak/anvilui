@@ -70,6 +70,11 @@
     --avl-radio-button-on-selected: var(--avl-color-on-container);
 }
 
+.avl-radio-button-group.avl-color-surface {
+    --avl-radio-button-selected: var(--avl-color-surface-variant);
+    --avl-radio-button-on-selected: var(--avl-color-on-surface-variant);
+}
+
 .avl-radio-button-group[data-ready] .avl-radio-button-group-indicator {
     transition:
         transform var(--avl-ease-length-slow) var(--avl-ease-out),

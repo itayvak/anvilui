@@ -15,7 +15,7 @@ import {
 } from 'anvilui'
 import type { MenuItemProps } from 'anvilui'
 import { sampleIcons } from '../options'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 const iconOptions = ['none', ...sampleIcons] as const
 const sides = ['bottom', 'top', 'left', 'right'] as const
@@ -123,19 +123,15 @@ export function MenuPlayground() {
                     options={aligns}
                     onChange={setAlign}
                 />
-                <label className="pg-checkbox">
+                <Labeled label="last item disabled">
                     <Checkbox
                         checked={lastDisabled}
                         onCheckedChange={setLastDisabled}
                     />
-                    <Typography type="caption">last item disabled</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="split before last item">
                     <Checkbox checked={split} onCheckedChange={setSplit} />
-                    <Typography type="caption">
-                        split before last item
-                    </Typography>
-                </label>
+                </Labeled>
                 <RadioGroup
                     aria-label="Submenus"
                     value={submenuOption}
@@ -143,12 +139,12 @@ export function MenuPlayground() {
                     style={{ flexDirection: 'row' }}
                 >
                     {submenuOptions.map((option) => (
-                        <label key={option} className="pg-checkbox">
+                        <Labeled
+                            key={option}
+                            label={<>{submenuLabels[option]}</>}
+                        >
                             <Radio value={option} />
-                            <Typography type="caption">
-                                {submenuLabels[option]}
-                            </Typography>
-                        </label>
+                        </Labeled>
                     ))}
                 </RadioGroup>
             </Row>

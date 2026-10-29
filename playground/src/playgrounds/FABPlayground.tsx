@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { MaterialSymbol } from 'material-symbols'
 import { FAB, Switch, Typography } from 'anvilui'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 const colors = [
@@ -11,6 +11,7 @@ const colors = [
     'warning',
     'error',
     'container',
+    'surface',
 ] as const
 const fills = ['filled', 'outlined', 'text'] as const
 const actions: { icon: MaterialSymbol; label: string }[] = [
@@ -49,13 +50,12 @@ export function FABPlayground() {
                         options={fills}
                         onChange={setFill}
                     />
-                    <label className="pg-checkbox">
+                    <Labeled label="disabled">
                         <Switch
                             checked={disabled}
                             onCheckedChange={setDisabled}
                         />
-                        <Typography type="caption">disabled</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     {actions.map((action) => (

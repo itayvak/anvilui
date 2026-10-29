@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Button, Checkbox, Typography } from 'anvilui'
-import type { ButtonProps } from 'anvilui'
+import { Button, Checkbox } from 'anvilui'
+import type { ButtonProps, ComponentColor, ComponentFillType } from 'anvilui'
 import { colors, fillTypes, sampleIcons } from '../options'
-import { Row, Section, SelectControl } from '../ui'
+import { Labeled, Row, Section, SelectControl } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 const iconOptions = ['none', ...sampleIcons] as const
@@ -11,18 +11,41 @@ type IconOption = (typeof iconOptions)[number]
 
 export function ButtonPlayground() {
     const [size, setSize] = useState<NonNullable<ButtonProps['size']>>('normal')
+    const [color, setColor] = useState<ComponentColor>('primary')
+    const [fillType, setFillType] = useState<ComponentFillType>('filled')
     const [startIcon, setStartIcon] = useState<IconOption>('none')
     const [endIcon, setEndIcon] = useState<IconOption>('none')
     const [disabled, setDisabled] = useState(false)
 
+    const shared = {
+        size,
+        color,
+        fillType,
+        disabled,
+        startIcon: startIcon === 'none' ? undefined : startIcon,
+        endIcon: endIcon === 'none' ? undefined : endIcon,
+    }
+
     return (
-        <Section title="Colors and fill types">
+        <Section title="Button">
             <Row>
                 <SelectControl
                     label="size"
                     value={size}
                     options={sizes}
                     onChange={setSize}
+                />
+                <SelectControl
+                    label="color"
+                    value={color}
+                    options={colors}
+                    onChange={setColor}
+                />
+                <SelectControl
+                    label="fillType"
+                    value={fillType}
+                    options={fillTypes}
+                    onChange={setFillType}
                 />
                 <SelectControl
                     label="startIcon"
@@ -36,59 +59,19 @@ export function ButtonPlayground() {
                     options={iconOptions}
                     onChange={setEndIcon}
                 />
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
             </Row>
-            <table className="pg-matrix">
-                <thead>
-                    <tr>
-                        <th />
-                        {colors.map((color) => (
-                            <th key={color}>
-                                <Typography type="caption">{color}</Typography>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {fillTypes.map((fillType) => (
-                        <tr key={fillType}>
-                            <th scope="row">
-                                <Typography type="caption">
-                                    {fillType}
-                                </Typography>
-                            </th>
-                            {colors.map((color) => (
-                                <td key={color}>
-                                    <Button
-                                        size={size}
-                                        color={color}
-                                        fillType={fillType}
-                                        startIcon={
-                                            startIcon === 'none'
-                                                ? undefined
-                                                : startIcon
-                                        }
-                                        endIcon={
-                                            endIcon === 'none'
-                                                ? undefined
-                                                : endIcon
-                                        }
-                                        disabled={disabled}
-                                    >
-                                        Button
-                                    </Button>
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <Row>
+                <Button {...shared}>Button</Button>
+                <Button {...shared}>
+                    A button with a much longer label than usual
+                </Button>
+            </Row>
         </Section>
     )
 }

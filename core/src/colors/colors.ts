@@ -1,6 +1,16 @@
-/** A color role from the theme. `container` is the neutral one. */
+/**
+ * A color role from the theme. `container` is the neutral one; `surface` is
+ * the theme's `surfaceVariant`, the background of navigation like
+ * `NavigationRail` and `NavigationList`.
+ */
 export type ComponentColor =
-    'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'container'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'container'
+    | 'surface'
 
 /**
  * - `filled`: solid background in the color

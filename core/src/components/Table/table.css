@@ -1,0 +1,91 @@
+/* `separate` rather than `collapse`: collapsed borders ignore border-radius */
+.avl-table {
+    width: 100%;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-medium);
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+}
+
+/* Outside the border, so it's not clipped or boxed in with the cells */
+.avl-table-caption {
+    padding-bottom: var(--avl-spacing-x2);
+    color: var(--avl-color-on-surface-variant);
+    font-size: var(--avl-font-size-caption);
+    text-align: start;
+}
+
+.avl-table-header-cell,
+.avl-table-cell {
+    height: var(--avl-spacing-x12);
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x4);
+    border-bottom: 1px solid var(--avl-color-outline);
+    border-inline-end: 1px solid var(--avl-color-outline);
+    text-align: start;
+    vertical-align: middle;
+}
+
+.avl-table-header-cell:last-child,
+.avl-table-cell:last-child {
+    border-inline-end: none;
+}
+
+/* Tables don't clip to their border-radius (overflow is ignored), so the
+   corner cells round themselves to keep the header tint and row hover inside */
+.avl-table-head > .avl-table-row:first-child > :first-child {
+    border-start-start-radius: calc(
+        var(--avl-radius-medium) - var(--avl-outline-size)
+    );
+}
+
+.avl-table-head > .avl-table-row:first-child > :last-child {
+    border-start-end-radius: calc(
+        var(--avl-radius-medium) - var(--avl-outline-size)
+    );
+}
+
+.avl-table-body > .avl-table-row:last-child > :first-child {
+    border-end-start-radius: calc(
+        var(--avl-radius-medium) - var(--avl-outline-size)
+    );
+}
+
+.avl-table-body > .avl-table-row:last-child > :last-child {
+    border-end-end-radius: calc(
+        var(--avl-radius-medium) - var(--avl-outline-size)
+    );
+}
+
+/* The table's own border closes the bottom */
+:is(.avl-table-body, .avl-table-head:last-child)
+    > .avl-table-row:last-child
+    > :is(.avl-table-header-cell, .avl-table-cell) {
+    border-bottom: none;
+}
+
+.avl-table-head .avl-table-header-cell {
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-label-large);
+    font-weight: 600;
+}
+
+/* On the cells, not the row: only cells get the rounded corners above */
+.avl-table-body .avl-table-row > :is(.avl-table-header-cell, .avl-table-cell) {
+    transition: background-color var(--avl-ease-length-short)
+        var(--avl-ease-smooth);
+}
+
+.avl-table-body
+    .avl-table-row:hover
+    > :is(.avl-table-header-cell, .avl-table-cell) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-background) 96%,
+        var(--avl-color-on-background) 4%
+    );
+}

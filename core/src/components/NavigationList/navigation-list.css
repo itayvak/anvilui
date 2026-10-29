@@ -1,0 +1,50 @@
+/* Text-only pills, styled like the items of an expanded NavigationRail */
+.avl-navigation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-sizing: border-box;
+    padding: var(--avl-spacing-x3);
+    background-color: var(--avl-color-surface-variant);
+    color: var(--avl-color-on-surface-variant);
+}
+
+.avl-navigation-list-item {
+    /* A block, not flex: text-overflow only works on block containers */
+    display: block;
+    flex-shrink: 0;
+    padding: 0 var(--avl-spacing-x4);
+    line-height: var(--avl-spacing-x12);
+    overflow: hidden;
+    border-radius: var(--avl-radius-full);
+    color: inherit;
+    font-size: var(--avl-font-size-label);
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--avl-ease-length-short) linear,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-navigation-list-item:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-surface-variant) 8%,
+        transparent
+    );
+}
+
+/* Press feedback: the pill squishes */
+.avl-navigation-list-item:active {
+    transform: scale(0.98, 0.94);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-navigation-list-item[aria-current='page'] {
+    background-color: var(--avl-color-secondary-container);
+    color: var(--avl-color-on-secondary-container);
+    font-weight: 600;
+}

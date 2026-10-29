@@ -1,0 +1,9 @@
+/* The field builds on input.css; the popup on popover.css. */
+.avl-date-input {
+    align-items: center;
+}
+
+.avl-date-input > .avl-icon-button {
+    flex-shrink: 0;
+    margin-inline-end: var(--avl-spacing-x1);
+}

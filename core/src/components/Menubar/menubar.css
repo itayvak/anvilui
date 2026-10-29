@@ -1,0 +1,43 @@
+.avl-menubar {
+    display: flex;
+    gap: var(--avl-spacing-x1);
+}
+
+.avl-menubar[data-orientation='vertical'] {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* MenuTrigger is a bare button; inside a menubar it gets a quiet look */
+.avl-menubar .avl-menu-trigger {
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x3);
+    border: none;
+    border-radius: var(--avl-radius-small);
+    background-color: transparent;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-label);
+    text-align: start;
+    cursor: pointer;
+    transition:
+        background-color var(--avl-ease-length-short) linear,
+        transform 10ms;
+}
+
+.avl-menubar .avl-menu-trigger:hover:not([data-disabled]),
+.avl-menubar .avl-menu-trigger[data-popup-open] {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 8%,
+        transparent
+    );
+}
+
+.avl-menubar .avl-menu-trigger:active:not([data-disabled]) {
+    transform: scale(0.97);
+}
+
+.avl-menubar .avl-menu-trigger[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}

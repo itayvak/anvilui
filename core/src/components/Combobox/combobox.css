@@ -1,0 +1,33 @@
+/* Builds on input.css (field) and select.css / menu.css (popup); only what differs. */
+.avl-combobox-trigger {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--avl-spacing-x2) 0 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.avl-combobox-trigger[data-popup-open] .avl-select-icon {
+    transform: rotate(180deg);
+}
+
+.avl-combobox-trigger:disabled {
+    cursor: default;
+}
+
+/* Nothing to show (no matches, no `empty`): hide the popup.
+   Base UI always renders the Empty div, filling it only when nothing matches. */
+.avl-combobox-popup:not(:has(.avl-menu-item, .avl-combobox-empty:not(:empty))) {
+    display: none;
+}
+
+.avl-combobox-empty {
+    padding: var(--avl-spacing-x3);
+    color: var(--avl-color-on-surface-variant);
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-combobox-empty:empty {
+    display: none;
+}

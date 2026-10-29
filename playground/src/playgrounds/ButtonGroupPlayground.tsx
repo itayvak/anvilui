@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, ButtonGroup, Checkbox, IconButton, Typography } from 'anvilui'
 import type { ButtonProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { RangeControl, Row, Section, SelectControl } from '../ui'
+import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 
@@ -43,13 +43,12 @@ export function ButtonGroupPlayground() {
                     max={6}
                     onChange={setCount}
                 />
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
             </Row>
             <Row>
                 <ButtonGroup>

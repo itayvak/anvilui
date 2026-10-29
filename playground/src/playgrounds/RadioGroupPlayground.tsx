@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Checkbox, Radio, RadioGroup, Typography } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 const fruits = ['apple', 'banana', 'cherry'] as const
 
@@ -14,20 +14,18 @@ export function RadioGroupPlayground() {
     return (
         <Section title="States">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="horizontal">
                     <Checkbox
                         checked={horizontal}
                         onCheckedChange={setHorizontal}
                     />
-                    <Typography type="caption">horizontal</Typography>
-                </label>
+                </Labeled>
             </Row>
             <Row>
                 <RadioGroup
@@ -37,10 +35,9 @@ export function RadioGroupPlayground() {
                     style={horizontal ? { flexDirection: 'row' } : undefined}
                 >
                     {fruits.map((fruit) => (
-                        <label key={fruit} className="pg-checkbox">
+                        <Labeled key={fruit} label={<>{fruit}</>} type="body">
                             <Radio value={fruit} />
-                            <Typography>{fruit}</Typography>
-                        </label>
+                        </Labeled>
                     ))}
                 </RadioGroup>
                 <RadioGroup
@@ -51,13 +48,18 @@ export function RadioGroupPlayground() {
                     style={horizontal ? { flexDirection: 'row' } : undefined}
                 >
                     {fruits.map((fruit) => (
-                        <label key={fruit} className="pg-checkbox">
+                        <Labeled
+                            key={fruit}
+                            label={
+                                <>
+                                    {fruit}
+                                    {fruit === value ? ' (selected)' : ''}
+                                </>
+                            }
+                            type="body"
+                        >
                             <Radio value={fruit} />
-                            <Typography>
-                                {fruit}
-                                {fruit === value ? ' (selected)' : ''}
-                            </Typography>
-                        </label>
+                        </Labeled>
                     ))}
                 </RadioGroup>
             </Row>
