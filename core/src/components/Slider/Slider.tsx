@@ -72,6 +72,12 @@ export function Slider<Value extends number | readonly number[]>({
                         // also clipping the handles, which are taller
                         <div className="avl-slider-rail">
                             <BaseSlider.Indicator className="avl-slider-indicator" />
+                            {/* The indicator's ::before and ::after draw the
+                                selected part and the part after it. A range
+                                needs a third piece, before its first handle. */}
+                            {thumbCount > 1 && (
+                                <BaseSlider.Indicator className="avl-slider-indicator-start" />
+                            )}
                         </div>
                     )}
                     {Array.from({ length: thumbCount }, (_, i) => (
@@ -80,6 +86,18 @@ export function Slider<Value extends number | readonly number[]>({
                             index={i}
                             aria-label={ariaLabel}
                             className="avl-slider-thumb"
+                            // Base UI marks every handle as dragging, so mark
+                            // the one being moved: only its track pinches
+                            render={(thumbProps, state) => (
+                                <div
+                                    {...thumbProps}
+                                    data-active={
+                                        state.activeThumbIndex === i
+                                            ? ''
+                                            : undefined
+                                    }
+                                />
+                            )}
                         >
                             {showValue && (
                                 <BaseSlider.Value className="avl-tooltip avl-slider-value">

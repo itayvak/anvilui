@@ -44,6 +44,7 @@ const WAVE_LENGTH = 40
 const WAVE_AMPLITUDE = 3
 const WAVE_MIDDLE = 6
 const STROKE_CAP = 2 // round caps reach this far past each end
+const WAVE_PERIOD = 1500 // ms for the ripple to travel one wavelength
 
 function wavePath(from: number, to: number, phase: number) {
     // Keep the round caps inside the drawn range
@@ -109,7 +110,7 @@ export function SquigglyWave(props: SquigglyWaveProps) {
                 current.from += (next.from - current.from) * 0.15
                 current.to += (next.to - current.to) * 0.15
             }
-            const phase = reduced ? 0 : (now / 1000) * 2 * Math.PI
+            const phase = reduced ? 0 : (now / WAVE_PERIOD) * 2 * Math.PI
 
             wave.setAttribute('d', wavePath(current.from, current.to, phase))
             rest.setAttribute(
