@@ -11,6 +11,18 @@
     scrollbar-color: var(--avl-color-outline) transparent;
 }
 
+/* A mouse can drag it (Carousel.tsx) */
+@media (pointer: fine) {
+    .avl-carousel {
+        cursor: grab;
+    }
+}
+
+.avl-carousel[data-dragging] {
+    cursor: grabbing;
+    user-select: none;
+}
+
 .avl-carousel-item {
     flex: 0 0 auto;
     width: calc(var(--avl-spacing-x20) * 3);
