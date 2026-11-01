@@ -46,7 +46,8 @@
             .avl-navigation-bar-item-indicator,
             .avl-chip,
             .avl-fab,
-            .avl-fab-menu-item
+            .avl-fab-menu-item,
+            .avl-kbd
         ) {
         transform: none !important;
     }

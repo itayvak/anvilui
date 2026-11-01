@@ -118,6 +118,9 @@ export type { IconButtonProps } from './components/IconButton/IconButton'
 export { Input } from './components/Input/Input'
 export type { InputProps } from './components/Input/Input'
 
+export { Kbd } from './components/Kbd/Kbd'
+export type { KbdProps } from './components/Kbd/Kbd'
+
 export { List, ListItem } from './components/List/List'
 export type { ListProps, ListItemProps } from './components/List/List'
 

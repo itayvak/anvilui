@@ -20,6 +20,7 @@ import { HoldButtonPlayground } from './HoldButtonPlayground'
 import { IconPlayground } from './IconPlayground'
 import { IconButtonPlayground } from './IconButtonPlayground'
 import { InputPlayground } from './InputPlayground'
+import { KbdPlayground } from './KbdPlayground'
 import { ListPlayground } from './ListPlayground'
 import { MenuPlayground } from './MenuPlayground'
 import { PopoverPlayground } from './PopoverPlayground'
@@ -63,6 +64,7 @@ export const playgrounds: Record<string, ComponentType> = {
     Icon: IconPlayground,
     IconButton: IconButtonPlayground,
     Input: InputPlayground,
+    Kbd: KbdPlayground,
     List: ListPlayground,
     Menu: MenuPlayground,
     Popover: PopoverPlayground,
