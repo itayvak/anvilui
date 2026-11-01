@@ -17,14 +17,14 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    min-width: var(--avl-spacing-x4);
-    height: var(--avl-spacing-x4);
-    padding: 0 var(--avl-spacing-x1);
+    min-width: var(--avl-spacing-x5);
+    height: var(--avl-spacing-x5);
+    padding: 0 calc(var(--avl-spacing-x1) * 1.5);
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-nested-color-main);
     color: var(--avl-nested-color-on-main);
     font-family: var(--avl-font-main);
-    font-size: 11px;
+    font-size: var(--avl-font-size-label-small);
     font-weight: 500;
     line-height: 1;
     white-space: nowrap;
@@ -34,8 +34,8 @@
 
 .avl-badge-dot {
     min-width: 0;
-    width: 6px;
-    height: 6px;
+    width: var(--avl-spacing-x2);
+    height: var(--avl-spacing-x2);
     padding: 0;
 }
 
