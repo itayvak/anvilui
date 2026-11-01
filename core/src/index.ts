@@ -1,3 +1,6 @@
+export { AnimatedNumber } from './components/AnimatedNumber/AnimatedNumber'
+export type { AnimatedNumberProps } from './components/AnimatedNumber/AnimatedNumber'
+
 export { AppBar } from './components/AppBar/AppBar'
 export type { AppBarProps } from './components/AppBar/AppBar'
 

@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import { AnimatedNumberPlayground } from './AnimatedNumberPlayground'
 import { AppBarPlayground } from './AppBarPlayground'
 import { AvatarPlayground } from './AvatarPlayground'
 import { BadgePlayground } from './BadgePlayground'
@@ -38,6 +39,7 @@ import { NavigationRailPlayground } from './NavigationRailPlayground'
 
 // One entry per AnvilUI component. The key is what shows up in the select.
 export const playgrounds: Record<string, ComponentType> = {
+    AnimatedNumber: AnimatedNumberPlayground,
     AppBar: AppBarPlayground,
     Avatar: AvatarPlayground,
     Badge: BadgePlayground,
