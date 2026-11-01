@@ -5,10 +5,24 @@ import {
     monochromeLightTheme,
 } from 'anvilui'
 import type { Theme } from 'anvilui'
+import {
+    arcadeDarkTheme,
+    arcadeLightTheme,
+    candyDarkTheme,
+    candyLightTheme,
+    oceanDarkTheme,
+    oceanLightTheme,
+    sunsetDarkTheme,
+    sunsetLightTheme,
+} from './themes'
 
 export const palettes = {
     Purple: { light: baseLightTheme, dark: baseDarkTheme },
     'Black & white': { light: monochromeLightTheme, dark: monochromeDarkTheme },
+    Candy: { light: candyLightTheme, dark: candyDarkTheme },
+    Ocean: { light: oceanLightTheme, dark: oceanDarkTheme },
+    Sunset: { light: sunsetLightTheme, dark: sunsetDarkTheme },
+    Arcade: { light: arcadeLightTheme, dark: arcadeDarkTheme },
 } satisfies Record<string, { light: Theme; dark: Theme }>
 
 export type PaletteName = keyof typeof palettes
