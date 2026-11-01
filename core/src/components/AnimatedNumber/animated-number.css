@@ -25,22 +25,22 @@
     visibility: hidden;
 }
 
-/* 0-9 stacked; shifting by 10% per digit shows one of them. The digit
-   comes in as a variable, not an inline transform, so @starting-style
-   below can still override it. */
+/* 0-9 stacked three times (30 rows); shifting by one row shows the next.
+   The position comes in as a variable, not an inline transform, so
+   @starting-style below can still override it. */
 .avl-animated-number-strip {
     position: absolute;
     inset: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translateY(calc(var(--avl-digit) * -10%));
+    transform: translateY(calc(var(--avl-digit) * -100% / 30));
     transition: transform var(--avl-ease-length-slow) var(--avl-ease-out);
 }
 
-/* A digit that just appeared rolls in from 0 */
+/* A digit that just appeared rolls in from the middle copy's 0 */
 @starting-style {
     .avl-animated-number-strip {
-        transform: translateY(0);
+        transform: translateY(calc(10 * -100% / 30));
     }
 }
