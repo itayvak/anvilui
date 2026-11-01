@@ -7,6 +7,9 @@ export type { AppBarProps } from './components/AppBar/AppBar'
 export { Avatar } from './components/Avatar/Avatar'
 export type { AvatarProps } from './components/Avatar/Avatar'
 
+export { AvatarGroup } from './components/AvatarGroup/AvatarGroup'
+export type { AvatarGroupProps } from './components/AvatarGroup/AvatarGroup'
+
 export { Badge } from './components/Badge/Badge'
 export type { BadgeProps } from './components/Badge/Badge'
 

@@ -1,8 +1,10 @@
+import { useContext } from 'react'
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar'
 import type { MaterialSymbol } from 'material-symbols'
 import { colorClass, type ColorProps } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { cx, withClass } from '../../utils'
+import { AvatarGroupContext } from './AvatarGroupContext'
 import './avatar.css'
 
 export type AvatarProps = BaseAvatar.Root.Props &
@@ -17,7 +19,7 @@ export type AvatarProps = BaseAvatar.Root.Props &
         name?: string
         /** Fallback icon when there's no `name`. @default 'person' */
         icon?: MaterialSymbol
-        /** 32px, 40px or 56px. @default 'normal' */
+        /** 32px, 40px or 56px. @default 'normal', or the AvatarGroup's size */
         size?: 'small' | 'normal' | 'big'
     }
 
@@ -40,13 +42,15 @@ export function Avatar({
     src,
     name,
     icon = 'person',
-    size = 'normal',
+    size: sizeProp,
     color,
     fillType,
     className,
     children,
     ...props
 }: AvatarProps) {
+    const groupSize = useContext(AvatarGroupContext)
+    const size = sizeProp ?? groupSize ?? 'normal'
     const letters = name ? initials(name) : ''
 
     return (

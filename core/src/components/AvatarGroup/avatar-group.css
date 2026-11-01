@@ -1,0 +1,32 @@
+.avl-avatar-group {
+    /* The ring that keeps overlapping avatars apart. Set it to whatever is
+       behind the group, e.g. --avl-color-container-low on a card. */
+    --avl-avatar-group-ring: var(--avl-color-background);
+    display: inline-flex;
+    align-items: center;
+    /* Room for the hovered avatar to lift without being cut off */
+    padding-block: var(--avl-spacing-x1);
+}
+
+.avl-avatar-group > .avl-avatar {
+    box-shadow: 0 0 0 2px var(--avl-avatar-group-ring);
+    transition:
+        margin var(--avl-ease-length-normal) var(--avl-ease-out),
+        translate var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+/* Each one tucks a quarter of the way under the one before */
+.avl-avatar-group > .avl-avatar + .avl-avatar {
+    margin-inline-start: calc(var(--avl-avatar-size) * -0.25);
+}
+
+/* Fans out so every face shows (unless fan={false}) */
+.avl-avatar-group-fan:is(:hover, :focus-within) > .avl-avatar + .avl-avatar {
+    margin-inline-start: var(--avl-spacing-x1);
+}
+
+/* The one under the pointer lifts and comes to the front */
+.avl-avatar-group > .avl-avatar:is(:hover, :focus-visible) {
+    z-index: 1;
+    translate: 0 calc(var(--avl-spacing-x1) * -1);
+}

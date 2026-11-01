@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { AnimatedNumberPlayground } from './AnimatedNumberPlayground'
 import { AppBarPlayground } from './AppBarPlayground'
 import { AvatarPlayground } from './AvatarPlayground'
+import { AvatarGroupPlayground } from './AvatarGroupPlayground'
 import { BadgePlayground } from './BadgePlayground'
 import { BottomSheetPlayground } from './BottomSheetPlayground'
 import { ButtonPlayground } from './ButtonPlayground'
@@ -46,6 +47,7 @@ export const playgrounds: Record<string, ComponentType> = {
     AnimatedNumber: AnimatedNumberPlayground,
     AppBar: AppBarPlayground,
     Avatar: AvatarPlayground,
+    AvatarGroup: AvatarGroupPlayground,
     Badge: BadgePlayground,
     BottomSheet: BottomSheetPlayground,
     Button: ButtonPlayground,
