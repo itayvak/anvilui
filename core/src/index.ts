@@ -184,6 +184,9 @@ export type { SliderProps } from './components/Slider/Slider'
 export { useSnackbar } from './components/Snackbar/Snackbar'
 export type { SnackbarOptions } from './components/Snackbar/Snackbar'
 
+export { Sticker } from './components/Sticker/Sticker'
+export type { StickerProps } from './components/Sticker/Sticker'
+
 export { Switch } from './components/Switch/Switch'
 export type { SwitchProps } from './components/Switch/Switch'
 

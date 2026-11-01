@@ -29,6 +29,7 @@ import { RadioGroupPlayground } from './RadioGroupPlayground'
 import { SelectPlayground } from './SelectPlayground'
 import { SliderPlayground } from './SliderPlayground'
 import { SnackbarPlayground } from './SnackbarPlayground'
+import { StickerPlayground } from './StickerPlayground'
 import { SwitchPlayground } from './SwitchPlayground'
 import { TabsPlayground } from './TabsPlayground'
 import { TextareaPlayground } from './TextareaPlayground'
@@ -71,6 +72,7 @@ export const playgrounds: Record<string, ComponentType> = {
     Slider: SliderPlayground,
     Snackbar: SnackbarPlayground,
     SplitButton: SplitButtonPlayground,
+    Sticker: StickerPlayground,
     Switch: SwitchPlayground,
     Tabs: TabsPlayground,
     Textarea: TextareaPlayground,
