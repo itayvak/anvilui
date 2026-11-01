@@ -1,0 +1,194 @@
+/* Open: the FAB morphs into a round close button. Half its size, not the
+   1000px full radius: the springy ease overshoots, and overshooting a
+   1000px change on the way back dips below 0, which draws square corners. */
+.avl-fab-menu-trigger[data-popup-open] {
+    border-radius: calc(var(--avl-fab-size) / 2);
+}
+
+/* The two icons sit on top of each other and spin as they swap. The close
+   icon is absolute, so the flexbox centers it on the open one. */
+.avl-fab-menu-trigger .avl-icon {
+    transition:
+        rotate var(--avl-ease-length-normal) var(--avl-ease-out),
+        opacity var(--avl-ease-length-short) var(--avl-ease-smooth);
+}
+
+.avl-fab-menu-icon-close {
+    position: absolute;
+    opacity: 0;
+    rotate: -90deg;
+}
+
+.avl-fab-menu-trigger[data-popup-open] .avl-fab-menu-icon-open {
+    opacity: 0;
+    rotate: 90deg;
+}
+
+.avl-fab-menu-trigger[data-popup-open] .avl-fab-menu-icon-close {
+    opacity: 1;
+    rotate: 0deg;
+}
+
+.avl-fab-menu-popup {
+    display: flex;
+    flex-direction: column;
+    /* Every item as wide as the widest, joined like a SplitButton */
+    align-items: stretch;
+    gap: 2px;
+    outline: none;
+    /* One shadow around the whole stack: a shadow per item would fall on
+       the next one and show the seams */
+    filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.25));
+    /* Base UI unmounts the popup once its own transition ends, so this
+       is also how long the items get to leave */
+    transition: opacity var(--avl-ease-length-normal) var(--avl-ease-smooth);
+}
+
+.avl-fab-menu-popup[data-ending-style] {
+    opacity: 0;
+}
+
+.avl-fab-menu-item {
+    /* Position away from the FAB, nearest first: staggers the entrance */
+    --avl-fab-menu-step: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    /* Sized like a big Button */
+    --avl-fab-menu-item-height: var(--avl-spacing-x12);
+    /* The button radius, capped at half the height, like SplitButton: a
+       bigger radius makes the browser shrink the small corners next to it */
+    --avl-fab-menu-outer-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-fab-menu-item-height) / 2)
+    );
+    box-sizing: border-box;
+    height: var(--avl-fab-menu-item-height);
+    /* Less than a big Button: the icons line up in a column at the start,
+       and its 32px pushed them too far in */
+    padding: 0;
+    padding-inline: var(--avl-spacing-x4) var(--avl-spacing-x5);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    font-size: var(--avl-font-size-label-large);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transform-origin: 100% 100%;
+    transition:
+        opacity var(--avl-ease-length-normal) var(--avl-ease-out),
+        transform var(--avl-ease-length-normal) var(--avl-ease-out),
+        background-color var(--avl-ease-length-short) var(--avl-ease-out);
+    transition-delay: calc(var(--avl-fab-menu-step) * 30ms);
+}
+
+/* Only the stack's outer corners stay round */
+.avl-fab-menu-item:first-child {
+    border-start-start-radius: var(--avl-fab-menu-outer-radius);
+    border-start-end-radius: var(--avl-fab-menu-outer-radius);
+}
+
+.avl-fab-menu-item:last-child {
+    border-end-start-radius: var(--avl-fab-menu-outer-radius);
+    border-end-end-radius: var(--avl-fab-menu-outer-radius);
+}
+
+.avl-fab-menu-item:nth-last-child(1) {
+    --avl-fab-menu-step: 0;
+}
+.avl-fab-menu-item:nth-last-child(2) {
+    --avl-fab-menu-step: 1;
+}
+.avl-fab-menu-item:nth-last-child(3) {
+    --avl-fab-menu-step: 2;
+}
+.avl-fab-menu-item:nth-last-child(4) {
+    --avl-fab-menu-step: 3;
+}
+.avl-fab-menu-item:nth-last-child(5) {
+    --avl-fab-menu-step: 4;
+}
+
+/* Opening downward, the first item is the nearest */
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item {
+    --avl-fab-menu-step: 5;
+    transform-origin: 100% 0;
+}
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item:nth-child(1) {
+    --avl-fab-menu-step: 0;
+}
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item:nth-child(2) {
+    --avl-fab-menu-step: 1;
+}
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item:nth-child(3) {
+    --avl-fab-menu-step: 2;
+}
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item:nth-child(4) {
+    --avl-fab-menu-step: 3;
+}
+.avl-fab-menu-popup[data-side='bottom'] .avl-fab-menu-item:nth-child(5) {
+    --avl-fab-menu-step: 4;
+}
+
+.avl-fab-menu-popup[data-align='start'] .avl-fab-menu-item {
+    transform-origin: 0 100%;
+}
+
+/* Entering, the items start tucked into the FAB; leaving, they all go
+   at once */
+.avl-fab-menu-popup[data-starting-style] .avl-fab-menu-item,
+.avl-fab-menu-popup[data-ending-style] .avl-fab-menu-item {
+    opacity: 0;
+    transform: translateY(var(--avl-spacing-x6)) scale(0.6);
+}
+
+.avl-fab-menu-popup[data-side='bottom'][data-starting-style] .avl-fab-menu-item,
+.avl-fab-menu-popup[data-side='bottom'][data-ending-style] .avl-fab-menu-item {
+    transform: translateY(calc(var(--avl-spacing-x6) * -1)) scale(0.6);
+}
+
+.avl-fab-menu-popup[data-ending-style] .avl-fab-menu-item {
+    transition-delay: 0ms;
+}
+
+.avl-fab-menu-item .avl-icon {
+    font-size: 1.25em;
+}
+
+.avl-fab-menu-item[data-highlighted] {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 90%,
+        var(--avl-nested-color-on-main) 10%
+    );
+}
+
+/* Press squish depends on the position in the stack, like SplitButton
+   turned on its side: middle items get narrower, the ends shrink in toward
+   the others. Percentages are of the item's own height, so ~2px. */
+.avl-fab-menu-item {
+    --avl-fab-menu-press: scaleX(0.97) scaleY(1.02);
+}
+
+.avl-fab-menu-item:first-child {
+    --avl-fab-menu-press: scaleY(0.94) scaleX(1.01) translateY(4%);
+}
+
+.avl-fab-menu-item:last-child {
+    --avl-fab-menu-press: scaleY(0.94) scaleX(1.01) translateY(-4%);
+}
+
+.avl-fab-menu-item:only-child {
+    --avl-fab-menu-press: scale(0.97);
+}
+
+.avl-fab-menu-item:active:not([data-disabled]) {
+    transform: var(--avl-fab-menu-press);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-fab-menu-item[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}

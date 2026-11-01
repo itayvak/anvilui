@@ -13,6 +13,7 @@ import { ConfettiPlayground } from './ConfettiPlayground'
 import { DialogPlayground } from './DialogPlayground'
 import { DividerPlayground } from './DividerPlayground'
 import { FABPlayground } from './FABPlayground'
+import { FABMenuPlayground } from './FABMenuPlayground'
 import { FieldPlayground } from './FieldPlayground'
 import { HoldButtonPlayground } from './HoldButtonPlayground'
 import { IconPlayground } from './IconPlayground'
@@ -52,6 +53,7 @@ export const playgrounds: Record<string, ComponentType> = {
     Dialog: DialogPlayground,
     Divider: DividerPlayground,
     FAB: FABPlayground,
+    FABMenu: FABMenuPlayground,
     Field: FieldPlayground,
     FloatingToolbar: FloatingToolbarPlayground,
     HoldButton: HoldButtonPlayground,

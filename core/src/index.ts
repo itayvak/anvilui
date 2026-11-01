@@ -90,6 +90,12 @@ export type { DividerProps } from './components/Divider/Divider'
 export { FAB } from './components/FAB/FAB'
 export type { FABProps } from './components/FAB/FAB'
 
+export { FABMenu, FABMenuItem } from './components/FABMenu/FABMenu'
+export type {
+    FABMenuProps,
+    FABMenuItemProps,
+} from './components/FABMenu/FABMenu'
+
 export { Field, FieldDescription, FieldError } from './components/Field/Field'
 export type {
     FieldProps,
