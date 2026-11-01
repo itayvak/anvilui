@@ -4,6 +4,23 @@ React components built on [Base UI](https://base-ui.com).
 
 ## Setup
 
+### 1. Load the fonts
+
+AnvilUI does not load any fonts by itself. The default theme uses Google Sans and Google Sans Code - if you intend to use them, add this to your HTML `<head>`:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+/>
+```
+
+To use different fonts, pass `tokens.font` to `AnvilRoot` and load the font yourself instead of Google Sans.
+
+### 2. Wrap your app in `AnvilRoot`
+
 ```tsx
 import { AnvilRoot, Button } from 'anvilui'
 import 'anvilui/styles.css'
@@ -17,7 +34,6 @@ export function App() {
 }
 ```
 
-- **Fonts:** the base tokens use Google Sans and Google Sans Code, which the library doesn't load. Add them yourself (e.g. a Google Fonts `<link>`), or pass your own `tokens.font` to `AnvilRoot`.
 - **Icons:** components import `material-symbols/rounded.css`, so your bundler needs to handle CSS and font files from `node_modules` (Vite, Next and webpack setups do by default).
 - Styles only apply inside `AnvilRoot`; nothing outside it is touched.
 
