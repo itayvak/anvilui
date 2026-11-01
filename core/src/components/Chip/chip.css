@@ -131,3 +131,9 @@
 .avl-input-chip-remove:disabled {
     cursor: default;
 }
+
+/* Clips the label while InputChip's exit animation squeezes it to nothing */
+.avl-input-chip[data-removing] {
+    overflow: hidden;
+    pointer-events: none;
+}
