@@ -1,0 +1,89 @@
+/* Material 3 top app bar. Three slots: start (navigation), label, end (actions) */
+.avl-app-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'start label end';
+    align-items: center;
+    column-gap: var(--avl-spacing-x1);
+    box-sizing: border-box;
+    min-height: var(--avl-spacing-x16);
+    padding-inline: var(--avl-spacing-x1);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-text);
+    /* Resolved here, so buttons inside can read the bar's text color even
+       after their own color class redefines the nested variables */
+    --avl-app-bar-content: var(--avl-nested-color-text);
+}
+
+/* The bar is navigation, so its neutral fill is navigation's color, the same
+   as NavigationRail and NavigationDrawer, not the darker container */
+.avl-app-bar.avl-color-container.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-container-low);
+    --avl-nested-color-on-main: var(--avl-color-on-container-low);
+}
+
+.avl-app-bar.avl-fill-outlined {
+    border-bottom: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+/* On a solid bar, text-style buttons take the bar's text color, so a menu
+   icon stays readable on primary. Filled buttons keep their own colors. */
+.avl-app-bar.avl-fill-filled :is(.avl-icon-button, .avl-button).avl-fill-text {
+    --avl-nested-color-on-main: var(--avl-app-bar-content);
+}
+
+.avl-app-bar-start,
+.avl-app-bar-end {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+}
+
+.avl-app-bar-start {
+    grid-area: start;
+}
+
+.avl-app-bar-end {
+    grid-area: end;
+    justify-content: flex-end;
+}
+
+.avl-app-bar-label {
+    grid-area: label;
+    min-width: 0;
+    margin: 0;
+    padding-inline: var(--avl-spacing-x3);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Centered: equal side columns, so the title is centered on the bar itself
+   rather than on the space between the buttons */
+.avl-app-bar-centered {
+    grid-template-columns: 1fr auto 1fr;
+}
+
+.avl-app-bar-centered .avl-app-bar-label {
+    text-align: center;
+}
+
+/* Big: buttons on top, the title on a row of its own below */
+.avl-app-bar-size-big {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+        'start . end'
+        'label label label';
+    row-gap: var(--avl-spacing-x5);
+    min-height: calc(var(--avl-spacing-x20) * 2 - var(--avl-spacing-x2));
+    padding-block: var(--avl-spacing-x3) var(--avl-spacing-x6);
+}
+
+/* Long titles wrap onto two lines here instead of being cut off */
+.avl-app-bar-size-big .avl-app-bar-label {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}

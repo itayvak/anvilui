@@ -1,0 +1,63 @@
+/* Wraps the decorated element; the badge sits on its top-end corner */
+.avl-badge-anchor {
+    position: relative;
+    display: inline-flex;
+    /* How far in from the corner the badge's center sits */
+    --avl-badge-inset: 0%;
+}
+
+/* Round things: move in to where the circle's edge meets the diagonal,
+   (1 - 1/√2) / 2 ≈ 14.6% of the size, instead of the empty square corner */
+.avl-badge-anchor:has(> :is(.avl-icon-button, .avl-avatar)) {
+    --avl-badge-inset: 14.6%;
+}
+
+.avl-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: var(--avl-spacing-x4);
+    height: var(--avl-spacing-x4);
+    padding: 0 var(--avl-spacing-x1);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    font-family: var(--avl-font-main);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-badge-dot {
+    min-width: 0;
+    width: 6px;
+    height: 6px;
+    padding: 0;
+}
+
+.avl-badge-anchor > .avl-badge {
+    position: absolute;
+    z-index: 1;
+    top: var(--avl-badge-inset);
+    inset-inline-end: var(--avl-badge-inset);
+    transform: translate(50%, -50%);
+}
+
+.avl-badge-anchor > .avl-badge:dir(rtl) {
+    transform: translate(-50%, -50%);
+}
+
+/* Pops in when it appears */
+@starting-style {
+    .avl-badge {
+        transform: scale(0);
+    }
+
+    .avl-badge-anchor > .avl-badge {
+        transform: translate(50%, -50%) scale(0);
+    }
+}

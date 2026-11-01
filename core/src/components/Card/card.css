@@ -16,7 +16,7 @@
     cursor: pointer;
     /* so `render={<a />}` doesn't get underlined */
     text-decoration: none;
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 .avl-card-clickable:hover:not([data-disabled]) {

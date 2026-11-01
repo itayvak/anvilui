@@ -1,17 +1,15 @@
 .avl-navigation-rail {
     /* read by NavigationRail.tsx so the FLIP animation matches the width transition */
-    --avl-navigation-rail-duration: 320ms;
-    /* a plain decelerate curve rather than --avl-ease-out: that token
-       overshoots, and on a box this size the overshoot reads as a bounce */
-    --avl-navigation-rail-ease: cubic-bezier(0.2, 0, 0, 1);
+    --avl-navigation-rail-duration: var(--avl-ease-length-normal);
+    /* no overshoot: a bounce on the whole layout reads as noise */
+    --avl-navigation-rail-ease: var(--avl-ease-smooth);
     --avl-navigation-rail-width: calc(var(--avl-spacing-x1) * 24);
 
     width: var(--avl-navigation-rail-width);
-    height: 100%;
     box-sizing: border-box;
     padding: var(--avl-spacing-x4);
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-on-color-surface-variant);
+    background-color: var(--avl-color-container-low);
+    color: var(--avl-color-on-container-low);
     overflow: clip;
     transition: width var(--avl-navigation-rail-duration)
         var(--avl-navigation-rail-ease);
@@ -60,9 +58,14 @@
     width: 100%;
     padding: 0;
     border: none;
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-on-color-surface-variant);
+    /* always on, not just when expanded: on collapse the selected color fades
+       out after the layout switches, and would show square corners */
+    border-radius: var(--avl-radius-button);
+    background-color: var(--avl-color-container-low);
+    color: var(--avl-color-on-container-low);
     cursor: pointer;
+    box-sizing: border-box;
+    text-decoration: none;
     /* colors get a plain ease-out: --avl-ease-out overshoots, which reads as a
        flash on a color but is the wanted bounce on transform */
     transition:
@@ -71,17 +74,21 @@
         color 400ms ease-out;
     --avl-navigation-rail-item-hover: color-mix(
         in srgb,
-        var(--avl-color-on-surface-variant) 8%,
-        var(--avl-color-surface-variant) 92%
+        var(--avl-color-on-container-low) 8%,
+        var(--avl-color-container-low) 92%
     );
 }
 
-.avl-navigation-rail-item:active:not(:disabled) {
+.avl-navigation-rail-item:active {
     transform: scale(0.99);
     transition: 10ms var(--avl-ease-out);
 }
 
 .avl-navigation-rail-item-icon {
+    position: relative;
+    /* Keeps the pill (::before, below) behind the glyph without leaving
+       this element */
+    isolation: isolate;
     border-radius: var(--avl-radius-button);
     background-color: transparent;
     transition:
@@ -90,22 +97,28 @@
         color 400ms ease-out;
 }
 
+/* Filled icon for the current page, outlined for the rest, like NavigationBar */
+.avl-navigation-rail-item[data-active] .avl-navigation-rail-item-icon {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0;
+}
+
 .avl-navigation-rail[data-expanded='true'] .avl-navigation-rail-item {
     flex-direction: row;
     gap: var(--avl-spacing-x4);
     padding: var(--avl-spacing-x4);
-    border-radius: var(--avl-radius-button);
 }
 
-.avl-navigation-rail[data-expanded='true']
-    .avl-navigation-rail-item:hover:not(:disabled) {
+.avl-navigation-rail[data-expanded='true'] .avl-navigation-rail-item:hover {
     background-color: var(--avl-navigation-rail-item-hover);
 }
 
 .avl-navigation-rail[data-expanded='true']
-    .avl-navigation-rail-item[data-pressed]:not(:disabled) {
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    .avl-navigation-rail-item[data-active] {
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
 }
 
 .avl-navigation-rail-item-text {
@@ -122,6 +135,35 @@
     text-overflow: clip;
 }
 
+.avl-navigation-rail-item-end {
+    flex-shrink: 0;
+    font-size: var(--avl-font-size-label-small);
+}
+
+/* Collapsed there's no room after the label, so it's a badge on the icon's
+   top-end corner, colored like Badge */
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item {
+    position: relative;
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item-end {
+    position: absolute;
+    top: 0;
+    inset-inline-start: calc(50% + var(--avl-spacing-x1));
+    min-width: var(--avl-spacing-x4);
+    height: var(--avl-spacing-x4);
+    box-sizing: border-box;
+    padding: 0 var(--avl-spacing-x1);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-error);
+    color: var(--avl-color-on-error);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: var(--avl-spacing-x4);
+    white-space: nowrap;
+    text-align: center;
+}
+
 .avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-expand-button {
     display: flex;
     margin-inline: auto;
@@ -131,39 +173,71 @@
     gap: var(--avl-spacing-x2);
 }
 
+/* The icon spans the whole pill; center the glyph in it. Explicit because
+   items are links now, which don't center text the way buttons do. */
 .avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item-icon {
     width: 100%;
     padding: var(--avl-spacing-x1) 0;
+    text-align: center;
 }
 
 .avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item-text {
     margin-bottom: var(--avl-spacing-x4);
+    font-size: var(--avl-font-size-label-small);
     white-space: normal;
     overflow-wrap: anywhere;
     text-align: center;
 }
 
 .avl-navigation-rail[data-expanded='false']
-    .avl-navigation-rail-item:active:not(:disabled) {
+    .avl-navigation-rail-item[data-active]
+    .avl-navigation-rail-item-text {
+    color: var(--avl-color-on-background);
+    font-weight: 600;
+}
+
+.avl-navigation-rail[data-expanded='false'] .avl-navigation-rail-item:active {
     transform: none;
 }
 
 .avl-navigation-rail[data-expanded='false']
-    .avl-navigation-rail-item:active:not(:disabled)
+    .avl-navigation-rail-item:active
     .avl-navigation-rail-item-icon {
     transform: scale(1.05, 0.93);
     transition: 10ms var(--avl-ease-out);
 }
 
 .avl-navigation-rail[data-expanded='false']
-    .avl-navigation-rail-item:hover:not(:disabled)
+    .avl-navigation-rail-item:hover
     .avl-navigation-rail-item-icon {
     background-color: var(--avl-navigation-rail-item-hover);
 }
 
+/* The pill, as a ::before so it can grow out from the middle while the
+   glyph stays still, like NavigationBar's */
+.avl-navigation-rail-item-icon::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--avl-color-tonal-container);
+    opacity: 0;
+    transform: scaleX(0.4);
+    transition:
+        opacity var(--avl-ease-length-short) linear,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
 .avl-navigation-rail[data-expanded='false']
-    .avl-navigation-rail-item[data-pressed]:not(:disabled)
+    .avl-navigation-rail-item[data-active]
     .avl-navigation-rail-item-icon {
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    color: var(--avl-color-on-tonal-container);
+}
+
+.avl-navigation-rail[data-expanded='false']
+    .avl-navigation-rail-item[data-active]
+    .avl-navigation-rail-item-icon::before {
+    opacity: 1;
+    transform: none;
 }

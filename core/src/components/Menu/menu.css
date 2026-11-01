@@ -7,7 +7,7 @@
     flex-direction: column;
     min-width: calc(var(--avl-spacing-x20) * 2.5);
     outline: none;
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 /* The visible container: one per group, or the popup itself when it has none */
@@ -15,8 +15,8 @@
 .avl-menu-popup:not(:has(> .avl-menu-group)) {
     padding: var(--avl-spacing-x1);
     border-radius: var(--avl-radius-medium);
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-container-low);
+    color: var(--avl-color-on-container-low);
     box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
 }
 
@@ -103,8 +103,8 @@
 
 .avl-menu-item[data-highlighted],
 .avl-menu-item[data-popup-open] {
-    background-color: var(--avl-color-secondary);
-    color: var(--avl-color-on-secondary);
+    background-color: var(--avl-color-tonal);
+    color: var(--avl-color-on-tonal);
 }
 
 .avl-menu-item[data-disabled] {

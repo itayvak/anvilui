@@ -1,0 +1,21 @@
+/* Fills its (12px-tall) track; the wave is drawn in px by SquigglyWave.tsx.
+   The parent sets --avl-wave-gap, the space between the wave and the track. */
+.avl-squiggly-wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.avl-squiggly-wave path {
+    fill: none;
+    stroke: var(--avl-color-primary);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.avl-squiggly-wave .avl-squiggly-wave-rest {
+    stroke: var(--avl-color-tonal-container);
+}

@@ -1,0 +1,44 @@
+.avl-field {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+/* Lined up with the text inside the control */
+.avl-field-description,
+.avl-field-error {
+    margin: 0;
+    padding-inline: var(--avl-spacing-x4);
+    font-size: var(--avl-font-size-label-small);
+    /* Wrap to the control's width instead of widening the field */
+    contain: inline-size;
+}
+
+.avl-field-description {
+    color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 60%,
+        var(--avl-color-background)
+    );
+}
+
+.avl-field-error {
+    color: var(--avl-color-error);
+    transition: opacity var(--avl-ease-length-short) linear;
+}
+
+.avl-field-error[data-starting-style],
+.avl-field-error[data-ending-style] {
+    opacity: 0;
+}
+
+/* Material: the error takes the helper text's place */
+.avl-field:has(> .avl-field-error) > .avl-field-description {
+    display: none;
+}
+
+/* Small controls have less side padding; follow them */
+.avl-field:has(> .avl-input-size-small)
+    :is(.avl-field-description, .avl-field-error) {
+    padding-inline: var(--avl-spacing-x3);
+}

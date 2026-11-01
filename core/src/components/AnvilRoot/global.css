@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
-
-* {
+/* :where() keeps these at zero specificity, so any component or consumer
+   class (including the icon font's) wins over them. Scoped to the root so
+   nothing leaks into the rest of the page. */
+:where(.avl-root, .avl-root *) {
     font-family: var(--avl-font-main);
 }
 
-*:focus-visible {
+:where(.avl-root :focus-visible) {
     outline: 3px solid
         color-mix(
             in srgb,
@@ -15,11 +16,62 @@
 }
 
 .avl-root {
-    min-height: 100vh;
     background-color: var(--avl-color-background);
     color: var(--avl-color-on-background);
+    /* Mobile browsers flash a box on every tap. Components show their own
+       press feedback, and keyboard focus still gets the ring above. */
+    -webkit-tap-highlight-color: transparent;
 }
 
-body {
-    margin: 0;
+@media (prefers-reduced-motion: reduce) {
+    /* On descendants, not the root: AnvilRoot sets these inline on the root,
+       and inline styles would beat this rule there. */
+    .avl-root * {
+        --avl-ease-length-short: 0ms;
+        --avl-ease-length-normal: 0ms;
+        --avl-ease-length-slow: 0ms;
+    }
+
+    /* the press "squish" on controls */
+    .avl-root
+        :is(
+            .avl-button,
+            .avl-icon-button,
+            .avl-card-clickable,
+            .avl-checkbox,
+            .avl-radio,
+            .avl-switch,
+            .avl-toggle-group-item,
+            .avl-tabs-tab-content,
+            .avl-navigation-bar-item-indicator,
+            .avl-chip,
+            .avl-fab
+        ) {
+        transform: none !important;
+    }
+}
+
+/* Set by morph.ts on a Dialog or Popover trigger while it has morphed into
+   its popup. Hidden, not removed, so the page doesn't shift. Triggers like
+   Card and Button transition every property, visibility included, which
+   would keep them visible for the whole duration. */
+.avl-root [data-morph-hidden] {
+    visibility: hidden;
+    transition: none;
+}
+
+/* Used by the rules morph.ts injects during a morph: the old content clears
+   out early, the new fades in late */
+@keyframes avl-morph-out {
+    30%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes avl-morph-in {
+    0%,
+    40% {
+        opacity: 0;
+    }
 }

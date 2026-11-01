@@ -5,11 +5,21 @@ export type DesignTokens = {
     radius: BorderRadius
     outlineSize: string
     ease: Ease
+    easeLength: EaseLength
 }
 
 export type Ease = {
+    /** Springy, with a slight overshoot: buttons, popups, small things. */
     out: string
     in: string
+    /** No overshoot: things that slide across or in from the screen edge. */
+    smooth: string
+}
+
+export type EaseLength = {
+    short: string
+    normal: string
+    slow: string
 }
 
 export type Font = {
@@ -21,6 +31,9 @@ export type Font = {
 export type FontSize = {
     body: string
     caption: string
+    labelSmall: string
+    label: string
+    labelLarge: string
     h1: string
     h2: string
     h3: string
@@ -34,5 +47,5 @@ export type BorderRadius = {
     medium: string
     large: string
     button: string
-    full: '1000px'
+    full: string
 }

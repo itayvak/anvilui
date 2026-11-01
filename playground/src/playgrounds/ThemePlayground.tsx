@@ -15,8 +15,8 @@ import {
     NavigationRail,
     NavigationRailItem,
     Radio,
-    RadioButton,
-    RadioButtonGroup,
+    ToggleGroup,
+    ToggleGroupItem,
     RadioGroup,
     Switch,
     Typography,
@@ -24,8 +24,10 @@ import {
 import { colors, fillTypes } from '../options'
 import { Grid, Row, Section } from '../ui'
 
-const lowerFirst = (text: string) => text.charAt(0).toLowerCase() + text.slice(1)
-const upperFirst = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
+const lowerFirst = (text: string) =>
+    text.charAt(0).toLowerCase() + text.slice(1)
+const upperFirst = (text: string) =>
+    text.charAt(0).toUpperCase() + text.slice(1)
 const isOnKey = (key: string) => /^on[A-Z]/.test(key)
 
 // Same naming as themeToCssVariables in core
@@ -149,13 +151,13 @@ export function ThemePlayground() {
                             </label>
                         ))}
                     </RadioGroup>
-                    <RadioButtonGroup aria-label="Radio buttons" defaultValue="Week">
+                    <ToggleGroup aria-label="Toggle group" defaultValue="Week">
                         {['Day', 'Week', 'Month'].map((value) => (
-                            <RadioButton key={value} value={value}>
+                            <ToggleGroupItem key={value} value={value}>
                                 {value}
-                            </RadioButton>
+                            </ToggleGroupItem>
                         ))}
-                    </RadioButtonGroup>
+                    </ToggleGroup>
                 </Row>
                 <Row>
                     {colors.map((color) => (

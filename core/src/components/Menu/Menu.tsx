@@ -3,19 +3,8 @@ import { Menu as BaseMenu } from '@base-ui/react/menu'
 import type { MaterialSymbol } from 'material-symbols'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
+import { withClass } from '../../utils'
 import './menu.css'
-
-// Base UI's className is a string or a function of the state; keep both
-// working and append the caller's after ours.
-function withClass<State>(
-    base: string,
-    className: string | ((state: State) => string | undefined) | undefined
-) {
-    return (state: State) =>
-        base +
-        ' ' +
-        ((typeof className === 'function' ? className(state) : className) ?? '')
-}
 
 export type MenuProps = BaseMenu.Root.Props
 

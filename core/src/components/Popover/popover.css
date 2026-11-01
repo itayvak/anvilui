@@ -1,0 +1,33 @@
+/* Builds on menu.css's popup. The long selector matches menu.css's container
+   rule plus one class, so this padding wins regardless of file order. */
+.avl-popover-popup.avl-menu-popup:not(:has(> .avl-menu-group)) {
+    gap: var(--avl-spacing-x2);
+    max-width: calc(var(--avl-spacing-x20) * 4);
+    padding: var(--avl-spacing-x4);
+}
+
+.avl-popover-title {
+    margin: 0;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-h6);
+    font-weight: normal;
+}
+
+.avl-popover-description {
+    margin: 0;
+    font-size: var(--avl-font-size-body);
+}
+
+/* Morph: morph.ts sets data-morphing while the browser grows the popover
+   out of its trigger. Skip Menu's grow-in so it's fully there for the
+   "after" snapshot; its fade-out still applies, instantly, so on close it's
+   gone when the trigger is captured. */
+.avl-popover-popup[data-morphing] {
+    transition: none;
+}
+
+.avl-popover-popup[data-morphing][data-starting-style] {
+    opacity: 1;
+    transform: none;
+}

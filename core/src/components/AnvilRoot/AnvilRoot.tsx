@@ -1,4 +1,14 @@
-import { CSSProperties, ReactNode, useRef, useState } from 'react'
+import {
+    CSSProperties,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useRef,
+    useState,
+} from 'react'
+import { Toast } from '@base-ui/react/toast'
+import { Tooltip } from '@base-ui/react/tooltip'
+import { SnackbarViewport } from '../Snackbar/Snackbar'
 import { AnvilContext, ColorType } from './AnvilContext'
 import { baseDarkTheme, baseLightTheme } from '../../themes/baseTheme'
 import { Theme } from '../../themes/types'
@@ -11,16 +21,26 @@ import './global.css'
 
 export type AnvilRootProps = {
     children: ReactNode
+    /** Controlled color mode. Pair with `onColorModeChange`. */
     colorMode?: ColorType
+    /** Starting color mode when `colorMode` isn't controlled. */
+    defaultColorMode?: ColorType
+    onColorModeChange?: (colorMode: ColorType) => void
     lightTheme?: Theme
     darkTheme?: Theme
     tokens?: DesignTokens
 }
 
 export function AnvilRoot(props: AnvilRootProps) {
-    const [colorMode, setColorMode] = useState<'light' | 'dark'>(
-        props.colorMode || 'light'
+    const [internalColorMode, setInternalColorMode] = useState<ColorType>(
+        props.defaultColorMode || 'light'
     )
+    const colorMode = props.colorMode ?? internalColorMode
+    const setColorMode: Dispatch<SetStateAction<ColorType>> = (next) => {
+        const value = typeof next === 'function' ? next(colorMode) : next
+        setInternalColorMode(value)
+        props.onColorModeChange?.(value)
+    }
     const tokens = props.tokens || baseDesignTokens
     const lightTheme = props.lightTheme || baseLightTheme
     const darkTheme = props.darkTheme || baseDarkTheme
@@ -31,8 +51,6 @@ export function AnvilRoot(props: AnvilRootProps) {
         ...tokensToCssVariables(tokens),
         ...themeToCssVariables(activeTheme),
     }
-
-    console.log(cssVars)
 
     return (
         <AnvilContext
@@ -50,7 +68,15 @@ export function AnvilRoot(props: AnvilRootProps) {
                 className="avl-root"
                 style={cssVars as CSSProperties}
             >
-                {props.children}
+                {/* Lets the pointer move between tooltips without waiting
+                    out the open delay each time */}
+                <Tooltip.Provider>
+                    {/* Up to 3 snackbars stack; a 4th pushes the oldest out */}
+                    <Toast.Provider limit={3}>
+                        {props.children}
+                        <SnackbarViewport />
+                    </Toast.Provider>
+                </Tooltip.Provider>
             </div>
         </AnvilContext>
     )

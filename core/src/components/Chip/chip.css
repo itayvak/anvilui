@@ -1,0 +1,133 @@
+/* Material 3 chips: 32px tall, outlined, with 8px corners */
+.avl-chip {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    box-sizing: border-box;
+    height: var(--avl-spacing-x8);
+    padding: 0 var(--avl-spacing-x4);
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: calc(var(--avl-radius-small) * 2);
+    background-color: transparent;
+    color: var(--avl-color-on-background);
+    font-family: inherit;
+    font-size: var(--avl-font-size-label);
+    white-space: nowrap;
+    user-select: none;
+    transition:
+        background-color var(--avl-ease-length-short) linear,
+        border-color var(--avl-ease-length-short) linear,
+        color var(--avl-ease-length-short) linear,
+        padding var(--avl-ease-length-normal) var(--avl-ease-out),
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+/* A leading icon sits closer to the edge */
+.avl-chip-has-icon {
+    padding-inline-start: var(--avl-spacing-x2);
+}
+
+.avl-chip .avl-icon {
+    font-size: 18px;
+}
+
+/* Only the clickable kinds; an input chip's own surface isn't a button */
+:is(button, .avl-filter-chip).avl-chip {
+    cursor: pointer;
+}
+
+:is(button, .avl-filter-chip).avl-chip:hover:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 8%,
+        transparent
+    );
+}
+
+:is(button, .avl-filter-chip).avl-chip:active:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 12%,
+        transparent
+    );
+    transform: scale(0.97);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-chip[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Filter: filled when on, with a checkmark that takes the side padding */
+.avl-filter-chip-check {
+    display: none;
+}
+
+.avl-filter-chip[data-pressed] {
+    padding-inline-start: var(--avl-spacing-x2);
+    border-color: transparent;
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
+}
+
+.avl-filter-chip[data-pressed] .avl-filter-chip-check {
+    display: inline;
+}
+
+.avl-filter-chip[data-pressed]:hover:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-tonal-container) 92%,
+        var(--avl-color-on-tonal-container)
+    );
+}
+
+/* Input: the remove button gets the end padding */
+.avl-input-chip {
+    padding-inline-end: var(--avl-spacing-x1);
+}
+
+.avl-input-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--avl-spacing-x6);
+    height: var(--avl-spacing-x6);
+    margin-inline-start: calc(var(--avl-spacing-x1) * -1);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-full);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color var(--avl-ease-length-short) linear;
+}
+
+/* Invisible 40px hit area, since the button itself is small */
+.avl-input-chip-remove {
+    position: relative;
+}
+
+.avl-input-chip-remove::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--avl-spacing-x10);
+    height: var(--avl-spacing-x10);
+    transform: translate(-50%, -50%);
+}
+
+.avl-input-chip-remove:hover:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-background) 10%,
+        transparent
+    );
+}
+
+.avl-input-chip-remove:disabled {
+    cursor: default;
+}

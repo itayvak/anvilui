@@ -1,0 +1,101 @@
+/* Builds on input.css (field) and menu.css (popup); only what differs. */
+.avl-select-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    height: 100%;
+    padding-inline-end: var(--avl-spacing-x2);
+    text-align: start;
+    cursor: pointer;
+}
+
+.avl-select-value {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.avl-select-trigger[data-placeholder] .avl-select-value {
+    color: var(--avl-input-placeholder-color);
+}
+
+.avl-select-icon {
+    display: flex;
+    color: var(--avl-input-placeholder-color);
+    transition: transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-select-trigger[data-popup-open] .avl-select-icon {
+    transform: rotate(180deg);
+}
+
+/* input.css floats the label via :placeholder-shown, which a button never
+   matches. Here the label rests while nothing is picked and the field is idle. */
+.avl-select
+    .avl-select-trigger[data-placeholder]:not(:focus, [data-popup-open])
+    + .avl-input-label {
+    top: 50%;
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-select
+    .avl-select-trigger[data-placeholder]:not(:focus, [data-popup-open])
+    ~ .avl-input-outline
+    legend {
+    max-width: 0.01px;
+}
+
+/* Focus moves into the popup while it's open; keep the field highlighted */
+.avl-select:has([data-popup-open]) .avl-input-outline {
+    border-width: 2px;
+    border-color: var(--avl-color-primary);
+}
+
+.avl-select .avl-select-trigger[data-popup-open] + .avl-input-label {
+    color: var(--avl-color-primary);
+}
+
+/* With a label, the placeholder waits until the label has moved up */
+.avl-select.avl-input-labeled
+    .avl-select-trigger[data-placeholder]:not(:focus, [data-popup-open])
+    .avl-select-value {
+    visibility: hidden;
+}
+
+/* Small: the label is the placeholder, and hides once something is picked */
+.avl-select.avl-input-size-small
+    .avl-select-trigger[data-placeholder]
+    + .avl-input-label {
+    visibility: visible;
+}
+
+.avl-select.avl-input-size-small.avl-input-labeled
+    .avl-select-trigger[data-placeholder]
+    .avl-select-value {
+    visibility: hidden;
+}
+
+.avl-select:has([data-disabled]) {
+    opacity: 0.5;
+}
+
+.avl-select-trigger[data-disabled] {
+    cursor: default;
+}
+
+.avl-select-popup {
+    min-width: var(--anchor-width);
+    /* 320px, or less if that's all the room left on screen */
+    max-height: min(calc(var(--avl-spacing-x20) * 4), var(--available-height));
+    overflow-y: auto;
+}
+
+.avl-select-item[data-selected]:not([data-highlighted]) {
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
+}
+
+.avl-select-item-indicator {
+    display: flex;
+}

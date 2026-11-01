@@ -1,0 +1,99 @@
+/* Material 3 FAB: a rounded square with a shadow, or a pill with a label */
+.avl-fab {
+    --avl-fab-size: var(--avl-spacing-x14);
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--avl-spacing-x3);
+    box-sizing: border-box;
+    min-width: var(--avl-fab-size);
+    height: var(--avl-fab-size);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-medium);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    font-family: inherit;
+    font-size: var(--avl-font-size-body);
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.25);
+    /* Sticks to a nearby cursor (set by FAB.tsx); on release it springs
+       back with the transition below. Separate from `transform`, so it adds
+       to the press squish instead of replacing it. */
+    translate: var(--avl-fab-pull-x, 0) var(--avl-fab-pull-y, 0);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+/* While stuck: follow the cursor closely, without bounce */
+.avl-fab[data-stuck]:not(:active) {
+    transition:
+        translate var(--avl-ease-length-short) var(--avl-ease-smooth),
+        background-color var(--avl-ease-length-normal) var(--avl-ease-out),
+        box-shadow var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-fab .avl-icon {
+    font-size: 24px;
+}
+
+.avl-fab-extended {
+    padding: 0 var(--avl-spacing-x5) 0 var(--avl-spacing-x4);
+}
+
+.avl-fab-size-small {
+    --avl-fab-size: var(--avl-spacing-x10);
+    border-radius: calc(var(--avl-radius-small) * 3);
+}
+
+.avl-fab-size-small.avl-fab-extended {
+    gap: var(--avl-spacing-x2);
+    padding: 0 var(--avl-spacing-x4) 0 var(--avl-spacing-x3);
+    font-size: var(--avl-font-size-label);
+}
+
+.avl-fab-size-big {
+    --avl-fab-size: calc(var(--avl-spacing-x1) * 24);
+    border-radius: var(--avl-radius-large);
+}
+
+.avl-fab-size-big .avl-icon {
+    font-size: 36px;
+}
+
+.avl-fab-size-big.avl-fab-extended {
+    gap: var(--avl-spacing-x4);
+    padding: 0 var(--avl-spacing-x8) 0 var(--avl-spacing-x6);
+    font-size: var(--avl-font-size-h6);
+}
+
+.avl-fab.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-fab:hover:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 90%,
+        var(--avl-nested-color-on-main) 10%
+    );
+    box-shadow: 0 5px 12px rgb(0 0 0 / 0.3);
+}
+
+.avl-fab:active:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-main) 80%,
+        var(--avl-nested-color-on-main) 20%
+    );
+    transform: scale(0.95);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-fab:disabled {
+    opacity: 0.5;
+    cursor: default;
+    box-shadow: none;
+}

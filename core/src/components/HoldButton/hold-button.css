@@ -1,0 +1,92 @@
+/* The fill sweeps across while held. It sits behind the label, above the
+   button's own background (isolation makes the -1 stay inside). */
+.avl-hold-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* A long press on touch screens would select text or open a callout */
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.avl-hold-button::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-color: color-mix(
+        in srgb,
+        var(--avl-nested-color-on-main) 25%,
+        transparent
+    );
+    transform-origin: left center;
+    scale: 0 1;
+    /* Let go early: springs back */
+    transition: scale var(--avl-ease-length-slow) var(--avl-ease-out);
+}
+
+.avl-hold-button:dir(rtl)::before {
+    transform-origin: right center;
+}
+
+/* Linear and on a raw duration, not the ease tokens: it's the progress
+   itself, so it keeps sweeping with reduced motion on */
+.avl-hold-button[data-hold='holding']::before {
+    scale: 1 1;
+    transition: scale var(--avl-hold-duration) linear;
+}
+
+.avl-hold-button[data-hold='confirmed']::before {
+    scale: 1 1;
+    opacity: 0;
+    transition: opacity var(--avl-ease-length-slow) linear;
+}
+
+/* The pop and wobble are decoration, so they only play without reduced
+   motion; the fill above always does */
+@media (prefers-reduced-motion: no-preference) {
+    /* Confirmed: a quick pop */
+    .avl-hold-button[data-hold='confirmed'] {
+        animation: avl-hold-pop var(--avl-ease-length-slow) var(--avl-ease-out);
+    }
+
+    /* Let go early: a little "no" wobble. Two copies of the keyframes, so
+       switching between them replays it on every release. */
+    .avl-hold-button-nudged[data-nudge='even']:not([data-hold]) {
+        animation: avl-hold-nudge-a var(--avl-ease-length-slow) ease-out;
+    }
+
+    .avl-hold-button-nudged[data-nudge='odd']:not([data-hold]) {
+        animation: avl-hold-nudge-b var(--avl-ease-length-slow) ease-out;
+    }
+}
+
+@keyframes avl-hold-pop {
+    40% {
+        transform: scale(1.06);
+    }
+}
+
+@keyframes avl-hold-nudge-a {
+    25% {
+        translate: -3px 0;
+    }
+    50% {
+        translate: 3px 0;
+    }
+    75% {
+        translate: -2px 0;
+    }
+}
+
+@keyframes avl-hold-nudge-b {
+    25% {
+        translate: -3px 0;
+    }
+    50% {
+        translate: 3px 0;
+    }
+    75% {
+        translate: -2px 0;
+    }
+}

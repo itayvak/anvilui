@@ -3,10 +3,30 @@ import { Theme } from './types'
 export function themeToCssVariables(theme: Theme): Record<string, string> {
     const cssVars: Record<string, string> = {}
 
-    for (const [key, value] of Object.entries(theme)) {
+    // The inverse roles are optional; themes without them get the page's
+    // colors swapped, so existing themes keep working
+    // Themes written before the rename still work: their surfaceVariant
+    // pair stands in for containerLow
+    const { surfaceVariant, onSurfaceVariant, ...rest } = theme
+    const filled: Theme = {
+        inverseSurface: theme.onBackground,
+        inverseOnSurface: theme.background,
+        inversePrimary: `color-mix(in srgb, ${theme.primary} 55%, ${theme.background})`,
+        ...rest,
+        containerLow: rest.containerLow ?? surfaceVariant,
+        onContainerLow: rest.onContainerLow ?? onSurfaceVariant,
+    }
+
+    for (const [key, value] of Object.entries(filled)) {
+        if (value === undefined) continue
         const kebabKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
         cssVars[`--avl-color-${kebabKey}`] = value
     }
+
+    // The old variable names, for custom CSS written before the rename
+    cssVars['--avl-color-surface-variant'] = 'var(--avl-color-container-low)'
+    cssVars['--avl-color-on-surface-variant'] =
+        'var(--avl-color-on-container-low)'
 
     return cssVars
 }

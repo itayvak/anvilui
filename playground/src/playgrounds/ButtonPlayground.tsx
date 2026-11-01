@@ -16,79 +16,125 @@ export function ButtonPlayground() {
     const [disabled, setDisabled] = useState(false)
 
     return (
-        <Section title="Colors and fill types">
-            <Row>
-                <SelectControl
-                    label="size"
-                    value={size}
-                    options={sizes}
-                    onChange={setSize}
-                />
-                <SelectControl
-                    label="startIcon"
-                    value={startIcon}
-                    options={iconOptions}
-                    onChange={setStartIcon}
-                />
-                <SelectControl
-                    label="endIcon"
-                    value={endIcon}
-                    options={iconOptions}
-                    onChange={setEndIcon}
-                />
-                <label className="pg-checkbox">
-                    <Checkbox
-                        checked={disabled}
-                        onCheckedChange={setDisabled}
+        <>
+            <Section title="Colors and fill types">
+                <Row>
+                    <SelectControl
+                        label="size"
+                        value={size}
+                        options={sizes}
+                        onChange={setSize}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
-            </Row>
-            <table className="pg-matrix">
-                <thead>
-                    <tr>
-                        <th />
-                        {colors.map((color) => (
-                            <th key={color}>
-                                <Typography type="caption">{color}</Typography>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {fillTypes.map((fillType) => (
-                        <tr key={fillType}>
-                            <th scope="row">
-                                <Typography type="caption">
-                                    {fillType}
-                                </Typography>
-                            </th>
+                    <SelectControl
+                        label="startIcon"
+                        value={startIcon}
+                        options={iconOptions}
+                        onChange={setStartIcon}
+                    />
+                    <SelectControl
+                        label="endIcon"
+                        value={endIcon}
+                        options={iconOptions}
+                        onChange={setEndIcon}
+                    />
+                    <label className="pg-checkbox">
+                        <Checkbox
+                            checked={disabled}
+                            onCheckedChange={setDisabled}
+                        />
+                        <Typography type="caption">disabled</Typography>
+                    </label>
+                </Row>
+                <table className="pg-matrix">
+                    <thead>
+                        <tr>
+                            <th />
                             {colors.map((color) => (
-                                <td key={color}>
-                                    <Button
-                                        size={size}
-                                        color={color}
-                                        fillType={fillType}
-                                        startIcon={
-                                            startIcon === 'none'
-                                                ? undefined
-                                                : startIcon
-                                        }
-                                        endIcon={
-                                            endIcon === 'none'
-                                                ? undefined
-                                                : endIcon
-                                        }
-                                        disabled={disabled}
-                                    >
-                                        Button
-                                    </Button>
-                                </td>
+                                <th key={color}>
+                                    <Typography type="caption">
+                                        {color}
+                                    </Typography>
+                                </th>
                             ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </Section>
+                    </thead>
+                    <tbody>
+                        {fillTypes.map((fillType) => (
+                            <tr key={fillType}>
+                                <th scope="row">
+                                    <Typography type="caption">
+                                        {fillType}
+                                    </Typography>
+                                </th>
+                                {colors.map((color) => (
+                                    <td key={color}>
+                                        <Button
+                                            size={size}
+                                            color={color}
+                                            fillType={fillType}
+                                            startIcon={
+                                                startIcon === 'none'
+                                                    ? undefined
+                                                    : startIcon
+                                            }
+                                            endIcon={
+                                                endIcon === 'none'
+                                                    ? undefined
+                                                    : endIcon
+                                            }
+                                            disabled={disabled}
+                                        >
+                                            Button
+                                        </Button>
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Section>
+            <Section title="Loading">
+                <Row>
+                    <LoadingButton size={size} loadingText="Saving">
+                        Save changes
+                    </LoadingButton>
+                    <LoadingButton
+                        size={size}
+                        fillType="outlined"
+                        startIcon="send"
+                        loadingText="Sending"
+                    >
+                        Send
+                    </LoadingButton>
+                    <LoadingButton
+                        size={size}
+                        color="tonal"
+                        loadingText="Processing payment"
+                    >
+                        Pay $20
+                    </LoadingButton>
+                </Row>
+            </Section>
+        </>
+    )
+}
+
+// Loads for a moment with different text, then goes back to normal
+function LoadingButton({
+    loadingText,
+    children,
+    ...props
+}: ButtonProps & { loadingText: string }) {
+    const [loading, setLoading] = useState(false)
+
+    const run = () => {
+        setLoading(true)
+        setTimeout(() => setLoading(false), 2000)
+    }
+
+    return (
+        <Button {...props} loading={loading} disabled={loading} onClick={run}>
+            {loading ? loadingText : children}
+        </Button>
     )
 }

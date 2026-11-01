@@ -1,0 +1,30 @@
+/* Builds on input.css; only what differs for multi-line text. */
+.avl-input.avl-textarea {
+    height: auto;
+}
+
+.avl-textarea .avl-input-field {
+    display: block;
+    margin: 0;
+    padding: var(--avl-spacing-x4);
+    line-height: var(--avl-spacing-x6);
+    min-height: var(--avl-spacing-x14);
+    resize: vertical;
+    /* Grows with its content. Browsers without support fall back to a
+       fixed height the user can resize. */
+    field-sizing: content;
+}
+
+.avl-textarea.avl-input-size-small .avl-input-field {
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x3);
+    min-height: var(--avl-spacing-x10);
+}
+
+/* At rest the label sits on the first line, not the vertical middle */
+.avl-textarea .avl-input-label {
+    top: calc(var(--avl-spacing-x4) + var(--avl-spacing-x3));
+}
+
+.avl-textarea.avl-input-size-small .avl-input-field + .avl-input-label {
+    top: calc(var(--avl-spacing-x2) + var(--avl-spacing-x3));
+}

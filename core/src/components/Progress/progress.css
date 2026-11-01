@@ -1,0 +1,200 @@
+/* Material 3 progress indicators: the filled part, a gap, then the rest */
+.avl-progress {
+    --avl-progress-gap: var(--avl-spacing-x1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-progress-label {
+    color: var(--avl-color-on-background);
+    font-size: var(--avl-font-size-label);
+}
+
+/* Linear */
+.avl-progress-linear {
+    min-width: calc(var(--avl-spacing-x20) * 2);
+}
+
+.avl-progress-track {
+    position: relative;
+    height: var(--avl-spacing-x1);
+}
+
+.avl-progress-indicator {
+    position: absolute;
+    top: 0;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-primary);
+    transition: width var(--avl-ease-length-slow) var(--avl-ease-out);
+}
+
+/* The unfilled part starts one gap after the filled one, or at the very
+   start while nothing is filled */
+.avl-progress-rest {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: calc(
+        var(--avl-progress-fraction) * 100% + var(--avl-progress-gap) *
+            min(1, var(--avl-progress-fraction) * 1000)
+    );
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-tonal-container);
+    transition: left var(--avl-ease-length-slow) var(--avl-ease-out);
+}
+
+/* Stop dot marking where the bar ends */
+.avl-progress-rest::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--avl-spacing-x1);
+    height: 100%;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-primary);
+}
+
+.avl-progress[data-complete] .avl-progress-rest {
+    display: none;
+}
+
+/* Indeterminate: a bar sweeps across the track */
+.avl-progress-linear[data-indeterminate] .avl-progress-track {
+    overflow: hidden;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-tonal-container);
+}
+
+.avl-progress-linear[data-indeterminate] .avl-progress-rest {
+    display: none;
+}
+
+.avl-progress-linear[data-indeterminate] .avl-progress-indicator {
+    width: 40%;
+    height: 100%;
+    animation: avl-progress-sweep 1.5s var(--avl-ease-in, ease-in-out) infinite;
+}
+
+@keyframes avl-progress-sweep {
+    from {
+        left: -40%;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+/* Squiggly: the filled part is a SquigglyWave, drawn in the 12px track */
+.avl-progress-squiggly {
+    --avl-wave-gap: var(--avl-progress-gap);
+}
+
+.avl-progress-squiggly .avl-progress-track {
+    height: var(--avl-spacing-x3);
+}
+
+/* While loading, the wave draws the track too, with gaps around itself,
+   so drop the plain bar's loading track */
+.avl-progress-squiggly[data-indeterminate] .avl-progress-track {
+    overflow: visible;
+    background: none;
+}
+
+/* The unfilled part stays a thin line through the middle */
+.avl-progress-squiggly .avl-progress-rest {
+    top: var(--avl-spacing-x1);
+    bottom: var(--avl-spacing-x1);
+}
+
+/* Circular */
+.avl-progress-circular {
+    align-items: center;
+}
+
+.avl-progress-ring {
+    width: var(--avl-spacing-x12);
+    height: var(--avl-spacing-x12);
+    /* Start at the top, not the right */
+    transform: rotate(-90deg);
+}
+
+.avl-progress-ring circle {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition:
+        stroke-dasharray var(--avl-ease-length-slow) var(--avl-ease-out),
+        stroke-dashoffset var(--avl-ease-length-slow) var(--avl-ease-out);
+}
+
+.avl-progress-ring-indicator {
+    stroke: var(--avl-color-primary);
+}
+
+.avl-progress-ring-rest {
+    stroke: var(--avl-color-tonal-container);
+}
+
+/* A zero-length dash with round caps would still draw a dot */
+.avl-progress-circular[data-progressing]:not([data-indeterminate])
+    .avl-progress-ring-indicator {
+    opacity: min(1, calc(var(--avl-progress-fraction) * 1000));
+}
+
+.avl-progress-circular[data-complete] .avl-progress-ring-rest {
+    display: none;
+}
+
+/* Indeterminate: a quarter arc spins */
+.avl-progress-circular[data-indeterminate] .avl-progress-ring-rest {
+    display: none;
+}
+
+.avl-progress-circular[data-indeterminate] .avl-progress-ring {
+    animation: avl-progress-spin 1s linear infinite;
+}
+
+@keyframes avl-progress-spin {
+    from {
+        transform: rotate(-90deg);
+    }
+    to {
+        transform: rotate(270deg);
+    }
+}
+
+/* Keep showing activity with reduced motion, just slower */
+@media (prefers-reduced-motion: reduce) {
+    .avl-progress[data-indeterminate]
+        :is(.avl-progress-indicator, .avl-progress-ring) {
+        animation-duration: 4s;
+    }
+}
+
+/* Inline: a ring the height of the surrounding text, sitting in a line */
+.avl-progress-inline {
+    display: inline-flex;
+    flex-direction: row;
+    gap: var(--avl-spacing-x1);
+    vertical-align: -0.125em;
+}
+
+.avl-progress-inline .avl-progress-label {
+    /* Ring first, like an icon before its text */
+    order: 1;
+    color: inherit;
+    font-size: inherit;
+}
+
+.avl-progress-inline .avl-progress-ring {
+    width: 1em;
+    height: 1em;
+}
+
+/* Thicker stroke so the ring stays readable at text size */
+.avl-progress-inline .avl-progress-ring circle {
+    stroke-width: 8;
+}

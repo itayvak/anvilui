@@ -2,7 +2,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    /* also read by ButtonGroup to cap its outer radius */
+    /* also read by SplitButton to cap its outer radius */
     --avl-button-height: var(--avl-spacing-x10);
     width: var(--avl-button-height);
     height: var(--avl-button-height);
@@ -12,7 +12,7 @@
     background-color: var(--avl-nested-color-main);
     color: var(--avl-nested-color-on-main);
     cursor: pointer;
-    transition: 200ms var(--avl-ease-out);
+    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
     --avl-button-active-transform: scale(0.97);
 }
 

@@ -1,0 +1,528 @@
+/* Shell: top bar over sidebar | list | reading pane */
+.am-app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-background);
+}
+
+.am-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    color: var(--avl-color-primary);
+    font-weight: 600;
+}
+
+.am-search {
+    width: calc(var(--avl-spacing-x1) * 80);
+    margin-inline-end: var(--avl-spacing-x2);
+}
+
+.am-avatar-button {
+    display: flex;
+    margin-inline-start: var(--avl-spacing-x1);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-full);
+    background: none;
+    cursor: pointer;
+}
+
+.am-account-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    min-width: calc(var(--avl-spacing-x1) * 64);
+    text-align: center;
+}
+
+.am-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.am-sidebar {
+    flex-shrink: 0;
+    /* More folders than fit on a short screen: scroll rather than clip */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.am-sidebar[data-expanded='false'] .am-expanded-only {
+    display: none;
+}
+
+.am-sidebar-heading {
+    display: block;
+    padding: var(--avl-spacing-x4) var(--avl-spacing-x4) var(--avl-spacing-x2);
+}
+
+.am-storage {
+    margin-top: var(--avl-spacing-x6);
+    padding-inline: var(--avl-spacing-x4);
+}
+
+.am-drawer-divider {
+    margin: var(--avl-spacing-x2) var(--avl-spacing-x4);
+}
+
+.am-list-pane,
+.am-reading-pane {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.am-list-pane {
+    overflow-y: auto;
+}
+
+/* One at a time: the list, or the open message in its place */
+.am-app[data-reading] .am-list-pane,
+.am-app[data-reading] .am-fab {
+    display: none;
+}
+
+.am-reading-pane {
+    padding: 0 var(--avl-spacing-x2) var(--avl-spacing-x2) 0;
+}
+
+.am-spacer {
+    flex: 1;
+}
+
+.am-narrow-only {
+    display: none;
+}
+
+/* Medium: the sidebar folds into the drawer */
+@media (max-width: 1100px) {
+    .am-wide-only {
+        display: none;
+    }
+
+    .am-narrow-only {
+        display: flex;
+    }
+
+    .am-reading-pane {
+        padding-inline-start: var(--avl-spacing-x2);
+    }
+}
+
+@media (max-width: 760px) {
+    .am-search {
+        width: calc(var(--avl-spacing-x1) * 40);
+    }
+}
+
+.am-fab {
+    position: absolute;
+    right: var(--avl-spacing-x6);
+    bottom: var(--avl-spacing-x6);
+    z-index: 1;
+}
+
+.am-empty {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--avl-spacing-x2);
+    padding: var(--avl-spacing-x12) var(--avl-spacing-x4);
+    text-align: center;
+}
+
+.am-empty .avl-icon {
+    font-size: var(--avl-font-size-h2);
+    opacity: 0.5;
+}
+
+.am-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.am-muted {
+    opacity: 0.7;
+}
+
+.am-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Filled star once it's on */
+.am-star[data-starred] .avl-icon {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0;
+}
+
+/* Message list */
+.am-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.am-list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--avl-spacing-x4) var(--avl-spacing-x4) var(--avl-spacing-x2);
+}
+
+.am-tab-badge {
+    margin-inline-start: var(--avl-spacing-x1);
+}
+
+.am-list-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+    min-height: var(--avl-spacing-x12);
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x4);
+}
+
+.am-list-actions .avl-chip {
+    margin-inline-start: var(--avl-spacing-x1);
+}
+
+.am-picked {
+    padding-inline: var(--avl-spacing-x2);
+}
+
+.am-refresh {
+    padding-inline: var(--avl-spacing-x4);
+}
+
+.am-rows {
+    padding-bottom: calc(var(--avl-spacing-x1) * 24);
+}
+
+.am-row {
+    position: relative;
+    border-radius: 0;
+}
+
+.am-row .avl-list-item-start {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+}
+
+.am-row[data-active] {
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
+}
+
+.am-row[data-selected] {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-primary) 12%,
+        transparent
+    );
+}
+
+.am-row:hover:not([data-active]) {
+    background-color: var(--avl-color-container-low);
+}
+
+/* The sender button stretches over the whole row, so clicking anywhere
+   opens the message. The checkbox and star sit on top of it. */
+.am-row-open {
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+}
+
+.am-row-open::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.am-row-open:focus-visible {
+    outline: none;
+}
+
+.am-row-open:focus-visible::after {
+    outline: 2px solid var(--avl-color-primary);
+    outline-offset: -2px;
+}
+
+.am-row .avl-checkbox,
+.am-row .am-star {
+    position: relative;
+    z-index: 1;
+}
+
+.am-row[data-unread] .am-row-open,
+.am-row[data-unread] .am-subject,
+.am-row[data-unread] .am-time {
+    font-weight: 700;
+}
+
+.am-row .avl-list-item-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.am-snippet {
+    opacity: 0.75;
+}
+
+.am-draft {
+    color: var(--avl-color-error);
+}
+
+.am-row-end {
+    display: flex;
+    align-items: center;
+}
+
+.am-row-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--avl-spacing-x1);
+    white-space: nowrap;
+}
+
+.am-row-meta .avl-icon {
+    font-size: var(--avl-font-size-body);
+}
+
+.am-app[data-density='compact'] .am-row {
+    min-height: 0;
+    padding-block: var(--avl-spacing-x1);
+}
+
+.am-app[data-density='compact'] .am-row-avatar {
+    display: none;
+}
+
+/* The open message: a raised surface the row grows into */
+.am-message {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    border-radius: var(--avl-radius-large);
+    background-color: var(--avl-color-container);
+    color: var(--avl-color-on-container);
+    overflow: hidden;
+}
+
+.am-message-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x4);
+    border-bottom: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.am-message-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x5);
+    padding: var(--avl-spacing-x6) var(--avl-spacing-x8)
+        calc(var(--avl-spacing-x1) * 24);
+    overflow-y: auto;
+}
+
+.am-message-subject:focus {
+    /* Focused from code when the message opens, not something to point out */
+    outline: none;
+}
+
+.am-sender {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+}
+
+.am-sender-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.am-message-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x3);
+    max-width: 70ch;
+    white-space: pre-line;
+}
+
+.am-attachments {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+}
+
+.am-attachment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--avl-spacing-x3);
+}
+
+.am-attachment {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--avl-spacing-x2) var(--avl-spacing-x2) var(--avl-spacing-x2)
+        var(--avl-spacing-x4);
+}
+
+.am-attachment-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.am-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.am-reply {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x3);
+}
+
+.am-reply-box .avl-input {
+    width: 100%;
+}
+
+.am-menu-row {
+    width: 100%;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+}
+
+.am-menu-row:hover {
+    background-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* Compose */
+.am-compose-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x3);
+}
+
+.am-compose-form .avl-input {
+    width: 100%;
+}
+
+.am-compose-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.am-recipients {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.am-compose-form .am-recipient-input {
+    flex: 1;
+    width: auto;
+    min-width: calc(var(--avl-spacing-x1) * 40);
+}
+
+.am-format-bar {
+    align-self: flex-start;
+}
+
+.am-compose-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+/* Settings */
+.am-settings {
+    width: calc(var(--avl-spacing-x1) * 140);
+    max-width: calc(100vw - var(--avl-spacing-x8));
+    max-height: calc(100dvh - var(--avl-spacing-x8));
+    overflow-y: auto;
+}
+
+.am-settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x5);
+    padding-top: var(--avl-spacing-x5);
+}
+
+.am-settings-panel .avl-input {
+    width: 100%;
+}
+
+.am-fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.am-fieldset legend {
+    padding: 0;
+    margin-bottom: var(--avl-spacing-x2);
+}
+
+.am-radio-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--avl-spacing-x6);
+}
+
+.am-radio {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    cursor: pointer;
+}
+
+.am-switch-row,
+.am-setting {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--avl-spacing-x3);
+}
+
+.am-switch-row {
+    cursor: pointer;
+}

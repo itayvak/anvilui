@@ -1,15 +1,31 @@
 {
     "name": "anvilui",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Anvil UI",
     "author": "itayvak",
+    "license": "MIT",
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./styles.css": "./dist/index.css"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "tsup && tsc -p tsconfig.build.json",
-        "dev": "tsup --watch"
+        "dev": "tsup --watch",
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "@base-ui/react": "^1.8.0",

@@ -1,0 +1,94 @@
+.avl-divider {
+    flex-shrink: 0;
+    margin: 0;
+    border: none;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-outline);
+}
+
+.avl-divider[data-orientation='horizontal'] {
+    height: var(--avl-outline-size);
+}
+
+.avl-divider[data-orientation='vertical'] {
+    align-self: stretch;
+    width: var(--avl-outline-size);
+}
+
+/* With a label: the root holds the text, and the two lines are drawn on
+   either side of it */
+.avl-divider.avl-divider-labeled {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.avl-divider-labeled[data-orientation='vertical'] {
+    flex-direction: column;
+}
+
+.avl-divider-labeled::before,
+.avl-divider-labeled::after {
+    content: '';
+    flex: 1;
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-outline);
+}
+
+.avl-divider-labeled[data-orientation='horizontal']::before,
+.avl-divider-labeled[data-orientation='horizontal']::after {
+    height: var(--avl-outline-size);
+}
+
+.avl-divider-labeled[data-orientation='vertical']::before,
+.avl-divider-labeled[data-orientation='vertical']::after {
+    width: var(--avl-outline-size);
+}
+
+.avl-divider-label {
+    color: var(--avl-color-on-container-low);
+    font-size: var(--avl-font-size-label-small);
+    white-space: nowrap;
+}
+
+/* Squiggly: each line is a SquigglyWave in a 12px-thick box */
+.avl-divider.avl-divider-squiggly {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.avl-divider-squiggly[data-orientation='vertical'] {
+    flex-direction: column;
+}
+
+.avl-divider-squiggly::before,
+.avl-divider-squiggly::after {
+    content: none;
+}
+
+.avl-divider-wave {
+    position: relative;
+    flex: 1;
+}
+
+.avl-divider-squiggly[data-orientation='horizontal'] .avl-divider-wave {
+    height: var(--avl-spacing-x3);
+}
+
+.avl-divider-squiggly[data-orientation='vertical'] .avl-divider-wave {
+    width: var(--avl-spacing-x3);
+}
+
+.avl-divider-wave .avl-squiggly-wave path {
+    stroke: var(--avl-color-outline);
+    stroke-width: var(--avl-outline-size);
+}
