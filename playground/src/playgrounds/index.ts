@@ -8,6 +8,7 @@ import { SplitButtonPlayground } from './SplitButtonPlayground'
 import { CardPlayground } from './CardPlayground'
 import { ChipPlayground } from './ChipPlayground'
 import { CheckboxPlayground } from './CheckboxPlayground'
+import { ConfettiPlayground } from './ConfettiPlayground'
 import { DialogPlayground } from './DialogPlayground'
 import { DividerPlayground } from './DividerPlayground'
 import { FABPlayground } from './FABPlayground'
@@ -45,6 +46,7 @@ export const playgrounds: Record<string, ComponentType> = {
     Card: CardPlayground,
     Checkbox: CheckboxPlayground,
     Chip: ChipPlayground,
+    Confetti: ConfettiPlayground,
     Dialog: DialogPlayground,
     Divider: DividerPlayground,
     FAB: FABPlayground,

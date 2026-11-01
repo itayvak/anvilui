@@ -75,6 +75,12 @@ export type {
     DialogCloseProps,
 } from './components/Dialog/Dialog'
 
+export { useConfetti } from './components/Confetti/Confetti'
+export type {
+    ConfettiOptions,
+    ConfettiOrigin,
+} from './components/Confetti/Confetti'
+
 export { Divider } from './components/Divider/Divider'
 export type { DividerProps } from './components/Divider/Divider'
 
