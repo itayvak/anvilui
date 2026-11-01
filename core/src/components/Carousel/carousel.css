@@ -1,0 +1,142 @@
+.avl-carousel {
+    display: flex;
+    gap: var(--avl-spacing-x2);
+    padding-inline: var(--avl-spacing-x4);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* A thin scrollbar: it shows the row scrolls, and a plain mouse can
+       drag it (a vertical wheel doesn't scroll sideways) */
+    padding-block-end: var(--avl-spacing-x2);
+    scrollbar-width: thin;
+    scrollbar-color: var(--avl-color-outline) transparent;
+}
+
+.avl-carousel-item {
+    flex: 0 0 auto;
+    width: calc(var(--avl-spacing-x20) * 3);
+    clip-path: inset(0 round var(--avl-radius-large));
+}
+
+.avl-carousel-item-content {
+    height: 100%;
+}
+
+/* The edge effect, driven by the scroll itself so it never lags behind it.
+   An item entering or leaving at an edge is masked with rounded corners
+   instead of being cut off flat, and its content slides by half the masked
+   width to stay centered in the part you can see. Browsers without
+   scroll-driven animations (Firefox, for now) cut items off flat. */
+@supports (animation-timeline: view()) {
+    .avl-carousel-item {
+        /* Tracks this item crossing the carousel's edges. Named, so the
+           content inside follows the item, not its own shifted box. No
+           fill: each animation applies only inside its own range, and
+           between them the item is whole. */
+        view-timeline: --avl-carousel-item inline;
+        animation:
+            avl-carousel-mask-end linear,
+            avl-carousel-mask-start linear;
+        animation-timeline: --avl-carousel-item, --avl-carousel-item;
+        animation-range: entry, exit;
+    }
+
+    .avl-carousel-item-content {
+        animation:
+            avl-carousel-slide-end linear,
+            avl-carousel-slide-start linear;
+        animation-timeline: --avl-carousel-item, --avl-carousel-item;
+        animation-range: entry, exit;
+    }
+
+    /* Right to left, items enter on the left and leave on the right */
+    .avl-carousel-item:dir(rtl) {
+        animation-name: avl-carousel-mask-start-rtl, avl-carousel-mask-end-rtl;
+    }
+
+    .avl-carousel-item:dir(rtl) .avl-carousel-item-content {
+        animation-name:
+            avl-carousel-slide-start-rtl, avl-carousel-slide-end-rtl;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .avl-carousel-item .avl-carousel-item-content,
+        .avl-carousel-item:dir(rtl) .avl-carousel-item-content {
+            animation: none;
+        }
+    }
+}
+
+/* Entering at the right: masked from the right, content nudged left */
+@keyframes avl-carousel-mask-end {
+    from {
+        clip-path: inset(0 100% 0 0 round var(--avl-radius-large));
+    }
+    to {
+        clip-path: inset(0 0 0 0 round var(--avl-radius-large));
+    }
+}
+
+@keyframes avl-carousel-slide-end {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+/* Leaving at the left: masked from the left, content nudged right */
+@keyframes avl-carousel-mask-start {
+    from {
+        clip-path: inset(0 0 0 0 round var(--avl-radius-large));
+    }
+    to {
+        clip-path: inset(0 0 0 100% round var(--avl-radius-large));
+    }
+}
+
+@keyframes avl-carousel-slide-start {
+    from {
+        transform: none;
+    }
+    to {
+        transform: translateX(50%);
+    }
+}
+
+/* The same, mirrored for right to left */
+@keyframes avl-carousel-mask-start-rtl {
+    from {
+        clip-path: inset(0 0 0 100% round var(--avl-radius-large));
+    }
+    to {
+        clip-path: inset(0 0 0 0 round var(--avl-radius-large));
+    }
+}
+
+@keyframes avl-carousel-slide-start-rtl {
+    from {
+        transform: translateX(50%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes avl-carousel-mask-end-rtl {
+    from {
+        clip-path: inset(0 0 0 0 round var(--avl-radius-large));
+    }
+    to {
+        clip-path: inset(0 100% 0 0 round var(--avl-radius-large));
+    }
+}
+
+@keyframes avl-carousel-slide-end-rtl {
+    from {
+        transform: none;
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}

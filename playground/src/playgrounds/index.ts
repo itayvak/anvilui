@@ -7,6 +7,7 @@ import { BottomSheetPlayground } from './BottomSheetPlayground'
 import { ButtonPlayground } from './ButtonPlayground'
 import { SplitButtonPlayground } from './SplitButtonPlayground'
 import { CardPlayground } from './CardPlayground'
+import { CarouselPlayground } from './CarouselPlayground'
 import { ChipPlayground } from './ChipPlayground'
 import { CheckboxPlayground } from './CheckboxPlayground'
 import { ConfettiPlayground } from './ConfettiPlayground'
@@ -47,6 +48,7 @@ export const playgrounds: Record<string, ComponentType> = {
     BottomSheet: BottomSheetPlayground,
     Button: ButtonPlayground,
     Card: CardPlayground,
+    Carousel: CarouselPlayground,
     Checkbox: CheckboxPlayground,
     Chip: ChipPlayground,
     Confetti: ConfettiPlayground,

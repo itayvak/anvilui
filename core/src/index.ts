@@ -49,6 +49,12 @@ export type {
     CardActionsProps,
 } from './components/Card/Card'
 
+export { Carousel, CarouselItem } from './components/Carousel/Carousel'
+export type {
+    CarouselProps,
+    CarouselItemProps,
+} from './components/Carousel/Carousel'
+
 export { Chip, FilterChip, InputChip } from './components/Chip/Chip'
 export type {
     ChipProps,
