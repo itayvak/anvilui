@@ -156,6 +156,38 @@
     font-size: 1.25em;
 }
 
+/* Items take the softer container shade of their color, so the FAB stays
+   the strongest thing. `container` has no softer shade, so it uses itself. */
+.avl-fab-menu-item[data-color='primary'] {
+    --avl-nested-color-main: var(--avl-color-primary-container);
+    --avl-nested-color-on-main: var(--avl-color-on-primary-container);
+}
+
+.avl-fab-menu-item[data-color='tonal'] {
+    --avl-nested-color-main: var(--avl-color-tonal-container);
+    --avl-nested-color-on-main: var(--avl-color-on-tonal-container);
+}
+
+.avl-fab-menu-item[data-color='success'] {
+    --avl-nested-color-main: var(--avl-color-success-container);
+    --avl-nested-color-on-main: var(--avl-color-on-success-container);
+}
+
+.avl-fab-menu-item[data-color='warning'] {
+    --avl-nested-color-main: var(--avl-color-warning-container);
+    --avl-nested-color-on-main: var(--avl-color-on-warning-container);
+}
+
+.avl-fab-menu-item[data-color='error'] {
+    --avl-nested-color-main: var(--avl-color-error-container);
+    --avl-nested-color-on-main: var(--avl-color-on-error-container);
+}
+
+.avl-fab-menu-item[data-color='container'] {
+    --avl-nested-color-main: var(--avl-color-container);
+    --avl-nested-color-on-main: var(--avl-color-on-container);
+}
+
 .avl-fab-menu-item[data-highlighted] {
     background-color: color-mix(
         in srgb,

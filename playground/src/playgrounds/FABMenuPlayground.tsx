@@ -108,7 +108,6 @@ export function FABMenuPlayground() {
                     >
                         <FABMenuItem
                             icon="celebration"
-                            color="tonal"
                             onClick={(e) => {
                                 setPicked('Celebrate')
                                 fire(e.currentTarget)

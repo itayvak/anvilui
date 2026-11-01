@@ -13,7 +13,7 @@ import { cx, withClass } from '../../utils'
 import '../FAB/fab.css'
 import './fab-menu.css'
 
-// The menu's color, so items match the FAB unless they pick their own
+// The FAB's color, so the items can take its softer container shade
 const FABMenuColorContext = createContext<ComponentColor>('primary')
 
 export type FABMenuProps = Omit<
@@ -26,7 +26,10 @@ export type FABMenuProps = Omit<
     closeIcon?: MaterialSymbol
     /** Screen reader name for the FAB, which has no visible text. */
     'aria-label': string
-    /** Theme color role for the FAB and, by default, its items. @default 'primary' */
+    /**
+     * Theme color role for the FAB. Its items use the same role's container
+     * shade (`primary-container` for `primary`). @default 'primary'
+     */
     color?: ComponentColor
     /** How the FAB's color is applied. @default 'filled' */
     fillType?: ComponentFillType
@@ -115,7 +118,10 @@ export type FABMenuItemProps = Omit<BaseMenu.Item.Props, 'children'> & {
     icon: MaterialSymbol
     /** The visible label. */
     children: React.ReactNode
-    /** Theme color role. @default the FABMenu's color */
+    /**
+     * Theme color role, shown in its softer container shade.
+     * @default the FABMenu's color
+     */
     color?: ComponentColor
 }
 
@@ -131,13 +137,9 @@ export function FABMenuItem({
     return (
         <BaseMenu.Item
             {...props}
-            className={withClass(
-                cx(
-                    'avl-fab-menu-item',
-                    colorClass(color ?? menuColor, 'filled')
-                ),
-                className
-            )}
+            // fab-menu.css maps this to the role's container shade
+            data-color={color ?? menuColor}
+            className={withClass('avl-fab-menu-item', className)}
         >
             <Icon name={icon} />
             {children}
