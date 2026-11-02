@@ -103,8 +103,8 @@
 
 .avl-menu-item[data-highlighted],
 .avl-menu-item[data-popup-open] {
-    background-color: var(--avl-color-secondary);
-    color: var(--avl-color-on-secondary);
+    background-color: var(--avl-color-tonal);
+    color: var(--avl-color-on-tonal);
 }
 
 .avl-menu-item[data-disabled] {

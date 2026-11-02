@@ -18,7 +18,7 @@ function actionColor(
     color: ComponentColor,
     fillType: ComponentFillType
 ): ComponentColor {
-    const neutral = color === 'container' || color === 'secondary'
+    const neutral = color === 'container' || color === 'tonal'
     return fillType === 'filled' && !neutral ? 'container' : 'primary'
 }
 

@@ -77,3 +77,16 @@
     gap: var(--avl-spacing-x2);
     margin-top: var(--avl-spacing-x2);
 }
+
+/* Morph (container transform). morph.ts sets data-morphing on the popup
+   while the browser animates it out of or into its trigger: skip its own
+   grow-in so it's fully there for the "after" snapshot. Its fade-out still
+   applies, so on close it's already gone when the trigger is captured. */
+.avl-dialog-popup[data-morphing] {
+    transition: none;
+}
+
+.avl-dialog-popup[data-morphing][data-starting-style] {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}

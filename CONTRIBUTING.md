@@ -32,7 +32,7 @@ The playground imports `anvilui` straight from `core/src`, so changes show up in
 
 If [Base UI](https://base-ui.com) has the component (button, checkbox, menu, dialog, tabs, ...), wrap it. Don't hand-roll keyboard handling, focus management or ARIA. Import from the subpath: `@base-ui/react/checkbox`, not `@base-ui/react`.
 
-Only use plain HTML when there's no behavior to get right (`Card` without `clickable`, `ButtonGroup`, `Typography`). For a custom element that needs Base UI's `render` prop, use `useRender` + `mergeProps` ([NavigationBarItem](core/src/components/NavigationBar/NavigationBar.tsx) does this).
+Only use plain HTML when there's no behavior to get right (`Card` without `clickable`, `SplitButton`, `Typography`). For a custom element that needs Base UI's `render` prop, use `useRender` + `mergeProps` ([NavigationBarItem](core/src/components/NavigationBar/NavigationBar.tsx) does this).
 
 ### 2. Props
 
@@ -40,7 +40,7 @@ Only use plain HTML when there's no behavior to get right (`Card` without `click
     ```ts
     export type SwitchProps = BaseSwitch.Root.Props
     export type ButtonProps = BaseButtonProps & ColorProps & { size?: ... }
-    export type ButtonGroupProps = React.ComponentProps<'div'>
+    export type SplitButtonProps = React.ComponentProps<'div'>
     ```
     Everything you don't handle gets passed through with `{...props}`.
 - **Reuse the shared prop names.** Don't invent synonyms:
@@ -93,7 +93,7 @@ const avl = useContext(AnvilContext)
 
 ### Class names
 
-- Prefix everything with `avl-`. Root class: `avl-<component-kebab>` (`avl-radio-button-group`).
+- Prefix everything with `avl-`. Root class: `avl-<component-kebab>` (`avl-toggle-group`).
 - Parts: `avl-<component>-<part>` (`avl-switch-thumb`, `avl-navigation-bar-item-indicator`).
 - Variants: `avl-<component>-size-<size>`. Colors come from `colorClass(color, fillType)`.
 - Use plain single classes. No IDs, no element selectors, no `!important` (the only exception is the reduced-motion override in `global.css`).
@@ -184,7 +184,3 @@ Hover and press states mix the two colors rather than introducing new ones:
 - every `color` × `fillType` and every `size` the component supports
 - disabled, plus controlled and uncontrolled state
 - long text and icons, if the component takes them
-
-## Breaking changes
-
-Renaming or removing a prop, changing a default, or changing a CSS variable name all break consumers. Avoid them when you can.

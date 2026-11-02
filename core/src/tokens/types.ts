@@ -18,6 +18,11 @@ export type Ease = {
     in: string
     /** No overshoot: things that slide across or in from the screen edge. */
     smooth: string
+    /**
+     * A spring that overshoots and wobbles before settling: playful moments
+     * like the slider's squish. Pair with a longer duration.
+     */
+    bounce: string
 }
 
 export type EaseLength = {

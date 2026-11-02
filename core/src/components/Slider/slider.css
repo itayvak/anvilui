@@ -42,7 +42,7 @@
    short of the handle; its outline paints the unselected part, starting past
    the handle, and the rail clips the outline to the track. */
 .avl-slider-indicator {
-    outline: 100vw solid var(--avl-color-secondary-container);
+    outline: 100vw solid var(--avl-color-tonal-container);
     outline-offset: var(--avl-slider-gap);
 }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Checkbox, RadioButton, RadioButtonGroup, Typography } from 'anvilui'
-import type { RadioButtonGroupProps } from 'anvilui'
+import { Checkbox, ToggleGroup, ToggleGroupItem, Typography } from 'anvilui'
+import type { ToggleGroupProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
 import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
@@ -8,32 +8,33 @@ const sizes = ['small', 'normal', 'big'] as const
 
 const options = ['Day', 'Week', 'Month', 'Year', 'Decade', 'Century']
 
-export function RadioButtonGroupPlayground() {
+export function ToggleGroupPlayground() {
     const [size, setSize] =
-        useState<NonNullable<RadioButtonGroupProps['size']>>('normal')
+        useState<NonNullable<ToggleGroupProps['size']>>('normal')
     const [color, setColor] =
-        useState<NonNullable<RadioButtonGroupProps['color']>>('primary')
+        useState<NonNullable<ToggleGroupProps['color']>>('primary')
     const [fillType, setFillType] =
-        useState<NonNullable<RadioButtonGroupProps['fillType']>>('filled')
+        useState<NonNullable<ToggleGroupProps['fillType']>>('filled')
     const [count, setCount] = useState(3)
     const [disabled, setDisabled] = useState(false)
     const [icons, setIcons] = useState(false)
     const [value, setValue] = useState('Week')
+    const [picked, setPicked] = useState<string[]>(['Day', 'Month'])
 
     const shown = options.slice(0, count)
 
     const buttons = shown.map((option) => (
-        <RadioButton
+        <ToggleGroupItem
             key={option}
             value={option}
             startIcon={icons ? 'calendar_today' : undefined}
         >
             {option}
-        </RadioButton>
+        </ToggleGroupItem>
     ))
 
     return (
-        <Section title="Radio button group">
+        <Section title="Toggle group">
             <Row>
                 <SelectControl
                     label="size"
@@ -71,7 +72,7 @@ export function RadioButtonGroupPlayground() {
                 </Labeled>
             </Row>
             <Row>
-                <RadioButtonGroup
+                <ToggleGroup
                     aria-label="Uncontrolled"
                     defaultValue="Day"
                     disabled={disabled}
@@ -80,8 +81,8 @@ export function RadioButtonGroupPlayground() {
                     fillType={fillType}
                 >
                     {buttons}
-                </RadioButtonGroup>
-                <RadioButtonGroup
+                </ToggleGroup>
+                <ToggleGroup
                     aria-label="Controlled"
                     value={value}
                     onValueChange={setValue}
@@ -91,8 +92,36 @@ export function RadioButtonGroupPlayground() {
                     fillType={fillType}
                 >
                     {buttons}
-                </RadioButtonGroup>
+                </ToggleGroup>
                 <Typography type="caption">selected: {value}</Typography>
+            </Row>
+            <Row>
+                <ToggleGroup
+                    multiple
+                    aria-label="Multiple, uncontrolled"
+                    defaultValue={['Week']}
+                    disabled={disabled}
+                    size={size}
+                    color={color}
+                    fillType={fillType}
+                >
+                    {buttons}
+                </ToggleGroup>
+                <ToggleGroup
+                    multiple
+                    aria-label="Multiple, controlled"
+                    value={picked}
+                    onValueChange={setPicked}
+                    disabled={disabled}
+                    size={size}
+                    color={color}
+                    fillType={fillType}
+                >
+                    {buttons}
+                </ToggleGroup>
+                <Typography type="caption">
+                    selected: {picked.join(', ') || 'none'}
+                </Typography>
             </Row>
         </Section>
     )

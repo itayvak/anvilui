@@ -1,0 +1,28 @@
+/* A fixed layer per burst, inside the root so the theme's colors apply */
+.avl-confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.avl-confetti-piece {
+    position: absolute;
+    width: var(--avl-spacing-x2);
+    height: var(--avl-spacing-x3);
+    margin: calc(var(--avl-spacing-x3) / -2) 0 0
+        calc(var(--avl-spacing-x2) / -2);
+    border-radius: 1px;
+    will-change: transform, opacity;
+}
+
+.avl-confetti-piece[data-shape='circle'] {
+    height: var(--avl-spacing-x2);
+    border-radius: var(--avl-radius-full);
+}
+
+.avl-confetti-piece[data-shape='strip'] {
+    width: var(--avl-spacing-x1);
+    height: var(--avl-spacing-x4);
+}

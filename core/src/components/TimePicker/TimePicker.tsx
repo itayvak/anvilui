@@ -6,10 +6,7 @@ import {
     PopoverTrigger,
     type PopoverProps,
 } from '../Popover/Popover'
-import {
-    RadioButton,
-    RadioButtonGroup,
-} from '../RadioButtonGroup/RadioButtonGroup'
+import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup/ToggleGroup'
 import { cx } from '../../utils'
 import { parseTime, type Time } from '../../datetime'
 import '../Input/input.css'
@@ -246,7 +243,7 @@ function TimePanel(props: {
                     </>
                 )}
                 {cycle === 12 && (
-                    <RadioButtonGroup
+                    <ToggleGroup
                         size="small"
                         fillType="outlined"
                         aria-label="AM or PM"
@@ -261,9 +258,9 @@ function TimePanel(props: {
                             })
                         }
                     >
-                        <RadioButton value="am">AM</RadioButton>
-                        <RadioButton value="pm">PM</RadioButton>
-                    </RadioButtonGroup>
+                        <ToggleGroupItem value="am">AM</ToggleGroupItem>
+                        <ToggleGroupItem value="pm">PM</ToggleGroupItem>
+                    </ToggleGroup>
                 )}
             </div>
             {type === 'dial' && (

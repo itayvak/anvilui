@@ -5,7 +5,7 @@
  */
 export type ComponentColor =
     | 'primary'
-    | 'secondary'
+    | 'tonal'
     | 'success'
     | 'warning'
     | 'error'

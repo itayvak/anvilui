@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import {
     Button,
+    Card,
+    CardContent,
+    CardTitle,
     Dialog,
     DialogActions,
     DialogClose,
@@ -8,6 +11,7 @@ import {
     DialogPopup,
     DialogTitle,
     DialogTrigger,
+    FAB,
     Input,
     Typography,
     useSnackbar,
@@ -123,6 +127,77 @@ export function DialogPlayground() {
                     </Dialog>
                 </Row>
             </Section>
+            <Section title="Morph">
+                <Row>
+                    {albums.map((album) => (
+                        <Dialog morph key={album.title}>
+                            <DialogTrigger
+                                render={
+                                    <Card
+                                        clickable
+                                        style={{
+                                            width: 200,
+                                            textAlign: 'start',
+                                        }}
+                                    />
+                                }
+                            >
+                                <CardTitle>{album.title}</CardTitle>
+                                <CardContent>
+                                    <Typography type="caption">
+                                        {album.artist}
+                                    </Typography>
+                                </CardContent>
+                            </DialogTrigger>
+                            <DialogPopup>
+                                <DialogTitle>{album.title}</DialogTitle>
+                                <DialogDescription>
+                                    {album.artist}. {album.notes}
+                                </DialogDescription>
+                                <DialogActions>
+                                    <DialogClose
+                                        render={<Button fillType="text" />}
+                                    >
+                                        Close
+                                    </DialogClose>
+                                    <DialogClose render={<Button />}>
+                                        Play
+                                    </DialogClose>
+                                </DialogActions>
+                            </DialogPopup>
+                        </Dialog>
+                    ))}
+                </Row>
+            </Section>
+            <Section title="Morph from a FAB">
+                <Row>
+                    <Dialog morph>
+                        <DialogTrigger
+                            render={<FAB icon="edit" label="Compose" />}
+                        />
+                        <DialogPopup>
+                            <DialogTitle>New message</DialogTitle>
+                            <Input label="To" />
+                            <Input label="Subject" />
+                            <DialogActions>
+                                <DialogClose
+                                    render={<Button fillType="text" />}
+                                >
+                                    Discard
+                                </DialogClose>
+                                <DialogClose
+                                    render={<Button />}
+                                    onClick={() =>
+                                        snackbar.show({ message: 'Sent' })
+                                    }
+                                >
+                                    Send
+                                </DialogClose>
+                            </DialogActions>
+                        </DialogPopup>
+                    </Dialog>
+                </Row>
+            </Section>
             <Section title="Controlled">
                 <Row>
                     <Button onClick={() => setOpen(true)}>
@@ -147,3 +222,21 @@ export function DialogPlayground() {
         </>
     )
 }
+
+const albums = [
+    {
+        title: 'Night Drive',
+        artist: 'The Lamplighters',
+        notes: 'Ten tracks of slow synths, recorded in a single week on the coast.',
+    },
+    {
+        title: 'Paper Boats',
+        artist: 'Mira Okafor',
+        notes: 'A quiet folk record about moving cities, with strings on every song.',
+    },
+    {
+        title: 'Static Bloom',
+        artist: 'Hollow Signal',
+        notes: 'Loud, bright guitar pop that never sits still for long.',
+    },
+]

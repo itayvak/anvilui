@@ -18,3 +18,16 @@
     margin: 0;
     font-size: var(--avl-font-size-body);
 }
+
+/* Morph: morph.ts sets data-morphing while the browser grows the popover
+   out of its trigger. Skip Menu's grow-in so it's fully there for the
+   "after" snapshot; its fade-out still applies, instantly, so on close it's
+   gone when the trigger is captured. */
+.avl-popover-popup[data-morphing] {
+    transition: none;
+}
+
+.avl-popover-popup[data-morphing][data-starting-style] {
+    opacity: 1;
+    transform: none;
+}

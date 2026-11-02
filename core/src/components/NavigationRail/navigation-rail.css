@@ -95,7 +95,7 @@
 
 .avl-navigation-rail-item[aria-current='page']
     .avl-navigation-rail-item-indicator {
-    background-color: var(--avl-color-secondary-container);
+    background-color: var(--avl-color-tonal-container);
 }
 
 .avl-navigation-rail-item .avl-icon {
@@ -113,7 +113,7 @@
 
 /* Filled icon for the current page, outlined for the rest */
 .avl-navigation-rail-item[aria-current='page'] .avl-icon {
-    color: var(--avl-color-on-secondary-container);
+    color: var(--avl-color-on-tonal-container);
     font-variation-settings:
         'FILL' 1,
         'wght' 400,
@@ -160,5 +160,41 @@
 .avl-navigation-rail[data-expanded]
     .avl-navigation-rail-item[aria-current='page']
     .avl-navigation-rail-item-label {
-    color: var(--avl-color-on-secondary-container);
+    color: var(--avl-color-on-tonal-container);
+}
+
+/* Expanded: after the label. Collapsed there's no room, so it's a badge on
+   the icon's top-end corner, colored like Badge. */
+.avl-navigation-rail-item-end {
+    position: absolute;
+    top: var(--avl-spacing-x1);
+    left: calc(var(--avl-spacing-x7) + var(--avl-spacing-x1));
+    min-width: var(--avl-spacing-x4);
+    height: var(--avl-spacing-x4);
+    box-sizing: border-box;
+    padding: 0 var(--avl-spacing-x1);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-error);
+    color: var(--avl-color-on-error);
+    font-size: var(--avl-font-size-label-small);
+    font-weight: var(--avl-font-weight-medium);
+    line-height: var(--avl-spacing-x4);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.avl-navigation-rail[data-expanded] .avl-navigation-rail-item-end {
+    top: 50%;
+    right: var(--avl-spacing-x4);
+    left: auto;
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+    transform: translateY(-50%);
+}
+
+.avl-navigation-rail[data-expanded]
+    .avl-navigation-rail-item:has(.avl-navigation-rail-item-end)
+    .avl-navigation-rail-item-label {
+    max-width: calc(100% - var(--avl-spacing-x13) - var(--avl-spacing-x12));
 }

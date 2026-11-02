@@ -68,7 +68,27 @@ export function ProgressPlayground() {
                         aria-label="Loading"
                         value={null}
                     />
-                    <Progress type="circular" label="Syncing" value={null} />
+                </Row>
+            </Section>
+            <Section title="Inline">
+                <Row>
+                    <p>
+                        <Progress
+                            type="inline"
+                            aria-label="Saving"
+                            value={null}
+                        />{' '}
+                        Saving your changes
+                    </p>
+                </Row>
+                <Row>
+                    <p>
+                        <Progress
+                            type="inline"
+                            label="Syncing 3 files"
+                            value={value}
+                        />
+                    </p>
                 </Row>
             </Section>
         </>

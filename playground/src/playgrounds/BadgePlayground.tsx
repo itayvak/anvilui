@@ -48,7 +48,7 @@ export function BadgePlayground() {
                         <Avatar name="Ada Lovelace" />
                     </Badge>
                     <Badge color="success">
-                        <Avatar name="Grace Hopper" color="secondary" />
+                        <Avatar name="Grace Hopper" color="tonal" />
                     </Badge>
                 </Row>
             </Section>

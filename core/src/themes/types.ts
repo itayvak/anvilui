@@ -7,8 +7,17 @@ export type Theme = {
     onBackgroundMuted: string
     container: string
     onContainer: string
+    /**
+     * One step from the background toward `container`: navigation, menus,
+     * dialogs and sheets.
+     */
     surface: string
+    /** Text and icons on `surface`. */
     onSurface: string
+    /** @deprecated Renamed to `surface`. Still read if that's missing. */
+    surfaceVariant?: string
+    /** @deprecated Renamed to `onSurface`. Still read if that's missing. */
+    onSurfaceVariant?: string
     /** Borders of inputs and outlined controls. */
     outline: string
     /** Thin lines between content: dividers, table lines, tab underlines. */
@@ -17,10 +26,10 @@ export type Theme = {
     onPrimary: string
     primaryContainer: string
     onPrimaryContainer: string
-    secondary: string
-    onSecondary: string
-    secondaryContainer: string
-    onSecondaryContainer: string
+    tonal: string
+    onTonal: string
+    tonalContainer: string
+    onTonalContainer: string
     error: string
     onError: string
     errorContainer: string

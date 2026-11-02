@@ -6,7 +6,7 @@ import { Row, Section, SelectControl, Labeled } from '../ui'
 const sizes = ['small', 'normal', 'big'] as const
 const colors = [
     'primary',
-    'secondary',
+    'tonal',
     'success',
     'warning',
     'error',
@@ -25,8 +25,9 @@ export function FABPlayground() {
     const [color, setColor] = useState<(typeof colors)[number]>('primary')
     const [fill, setFill] = useState<(typeof fills)[number]>('filled')
     const [disabled, setDisabled] = useState(false)
+    const [sticky, setSticky] = useState(true)
 
-    const shared = { size, color, fillType: fill, disabled }
+    const shared = { size, color, fillType: fill, disabled, sticky }
 
     return (
         <>
@@ -55,6 +56,9 @@ export function FABPlayground() {
                             checked={disabled}
                             onCheckedChange={setDisabled}
                         />
+                    </Labeled>
+                    <Labeled label="sticky">
+                        <Switch checked={sticky} onCheckedChange={setSticky} />
                     </Labeled>
                 </Row>
                 <Row>

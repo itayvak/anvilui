@@ -2,7 +2,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    /* also read by ButtonGroup to cap its outer radius */
+    /* also read by SplitButton to cap its outer radius */
     --avl-button-height: var(--avl-spacing-x10);
     width: var(--avl-button-height);
     height: var(--avl-button-height);

@@ -44,7 +44,7 @@
 }
 
 .avl-navigation-list-item[aria-current='page'] {
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
     font-weight: var(--avl-font-weight-semibold);
 }

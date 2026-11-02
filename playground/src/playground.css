@@ -3,13 +3,39 @@ body {
 }
 
 .avl-root {
-    min-height: 100vh;
+    /* dvh, not vh: on phones vh is the height with the browser's toolbar
+       hidden, taller than what's visible. As a min-height it also beat the
+       demos' height below, pushing their bottom (and the FAB) off screen. */
+    min-height: 100dvh;
 }
 
 .pg-header {
     position: sticky;
     top: 0;
     z-index: 1;
+}
+
+.pg-nav {
+    display: flex;
+    gap: var(--avl-spacing-x4);
+}
+
+.pg-nav a {
+    color: inherit;
+    font-family: var(--avl-font-main);
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.pg-nav a[aria-current='page'] {
+    font-weight: 600;
+    opacity: 1;
+}
+
+.pg-header label {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
 }
 
 .pg-layout {
@@ -87,4 +113,160 @@ body {
 
 .pg-matrix td {
     padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+}
+
+/* Clips a component that fills its parent's height, like the navigation rail */
+.pg-frame {
+    display: flex;
+    width: fit-content;
+    height: calc(var(--avl-spacing-x1) * 80);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    overflow: hidden;
+}
+
+.pg-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--avl-spacing-x3);
+    margin-top: var(--avl-spacing-x1);
+}
+
+.pg-swatch {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+.pg-swatch-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--avl-spacing-x1) * 16);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    font-size: var(--avl-font-size-h6);
+}
+
+.pg-swatch-value {
+    font-family: var(--avl-font-mono);
+    text-transform: uppercase;
+}
+
+select {
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-background);
+    font-size: var(--avl-font-size-body);
+}
+
+/* A demo app fills the screen under the header and scrolls inside itself */
+.avl-root:has(.pg-demo) {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+}
+
+.pg-demo {
+    flex: 1;
+    min-height: 0;
+}
+
+.pg-header-end {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+}
+
+/* Token editor: fixed on the right, with the page shifted over so nothing
+   is hidden behind it */
+.avl-root:has(.pg-tokens-panel) {
+    padding-right: 340px;
+}
+
+.pg-tokens-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    width: 340px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    padding: var(--avl-spacing-x4);
+    background-color: var(--avl-color-container);
+    color: var(--avl-color-on-container);
+    border-left: 1px solid var(--avl-color-outline);
+}
+
+.pg-tokens-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pg-tokens-actions {
+    display: flex;
+    gap: var(--avl-spacing-x2);
+    margin: var(--avl-spacing-x2) 0 var(--avl-spacing-x4);
+}
+
+.pg-tokens-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x3);
+    margin: 0 0 var(--avl-spacing-x4);
+    padding: var(--avl-spacing-x3);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+}
+
+.pg-token {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x1);
+}
+
+/* Marks tokens that differ from the library defaults */
+.pg-token[data-changed] > :first-child {
+    color: var(--avl-color-primary);
+    font-weight: 600;
+}
+
+.pg-token-number {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x2);
+}
+
+.pg-token-number input[type='range'] {
+    flex: 1;
+    min-width: 0;
+}
+
+.pg-token-number input[type='number'] {
+    width: 64px;
+}
+
+.pg-token input[type='text'],
+.pg-token input[type='number'] {
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
+    border: 1px solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-background);
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-mono);
+    font-size: var(--avl-font-size-caption);
+}
+
+@media (max-width: 720px) {
+    .avl-root:has(.pg-tokens-panel) {
+        padding-right: 0;
+    }
+
+    .pg-tokens-panel {
+        width: 100%;
+    }
 }

@@ -21,12 +21,15 @@ export type AppBarProps = ComponentProps<'header'> & {
     size?: 'normal' | 'big'
     /** Center the title. Only for `size="normal"`. @default false */
     centered?: boolean
-    /** Color role from the theme. @default 'container' */
+    /**
+     * Color role from the theme. The default `container` gives the bar the
+     * navigation color (the theme's `surface`), so it matches a
+     * NavigationRail or NavigationDrawer beside it. @default 'container'
+     */
     color?: ComponentColor
     /**
-     * `text` is Material 3's flat bar, the same color as the page. `filled`
-     * gives it a solid background, e.g. `color="primary" fillType="filled"`.
-     * @default 'text'
+     * `filled` gives the bar a solid background. `text` makes it colorless,
+     * the same color as the page. @default 'filled'
      */
     fillType?: ComponentFillType
 }
@@ -39,9 +42,9 @@ export function AppBar({
     end,
     size = 'normal',
     centered = false,
-    // Not the library's usual primary/filled: Material 3's bar is flat
+    // Not the library's usual primary: the bar frames the page, like navigation
     color = 'container',
-    fillType = 'text',
+    fillType = 'filled',
     className,
     ...props
 }: AppBarProps) {

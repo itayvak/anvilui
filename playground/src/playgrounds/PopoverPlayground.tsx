@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import {
+    Avatar,
     Button,
-    ButtonGroup,
+    SplitButton,
     IconButton,
     Input,
     Popover,
@@ -47,7 +48,7 @@ export function PopoverPlayground() {
                                 defaultValue="https://example.com/page"
                                 readOnly
                             />
-                            <ButtonGroup>
+                            <SplitButton>
                                 <PopoverClose
                                     render={<Button fillType="outlined" />}
                                 >
@@ -56,7 +57,7 @@ export function PopoverPlayground() {
                                 <PopoverClose render={<Button />}>
                                     Copy link
                                 </PopoverClose>
-                            </ButtonGroup>
+                            </SplitButton>
                         </PopoverPopup>
                     </Popover>
 
@@ -78,6 +79,50 @@ export function PopoverPlayground() {
                             <Labeled label="Compact mode" type="body">
                                 <Switch />
                             </Labeled>
+                        </PopoverPopup>
+                    </Popover>
+                </Row>
+            </Section>
+            <Section title="Morph from the trigger">
+                <Row>
+                    <Popover morph>
+                        <PopoverTrigger
+                            aria-label="Ada Lovelace"
+                            render={
+                                <Avatar
+                                    name="Ada Lovelace"
+                                    size="big"
+                                    render={<button type="button" />}
+                                />
+                            }
+                        />
+                        <PopoverPopup side={side}>
+                            <PopoverTitle>Ada Lovelace</PopoverTitle>
+                            <PopoverDescription>
+                                Mathematician. Wrote the first program for the
+                                Analytical Engine.
+                            </PopoverDescription>
+                            <PopoverClose render={<Button fillType="text" />}>
+                                Close
+                            </PopoverClose>
+                        </PopoverPopup>
+                    </Popover>
+                    <Popover morph>
+                        <PopoverTrigger
+                            render={
+                                <IconButton
+                                    icon="info"
+                                    aria-label="What is this?"
+                                    fillType="outlined"
+                                />
+                            }
+                        />
+                        <PopoverPopup side={side}>
+                            <PopoverTitle>Morphing popovers</PopoverTitle>
+                            <PopoverDescription>
+                                The button grows into this bubble, and shrinks
+                                back when it closes.
+                            </PopoverDescription>
                         </PopoverPopup>
                     </Popover>
                 </Row>

@@ -1,5 +1,5 @@
 /* Material 3 floating toolbar: a pill of icon buttons with a shadow */
-.avl-toolbar {
+.avl-floating-toolbar {
     display: inline-flex;
     align-items: center;
     gap: var(--avl-spacing-x1);
@@ -10,36 +10,37 @@
     box-shadow: var(--avl-shadow-medium);
 }
 
-.avl-toolbar[data-orientation='vertical'] {
+.avl-floating-toolbar[data-orientation='vertical'] {
     flex-direction: column;
 }
 
-.avl-toolbar-inverse {
+.avl-floating-toolbar-inverse {
     background-color: var(--avl-color-inverse-surface);
     color: var(--avl-color-inverse-on-surface);
 }
 
 /* Plain buttons follow it; their default color would vanish on the inverse
    surface. The highlighted (filled) one keeps its own colors. */
-.avl-toolbar-inverse .avl-icon-button.avl-fill-text {
+.avl-floating-toolbar-inverse .avl-icon-button.avl-fill-text {
     --avl-nested-color-on-main: var(--avl-color-inverse-on-surface);
 }
 
 /* The highlighted button is a wider pill */
-.avl-toolbar .avl-icon-button.avl-fill-filled {
+.avl-floating-toolbar .avl-icon-button.avl-fill-filled {
     width: var(--avl-spacing-x14);
 }
 
-.avl-toolbar[data-orientation='vertical'] .avl-icon-button.avl-fill-filled {
+.avl-floating-toolbar[data-orientation='vertical']
+    .avl-icon-button.avl-fill-filled {
     width: var(--avl-button-height);
     height: var(--avl-spacing-x14);
 }
 
 /* Shorter than the toolbar, so it doesn't touch the rounded edges */
-.avl-toolbar-separator[data-orientation='vertical'] {
+.avl-floating-toolbar-separator[data-orientation='vertical'] {
     margin-block: var(--avl-spacing-x2);
 }
 
-.avl-toolbar-separator[data-orientation='horizontal'] {
+.avl-floating-toolbar-separator[data-orientation='horizontal'] {
     margin-inline: var(--avl-spacing-x2);
 }

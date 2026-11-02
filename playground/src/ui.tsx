@@ -90,3 +90,20 @@ export function RangeControl(props: {
         />
     )
 }
+
+export function TextControl(props: {
+    label: string
+    value: string
+    onChange: (value: string) => void
+}) {
+    return (
+        <label className="pg-control">
+            <Typography type="caption">{props.label}</Typography>
+            <input
+                type="text"
+                value={props.value}
+                onChange={(e) => props.onChange(e.target.value)}
+            />
+        </label>
+    )
+}

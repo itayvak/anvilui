@@ -17,5 +17,5 @@
 }
 
 .avl-squiggly-wave .avl-squiggly-wave-rest {
-    stroke: var(--avl-color-secondary-container);
+    stroke: var(--avl-color-tonal-container);
 }

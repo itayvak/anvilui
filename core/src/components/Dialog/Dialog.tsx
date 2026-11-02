@@ -1,22 +1,56 @@
-import { useContext, type ComponentProps } from 'react'
+import { useContext, type ComponentProps, type Ref } from 'react'
 import { Dialog as BaseDialog } from '@base-ui/react/dialog'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
-import { cx, withClass } from '../../utils'
+import { cx, mergeRefs, withClass } from '../../utils'
+import { MorphContext, useMorphOpen } from '../../morph'
 import './dialog.css'
 
-export type DialogProps = BaseDialog.Root.Props
+export type DialogProps = BaseDialog.Root.Props & {
+    /**
+     * Grow the dialog out of its trigger, and shrink it back into it on
+     * close (Material's container transform). Works best when the trigger
+     * is a surface, like a clickable `Card`. @default false
+     */
+    morph?: boolean
+}
 
-export function Dialog(props: DialogProps) {
-    return <BaseDialog.Root {...props} />
+export function Dialog({
+    morph = false,
+    defaultOpen = false,
+    ...props
+}: DialogProps) {
+    const state = useMorphOpen({
+        morph,
+        open: props.open,
+        defaultOpen,
+        onOpenChange: props.onOpenChange,
+    })
+
+    return (
+        <MorphContext value={state.refs}>
+            <BaseDialog.Root
+                {...props}
+                open={state.open}
+                onOpenChange={state.onOpenChange}
+            />
+        </MorphContext>
+    )
 }
 
 // Renders a bare button. Pass `render={<Button />}` to use the library button.
 export type DialogTriggerProps = BaseDialog.Trigger.Props
 
-export function DialogTrigger({ className, ...props }: DialogTriggerProps) {
+export function DialogTrigger({
+    className,
+    ref,
+    ...props
+}: DialogTriggerProps) {
+    const morph = useContext(MorphContext)
+
     return (
         <BaseDialog.Trigger
             {...props}
+            ref={mergeRefs(morph?.trigger, ref as Ref<HTMLElement>)}
             className={withClass('avl-dialog-trigger', className)}
         />
     )
@@ -25,8 +59,9 @@ export function DialogTrigger({ className, ...props }: DialogTriggerProps) {
 // Also renders the portal and the dimmed backdrop behind the dialog.
 export type DialogPopupProps = BaseDialog.Popup.Props
 
-export function DialogPopup({ className, ...props }: DialogPopupProps) {
+export function DialogPopup({ className, ref, ...props }: DialogPopupProps) {
     const avl = useContext(AnvilContext)
+    const morph = useContext(MorphContext)
 
     return (
         // Into the AnvilRoot, not body, so the popup sees the theme variables
@@ -34,6 +69,7 @@ export function DialogPopup({ className, ...props }: DialogPopupProps) {
             <BaseDialog.Backdrop className="avl-dialog-backdrop" />
             <BaseDialog.Popup
                 {...props}
+                ref={mergeRefs(morph?.popup, ref as Ref<HTMLElement>)}
                 className={withClass('avl-dialog-popup', className)}
             />
         </BaseDialog.Portal>

@@ -5,8 +5,13 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     width: var(--avl-avatar-size);
     height: var(--avl-avatar-size);
+    /* Clears a <button>'s default border and padding when it's rendered as
+       one to be clickable (e.g. a Popover trigger) */
+    padding: 0;
+    border: none;
     overflow: hidden;
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-nested-color-main);
@@ -18,6 +23,10 @@
     line-height: 1;
     user-select: none;
     vertical-align: middle;
+}
+
+.avl-avatar:is(button, a) {
+    cursor: pointer;
 }
 
 .avl-avatar.avl-fill-outlined {

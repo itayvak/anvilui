@@ -1,0 +1,38 @@
+.avl-sticker {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+    padding: var(--avl-spacing-x1) var(--avl-spacing-x3);
+    /* The "cut" edge: a border in the page color, so it looks stuck on in
+       light and dark mode alike */
+    border: 2px solid var(--avl-color-background);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
+    font-family: var(--avl-font-title);
+    font-size: var(--avl-font-size-label);
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    /* Faint while flat on the page; see :hover for the lifted one */
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+    rotate: var(--avl-sticker-tilt);
+    transition:
+        rotate var(--avl-ease-length-normal) var(--avl-ease-out),
+        scale var(--avl-ease-length-normal) var(--avl-ease-out),
+        translate var(--avl-ease-length-normal) var(--avl-ease-out),
+        box-shadow var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-sticker .avl-icon {
+    font-size: 1.2em;
+}
+
+/* Hover: straightens and lifts, like it's about to be peeled off */
+.avl-sticker:hover {
+    rotate: 0deg;
+    scale: 1.08;
+    translate: 0 -2px;
+    /* Bigger, softer and further down: it reads as off the page */
+    box-shadow: 0 10px 18px rgb(0 0 0 / 0.3);
+}

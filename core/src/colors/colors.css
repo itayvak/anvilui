@@ -14,9 +14,9 @@
     --avl-nested-color-on-main: var(--avl-color-on-primary);
 }
 
-.avl-color-secondary.avl-fill-filled {
-    --avl-nested-color-main: var(--avl-color-secondary);
-    --avl-nested-color-on-main: var(--avl-color-on-secondary);
+.avl-color-tonal.avl-fill-filled {
+    --avl-nested-color-main: var(--avl-color-tonal);
+    --avl-nested-color-on-main: var(--avl-color-on-tonal);
 }
 
 .avl-color-success.avl-fill-filled {
@@ -53,9 +53,9 @@
     --avl-nested-color-on-main: var(--avl-color-primary);
 }
 
-.avl-color-secondary:is(.avl-fill-outlined, .avl-fill-text) {
+.avl-color-tonal:is(.avl-fill-outlined, .avl-fill-text) {
     --avl-nested-color-main: transparent;
-    --avl-nested-color-on-main: var(--avl-color-on-secondary);
+    --avl-nested-color-on-main: var(--avl-color-on-tonal);
 }
 
 .avl-color-success:is(.avl-fill-outlined, .avl-fill-text) {

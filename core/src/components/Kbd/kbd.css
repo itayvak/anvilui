@@ -1,0 +1,38 @@
+/* A keycap: the thick bottom border is the key's side */
+.avl-kbd {
+    --avl-kbd-depth: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: var(--avl-spacing-x7);
+    height: var(--avl-spacing-x7);
+    padding: 0 var(--avl-spacing-x2);
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-bottom-width: var(--avl-kbd-depth);
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+    font-family: var(--avl-font-mono);
+    font-size: var(--avl-font-size-label-small);
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    /* Comes back up with a little spring */
+    transition:
+        transform var(--avl-ease-length-normal) var(--avl-ease-out),
+        border-bottom-width var(--avl-ease-length-normal) var(--avl-ease-out),
+        background-color var(--avl-ease-length-short) var(--avl-ease-out);
+}
+
+/* Held on the real keyboard, or pressed with the mouse or a finger: sinks
+   into its side. The color change keeps it visible with reduced motion,
+   which turns the movement off. */
+.avl-kbd[data-pressed],
+.avl-kbd:active {
+    border-bottom-width: var(--avl-outline-size);
+    transform: translateY(calc(var(--avl-kbd-depth) - var(--avl-outline-size)));
+    background-color: var(--avl-color-container);
+    transition: 10ms var(--avl-ease-out);
+}

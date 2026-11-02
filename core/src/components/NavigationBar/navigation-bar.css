@@ -44,7 +44,7 @@
     z-index: -1;
     inset: 0;
     border-radius: inherit;
-    background-color: var(--avl-color-secondary-container);
+    background-color: var(--avl-color-tonal-container);
     opacity: 0;
     transform: scaleX(0.4);
     transition:
@@ -68,7 +68,7 @@
 
 .avl-navigation-bar-item[aria-current='page']
     .avl-navigation-bar-item-indicator {
-    color: var(--avl-color-on-secondary-container);
+    color: var(--avl-color-on-tonal-container);
 }
 
 .avl-navigation-bar-item[aria-current='page']

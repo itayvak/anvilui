@@ -7,7 +7,7 @@ import type {
 
 export const colors: ComponentColor[] = [
     'primary',
-    'secondary',
+    'tonal',
     'success',
     'warning',
     'error',

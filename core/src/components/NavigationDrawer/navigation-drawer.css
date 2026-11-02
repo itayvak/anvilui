@@ -125,8 +125,8 @@
 }
 
 .avl-navigation-drawer-item[aria-current='page'] {
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
 }
 
 /* Filled icon for the current page, outlined for the rest, like the other

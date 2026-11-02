@@ -1,23 +1,56 @@
-import { useContext } from 'react'
+import { useContext, type Ref } from 'react'
 import { Popover as BasePopover } from '@base-ui/react/popover'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
-import { withClass } from '../../utils'
+import { mergeRefs, withClass } from '../../utils'
+import { MorphContext, useMorphOpen } from '../../morph'
 import '../Menu/menu.css'
 import './popover.css'
 
-export type PopoverProps = BasePopover.Root.Props
+export type PopoverProps = BasePopover.Root.Props & {
+    /**
+     * Grow the popover out of its trigger, and shrink it back into it on
+     * close, like an avatar opening into a profile card. @default false
+     */
+    morph?: boolean
+}
 
-export function Popover(props: PopoverProps) {
-    return <BasePopover.Root {...props} />
+export function Popover({
+    morph = false,
+    defaultOpen = false,
+    ...props
+}: PopoverProps) {
+    const state = useMorphOpen({
+        morph,
+        open: props.open,
+        defaultOpen,
+        onOpenChange: props.onOpenChange,
+    })
+
+    return (
+        <MorphContext value={state.refs}>
+            <BasePopover.Root
+                {...props}
+                open={state.open}
+                onOpenChange={state.onOpenChange}
+            />
+        </MorphContext>
+    )
 }
 
 // Renders a bare button. Pass `render={<Button />}` to use the library button.
 export type PopoverTriggerProps = BasePopover.Trigger.Props
 
-export function PopoverTrigger({ className, ...props }: PopoverTriggerProps) {
+export function PopoverTrigger({
+    className,
+    ref,
+    ...props
+}: PopoverTriggerProps) {
+    const morph = useContext(MorphContext)
+
     return (
         <BasePopover.Trigger
             {...props}
+            ref={mergeRefs(morph?.trigger, ref as Ref<HTMLElement>)}
             className={withClass('avl-popover-trigger', className)}
         />
     )
@@ -37,9 +70,11 @@ export function PopoverPopup({
     sideOffset,
     alignOffset,
     className,
+    ref,
     ...props
 }: PopoverPopupProps) {
     const avl = useContext(AnvilContext)
+    const morph = useContext(MorphContext)
 
     return (
         // Into the AnvilRoot, not body, so the popup sees the theme variables
@@ -55,6 +90,7 @@ export function PopoverPopup({
                 {/* Menu's surface and open/close animation, with more room inside */}
                 <BasePopover.Popup
                     {...props}
+                    ref={mergeRefs(morph?.popup, ref as Ref<HTMLElement>)}
                     className={withClass(
                         'avl-menu-popup avl-popover-popup',
                         className

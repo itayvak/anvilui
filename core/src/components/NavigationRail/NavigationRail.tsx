@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ComponentProps } from 'react'
+import {
+    createContext,
+    useContext,
+    useState,
+    type ComponentProps,
+    type ReactNode,
+} from 'react'
 import type { MaterialSymbol } from 'material-symbols'
 import { useRender } from '@base-ui/react/use-render'
 import { mergeProps } from '@base-ui/react/merge-props'
@@ -88,12 +94,18 @@ export type NavigationRailItemProps = useRender.ComponentProps<'a'> & {
     label: string
     /** The current page. Sets aria-current="page". */
     active?: boolean
+    /**
+     * Short content after the label, like an unread count. Shown as a badge
+     * on the icon while the rail is collapsed, so keep it to a few characters.
+     */
+    end?: ReactNode
 }
 
 export function NavigationRailItem({
     icon,
     label,
     active = false,
+    end,
     render,
     className,
     ...props
@@ -113,6 +125,11 @@ export function NavigationRailItem({
                         <span className="avl-navigation-rail-item-label">
                             {label}
                         </span>
+                        {end != null && (
+                            <span className="avl-navigation-rail-item-end">
+                                {end}
+                            </span>
+                        )}
                     </>
                 ),
             },

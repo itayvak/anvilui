@@ -1,8 +1,14 @@
+export { AnimatedNumber } from './components/AnimatedNumber/AnimatedNumber'
+export type { AnimatedNumberProps } from './components/AnimatedNumber/AnimatedNumber'
+
 export { AppBar } from './components/AppBar/AppBar'
 export type { AppBarProps } from './components/AppBar/AppBar'
 
 export { Avatar } from './components/Avatar/Avatar'
 export type { AvatarProps } from './components/Avatar/Avatar'
+
+export { AvatarGroup } from './components/AvatarGroup/AvatarGroup'
+export type { AvatarGroupProps } from './components/AvatarGroup/AvatarGroup'
 
 export { Badge } from './components/Badge/Badge'
 export type { BadgeProps } from './components/Badge/Badge'
@@ -27,8 +33,11 @@ export type {
 export { Button } from './components/Button/Button'
 export type { ButtonProps } from './components/Button/Button'
 
-export { ButtonGroup } from './components/ButtonGroup/ButtonGroup'
-export type { ButtonGroupProps } from './components/ButtonGroup/ButtonGroup'
+export { SplitButton } from './components/SplitButton/SplitButton'
+export type { SplitButtonProps } from './components/SplitButton/SplitButton'
+
+export { HoldButton } from './components/HoldButton/HoldButton'
+export type { HoldButtonProps } from './components/HoldButton/HoldButton'
 
 export {
     Card,
@@ -45,6 +54,11 @@ export type {
 
 export { Calendar } from './components/Calendar/Calendar'
 export type { CalendarProps } from './components/Calendar/Calendar'
+export { Carousel, CarouselItem } from './components/Carousel/Carousel'
+export type {
+    CarouselProps,
+    CarouselItemProps,
+} from './components/Carousel/Carousel'
 
 export { Chip, FilterChip, InputChip } from './components/Chip/Chip'
 export type {
@@ -75,11 +89,23 @@ export type {
     DialogCloseProps,
 } from './components/Dialog/Dialog'
 
+export { useConfetti } from './components/Confetti/Confetti'
+export type {
+    ConfettiOptions,
+    ConfettiOrigin,
+} from './components/Confetti/Confetti'
+
 export { Divider } from './components/Divider/Divider'
 export type { DividerProps } from './components/Divider/Divider'
 
 export { FAB } from './components/FAB/FAB'
 export type { FABProps } from './components/FAB/FAB'
+
+export { FABMenu, FABMenuItem } from './components/FABMenu/FABMenu'
+export type {
+    FABMenuProps,
+    FABMenuItemProps,
+} from './components/FABMenu/FABMenu'
 
 export { Field, FieldDescription, FieldError } from './components/Field/Field'
 export type {
@@ -96,6 +122,9 @@ export type { IconButtonProps } from './components/IconButton/IconButton'
 
 export { Input } from './components/Input/Input'
 export type { InputProps } from './components/Input/Input'
+
+export { Kbd } from './components/Kbd/Kbd'
+export type { KbdProps } from './components/Kbd/Kbd'
 
 export { List, ListItem } from './components/List/List'
 export type { ListProps, ListItemProps } from './components/List/List'
@@ -176,13 +205,13 @@ export { Progress } from './components/Progress/Progress'
 export type { ProgressProps } from './components/Progress/Progress'
 
 export {
-    RadioButtonGroup,
-    RadioButton,
-} from './components/RadioButtonGroup/RadioButtonGroup'
+    ToggleGroup,
+    ToggleGroupItem,
+} from './components/ToggleGroup/ToggleGroup'
 export type {
-    RadioButtonGroupProps,
-    RadioButtonProps,
-} from './components/RadioButtonGroup/RadioButtonGroup'
+    ToggleGroupProps,
+    ToggleGroupItemProps,
+} from './components/ToggleGroup/ToggleGroup'
 
 export { RadioGroup, Radio } from './components/RadioGroup/RadioGroup'
 export type {
@@ -223,6 +252,9 @@ export type { SliderProps } from './components/Slider/Slider'
 export { useSnackbar } from './components/Snackbar/Snackbar'
 export type { SnackbarOptions } from './components/Snackbar/Snackbar'
 
+export { Sticker } from './components/Sticker/Sticker'
+export type { StickerProps } from './components/Sticker/Sticker'
+
 export { Switch } from './components/Switch/Switch'
 export type { SwitchProps } from './components/Switch/Switch'
 
@@ -257,15 +289,15 @@ export { Textarea } from './components/Textarea/Textarea'
 export type { TextareaProps } from './components/Textarea/Textarea'
 
 export {
-    Toolbar,
-    ToolbarButton,
-    ToolbarSeparator,
-} from './components/Toolbar/Toolbar'
+    FloatingToolbar,
+    FloatingToolbarButton,
+    FloatingToolbarSeparator,
+} from './components/FloatingToolbar/FloatingToolbar'
 export type {
-    ToolbarProps,
-    ToolbarButtonProps,
-    ToolbarSeparatorProps,
-} from './components/Toolbar/Toolbar'
+    FloatingToolbarProps,
+    FloatingToolbarButtonProps,
+    FloatingToolbarSeparatorProps,
+} from './components/FloatingToolbar/FloatingToolbar'
 
 export { Tooltip } from './components/Tooltip/Tooltip'
 export type { TooltipProps } from './components/Tooltip/Tooltip'
@@ -336,6 +368,10 @@ export type {
 export { baseLightTheme, baseDarkTheme } from './themes/baseTheme'
 export { createTheme, createThemeFromImage } from './themes/createTheme'
 export type { ThemePair, CreateThemeOptions } from './themes/createTheme'
+export {
+    monochromeLightTheme,
+    monochromeDarkTheme,
+} from './themes/monochromeTheme'
 export type { Theme } from './themes/types'
 
 export { AnvilRoot } from './components/AnvilRoot/AnvilRoot'
@@ -346,3 +382,6 @@ export type {
     ColorType,
     ColorModeSetting,
 } from './components/AnvilRoot/AnvilContext'
+
+export { morph, morphBetween } from './morph'
+export type { MorphOptions } from './morph'

@@ -1,4 +1,5 @@
 import {
+    Button,
     Card,
     CardContent,
     CardTitle,
@@ -39,6 +40,32 @@ export function DividerPlayground() {
                         icon="format_align_center"
                         aria-label="Align center"
                     />
+                </Row>
+            </Section>
+            <Section title="With label">
+                <div style={{ maxWidth: 360 }}>
+                    <Divider label="or" />
+                </div>
+                <div style={{ maxWidth: 360 }}>
+                    <Divider label="A much longer label in the middle" />
+                </div>
+                <Row>
+                    <Button style={{ height: '150px' }}>Left</Button>
+                    <Divider orientation="vertical" label="or" />
+                    <Button style={{ height: '150px' }}>Right</Button>
+                </Row>
+            </Section>
+            <Section title="Squiggly">
+                <div style={{ maxWidth: 360 }}>
+                    <Divider squiggly />
+                </div>
+                <div style={{ maxWidth: 360 }}>
+                    <Divider squiggly label="Your changes" />
+                </div>
+                <Row>
+                    <Button style={{ height: '150px' }}>Left</Button>
+                    <Divider orientation="vertical" label="or" squiggly />
+                    <Button style={{ height: '150px' }}>Right</Button>
                 </Row>
             </Section>
         </>

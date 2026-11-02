@@ -2,10 +2,15 @@ import { useState } from 'react'
 import {
     Avatar,
     Badge,
+    Card,
+    CardContent,
+    CardTitle,
     Checkbox,
     Icon,
+    IconButton,
     List,
     ListItem,
+    morph,
     Switch,
     Typography,
 } from 'anvilui'
@@ -16,6 +21,8 @@ const box = { maxWidth: 420 }
 export function ListPlayground() {
     const [wifi, setWifi] = useState(true)
     const [done, setDone] = useState<string[]>(['Milk'])
+    const [openMail, setOpenMail] = useState<string | null>(null)
+    const mail = inbox.find((m) => m.id === openMail)
 
     return (
         <>
@@ -45,6 +52,49 @@ export function ListPlayground() {
                     />
                 </List>
             </Section>
+            <Section title="Morph into a detail page">
+                <div style={{ ...box, minHeight: 320 }}>
+                    {mail ? (
+                        <Card
+                            data-morph-id={mail.id}
+                            style={{ minHeight: 320 }}
+                        >
+                            <IconButton
+                                icon="arrow_back"
+                                aria-label="Back to inbox"
+                                fillType="text"
+                                onClick={() =>
+                                    morph(mail.id, () => setOpenMail(null))
+                                }
+                            />
+                            <CardTitle>{mail.subject}</CardTitle>
+                            <CardContent>
+                                <Typography type="caption">
+                                    From {mail.from}
+                                </Typography>
+                                <Typography>{mail.body}</Typography>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <List divided>
+                            {inbox.map((m) => (
+                                <ListItem
+                                    key={m.id}
+                                    data-morph-id={m.id}
+                                    render={<button type="button" />}
+                                    onClick={() =>
+                                        morph(m.id, () => setOpenMail(m.id))
+                                    }
+                                    start={<Avatar name={m.from} />}
+                                    label={m.subject}
+                                    description={m.from}
+                                    end={<Icon name="chevron_right" />}
+                                />
+                            ))}
+                        </List>
+                    )}
+                </div>
+            </Section>
             <Section title="Messages (avatars, divided)">
                 <List divided style={box}>
                     <ListItem
@@ -60,7 +110,7 @@ export function ListPlayground() {
                     />
                     <ListItem
                         render={<a href="#" />}
-                        start={<Avatar name="Grace Hopper" color="secondary" />}
+                        start={<Avatar name="Grace Hopper" color="tonal" />}
                         label="Grace Hopper"
                         description="Found the bug. It was an actual moth. A long message wraps to a second line and then gets cut off with an ellipsis."
                         end="Yesterday"
@@ -114,3 +164,24 @@ export function ListPlayground() {
         </>
     )
 }
+
+const inbox = [
+    {
+        id: 'mail-1',
+        from: 'Grace Hopper',
+        subject: 'Found the bug',
+        body: 'It was a moth, stuck in relay 70. Taped it into the logbook so nobody believes we made it up.',
+    },
+    {
+        id: 'mail-2',
+        from: 'Alan Turing',
+        subject: 'Lunch on Thursday?',
+        body: 'The new place by the river does a decent soup. I can bring the chess board if you want a rematch.',
+    },
+    {
+        id: 'mail-3',
+        from: 'Katherine Johnson',
+        subject: 'Numbers check out',
+        body: 'Ran the trajectory by hand again. Tell them they are good to go.',
+    },
+]

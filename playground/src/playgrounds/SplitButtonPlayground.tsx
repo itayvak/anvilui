@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Button, ButtonGroup, Checkbox, IconButton, Typography } from 'anvilui'
+import { Button, SplitButton, Checkbox, IconButton, Typography } from 'anvilui'
 import type { ButtonProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
 import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 
-export function ButtonGroupPlayground() {
+export function SplitButtonPlayground() {
     const [size, setSize] = useState<NonNullable<ButtonProps['size']>>('normal')
     const [color, setColor] =
         useState<NonNullable<ButtonProps['color']>>('primary')
@@ -51,7 +51,7 @@ export function ButtonGroupPlayground() {
                 </Labeled>
             </Row>
             <Row>
-                <ButtonGroup>
+                <SplitButton>
                     {Array.from({ length: count }, (_, i) => (
                         <Button
                             key={i}
@@ -63,10 +63,10 @@ export function ButtonGroupPlayground() {
                             Button {i + 1}
                         </Button>
                     ))}
-                </ButtonGroup>
+                </SplitButton>
             </Row>
             <Row>
-                <ButtonGroup>
+                <SplitButton>
                     <Button
                         color={color}
                         fillType={fillType}
@@ -81,7 +81,7 @@ export function ButtonGroupPlayground() {
                         fillType={fillType}
                         disabled={disabled}
                     />
-                </ButtonGroup>
+                </SplitButton>
             </Row>
         </Section>
     )

@@ -26,6 +26,9 @@
 .avl-root {
     background-color: var(--avl-color-background);
     color: var(--avl-color-on-background);
+    /* Mobile browsers flash a box on every tap. Components show their own
+       press feedback, and keyboard focus still gets the ring above. */
+    -webkit-tap-highlight-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -48,15 +51,42 @@
             .avl-checkbox,
             .avl-radio,
             .avl-switch,
-            .avl-radio-button,
+            .avl-toggle-group-item,
             .avl-tabs-tab-content,
             .avl-navigation-bar-item-indicator,
             .avl-accordion-item,
             .avl-navigation-rail-item-indicator,
             .avl-navigation-list-item,
             .avl-chip,
-            .avl-fab
+            .avl-fab,
+            .avl-fab-menu-item,
+            .avl-kbd
         ) {
         transform: none !important;
+    }
+}
+
+/* Set by morph.ts on a Dialog or Popover trigger while it has morphed into
+   its popup. Hidden, not removed, so the page doesn't shift. Triggers like
+   Card and Button transition every property, visibility included, which
+   would keep them visible for the whole duration. */
+.avl-root [data-morph-hidden] {
+    visibility: hidden;
+    transition: none;
+}
+
+/* Used by the rules morph.ts injects during a morph: the old content clears
+   out early, the new fades in late */
+@keyframes avl-morph-out {
+    30%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes avl-morph-in {
+    0%,
+    40% {
+        opacity: 0;
     }
 }

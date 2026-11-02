@@ -1,31 +1,94 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
+    AnvilContext,
     AnvilRoot,
     Button,
     Card,
     CardContent,
     CardTitle,
     Checkbox,
-    Chip,
-    Input,
+    IconButton,
+    Menu,
+    MenuGroup,
+    MenuItem,
+    MenuPopup,
+    MenuTrigger,
+    NavigationRail,
+    NavigationRailItem,
+    NavigationRailToggle,
+    Radio,
+    ToggleGroup,
+    ToggleGroupItem,
+    RadioGroup,
     Switch,
     Typography,
     createTheme,
     createThemeFromImage,
-    useAnvil,
 } from 'anvilui'
 import type { ThemePair } from 'anvilui'
-import { Labeled, Row, Section, Stack } from '../ui'
+import { colors, fillTypes } from '../options'
+import { Grid, Labeled, Row, Section } from '../ui'
+
+const lowerFirst = (text: string) =>
+    text.charAt(0).toLowerCase() + text.slice(1)
+const upperFirst = (text: string) =>
+    text.charAt(0).toUpperCase() + text.slice(1)
+const isOnKey = (key: string) => /^on[A-Z]/.test(key)
+
+// Same naming as themeToCssVariables in core
+function cssVariable(key: string) {
+    return `--avl-color-${key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}`
+}
+
+// The key of the color drawn on top of this one, or the one it is drawn on top
+// of: primary <-> onPrimary, primaryContainer <-> onPrimaryContainer
+function partnerKey(key: string) {
+    return isOnKey(key) ? lowerFirst(key.slice(2)) : 'on' + upperFirst(key)
+}
+
+// primary, onPrimary, primaryContainer and onPrimaryContainer are one family
+function familyOf(key: string) {
+    const base = isOnKey(key) ? lowerFirst(key.slice(2)) : key
+    return base.replace(/(?<=[a-z])Container$/, '')
+}
+
+function familyTitle(family: string) {
+    return upperFirst(family.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase())
+}
+
+function Swatch(props: { name: string; value: string; partner?: string }) {
+    const { name, value, partner } = props
+
+    return (
+        <div className="pg-swatch" title={cssVariable(name)}>
+            <div
+                className="pg-swatch-chip"
+                style={{
+                    backgroundColor: `var(${cssVariable(name)})`,
+                    color: partner ? `var(${cssVariable(partner)})` : undefined,
+                }}
+            >
+                {partner && 'Aa'}
+            </div>
+            <Typography type="caption">{name}</Typography>
+            <Typography type="caption" className="pg-swatch-value">
+                {value}
+            </Typography>
+        </div>
+    )
+}
 
 export function ThemePlayground() {
-    const { colorMode } = useAnvil()
+    const avl = useContext(AnvilContext)
     const [seed, setSeed] = useState('#0B6E4F')
-    const [theme, setTheme] = useState<ThemePair>(() => createTheme(seed))
+    // null previews the playground's palette; set once a color or image is picked
+    const [generated, setGenerated] = useState<ThemePair | null>(null)
     const [error, setError] = useState('')
+    if (!avl) throw new Error('ThemePlayground must be used inside AnvilRoot')
 
     return (
         <>
-            <Section title="Source">
+            <Section title="Generate a theme">
                 <Row>
                     <Labeled label="primary color">
                         <input
@@ -33,7 +96,7 @@ export function ThemePlayground() {
                             value={seed}
                             onChange={(e) => {
                                 setSeed(e.target.value)
-                                setTheme(createTheme(e.target.value))
+                                setGenerated(createTheme(e.target.value))
                             }}
                         />
                     </Labeled>
@@ -47,7 +110,7 @@ export function ThemePlayground() {
                                 try {
                                     const t = await createThemeFromImage(file)
                                     setError('')
-                                    setTheme(t)
+                                    setGenerated(t)
                                     setSeed(t.light.primary.toLowerCase())
                                 } catch (err) {
                                     setError(String(err))
@@ -55,64 +118,211 @@ export function ThemePlayground() {
                             }}
                         />
                     </Labeled>
+                    {generated && (
+                        <Button
+                            fillType="text"
+                            onClick={() => setGenerated(null)}
+                        >
+                            Back to the playground palette
+                        </Button>
+                    )}
                 </Row>
                 {error && <Typography>{error}</Typography>}
             </Section>
-            <Section title="Preview">
-                {/* Follows the playground's own light/dark toggle */}
+            {generated ? (
+                // Follows the playground's own light/dark toggle
                 <AnvilRoot
-                    colorMode={colorMode}
-                    lightTheme={theme.light}
-                    darkTheme={theme.dark}
+                    colorMode={avl.colorMode}
+                    lightTheme={generated.light}
+                    darkTheme={generated.dark}
                 >
-                    <Stack style={{ padding: 16 }}>
-                        <Row>
-                            <Button>Primary</Button>
-                            <Button color="secondary">Secondary</Button>
-                            <Button fillType="outlined">Outlined</Button>
-                            <Button fillType="text">Text</Button>
-                        </Row>
-                        <Row>
-                            <Checkbox defaultChecked aria-label="Checkbox" />
-                            <Switch defaultChecked aria-label="Switch" />
-                            <Chip>Chip</Chip>
-                            <Input label="Input" placeholder="Muted text" />
-                        </Row>
-                        <Row>
-                            {(['primary', 'surface', 'container'] as const).map(
-                                (color) => (
-                                    <Card key={color} color={color}>
-                                        <CardTitle>{color}</CardTitle>
-                                        <CardContent>
-                                            Text on a {color} card.
-                                        </CardContent>
-                                    </Card>
-                                )
-                            )}
-                        </Row>
-                    </Stack>
+                    <ThemePreview />
                 </AnvilRoot>
+            ) : (
+                <ThemePreview />
+            )}
+        </>
+    )
+}
+
+// Every color of the nearest AnvilRoot's theme, on components and as swatches
+function ThemePreview() {
+    const avl = useContext(AnvilContext)!
+    const [railExpanded, setRailExpanded] = useState(true)
+    const [railPage, setRailPage] = useState('Profile')
+
+    const { colorMode, lightTheme, darkTheme } = avl
+    const theme = colorMode === 'light' ? lightTheme : darkTheme
+
+    // Built from the theme itself, so a color added to Theme shows up here
+    const families = new Map<string, [key: string, value: string][]>()
+    for (const [key, value] of Object.entries(theme)) {
+        const family = familyOf(key)
+        families.set(family, [...(families.get(family) ?? []), [key, value]])
+    }
+
+    return (
+        <>
+            <Section title="Buttons">
+                {fillTypes.map((fillType) => (
+                    <Row key={fillType}>
+                        {colors.map((color) => (
+                            <Button
+                                key={color}
+                                color={color}
+                                fillType={fillType}
+                            >
+                                {color}
+                            </Button>
+                        ))}
+                    </Row>
+                ))}
             </Section>
-            <Section title="Generated colors">
+
+            <Section title="Cards">
+                <Grid>
+                    {colors.map((color) => (
+                        <Card key={color} color={color}>
+                            <CardTitle>{color}</CardTitle>
+                            <CardContent>
+                                <Typography>Text on {color}.</Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Grid>
+            </Section>
+
+            <Section title="Controls">
                 <Row>
-                    {Object.entries(theme[colorMode]).map(([role, value]) => (
-                        <Stack key={role} style={{ width: 120 }}>
-                            <div
-                                style={{
-                                    height: 32,
-                                    borderRadius: 8,
-                                    background: value,
-                                    border: '1px solid var(--avl-color-divider)',
-                                }}
-                            />
-                            <Typography type="caption">
-                                {role}
-                                <br />
+                    <label className="pg-checkbox">
+                        <Checkbox />
+                        <Typography>unchecked</Typography>
+                    </label>
+                    <label className="pg-checkbox">
+                        <Checkbox defaultChecked />
+                        <Typography>checked</Typography>
+                    </label>
+                    <label className="pg-checkbox">
+                        <Switch />
+                        <Typography>off</Typography>
+                    </label>
+                    <label className="pg-checkbox">
+                        <Switch defaultChecked />
+                        <Typography>on</Typography>
+                    </label>
+                </Row>
+                <Row>
+                    <RadioGroup
+                        aria-label="Radio"
+                        defaultValue="b"
+                        style={{ flexDirection: 'row' }}
+                    >
+                        {['a', 'b', 'c'].map((value) => (
+                            <label key={value} className="pg-checkbox">
+                                <Radio value={value} />
+                                <Typography>{value}</Typography>
+                            </label>
+                        ))}
+                    </RadioGroup>
+                    <ToggleGroup aria-label="Toggle group" defaultValue="Week">
+                        {['Day', 'Week', 'Month'].map((value) => (
+                            <ToggleGroupItem key={value} value={value}>
                                 {value}
-                            </Typography>
-                        </Stack>
+                            </ToggleGroupItem>
+                        ))}
+                    </ToggleGroup>
+                </Row>
+                <Row>
+                    {colors.map((color) => (
+                        <IconButton
+                            key={color}
+                            icon="favorite"
+                            color={color}
+                            aria-label={color}
+                        />
                     ))}
                 </Row>
+            </Section>
+
+            <Section title="Menu">
+                <Row>
+                    <Menu>
+                        <MenuTrigger
+                            render={<Button endIcon="arrow_drop_down" />}
+                        >
+                            Open menu
+                        </MenuTrigger>
+                        <MenuPopup>
+                            <MenuGroup>
+                                <MenuItem startIcon="person">Profile</MenuItem>
+                                <MenuItem startIcon="settings">
+                                    Settings
+                                </MenuItem>
+                                <MenuItem startIcon="delete" disabled>
+                                    Delete account
+                                </MenuItem>
+                            </MenuGroup>
+                        </MenuPopup>
+                    </Menu>
+                </Row>
+            </Section>
+
+            <Section title="Navigation rail">
+                <div className="pg-frame">
+                    <NavigationRail
+                        aria-label="Preview"
+                        expanded={railExpanded}
+                        onExpandedChange={setRailExpanded}
+                    >
+                        <NavigationRailToggle aria-label="Menu" />
+                        {(
+                            [
+                                ['person', 'Profile'],
+                                ['photo', 'Photos'],
+                                ['settings', 'Settings'],
+                            ] as const
+                        ).map(([icon, label]) => (
+                            <NavigationRailItem
+                                key={label}
+                                icon={icon}
+                                label={label}
+                                href="#"
+                                active={railPage === label}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setRailPage(label)
+                                }}
+                            />
+                        ))}
+                    </NavigationRail>
+                </div>
+            </Section>
+
+            <Section title={`Swatches (${colorMode})`}>
+                {[...families].map(([family, entries]) => (
+                    <div key={family}>
+                        <Typography type="caption">
+                            {familyTitle(family)}
+                        </Typography>
+                        <div className="pg-swatches">
+                            {entries.map(([key, value]) => {
+                                const partner = partnerKey(key)
+                                return (
+                                    <Swatch
+                                        key={key}
+                                        name={key}
+                                        value={value}
+                                        partner={
+                                            partner in theme
+                                                ? partner
+                                                : undefined
+                                        }
+                                    />
+                                )
+                            })}
+                        </div>
+                    </div>
+                ))}
             </Section>
         </>
     )

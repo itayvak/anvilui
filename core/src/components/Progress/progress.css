@@ -41,7 +41,7 @@
             min(1, var(--avl-progress-fraction) * 1000)
     );
     border-radius: var(--avl-radius-full);
-    background-color: var(--avl-color-secondary-container);
+    background-color: var(--avl-color-tonal-container);
     transition: left var(--avl-ease-length-slow) var(--avl-ease-out);
 }
 
@@ -65,7 +65,7 @@
 .avl-progress-linear[data-indeterminate] .avl-progress-track {
     overflow: hidden;
     border-radius: var(--avl-radius-full);
-    background-color: var(--avl-color-secondary-container);
+    background-color: var(--avl-color-tonal-container);
 }
 
 .avl-progress-linear[data-indeterminate] .avl-progress-rest {
@@ -135,7 +135,7 @@
 }
 
 .avl-progress-ring-rest {
-    stroke: var(--avl-color-secondary-container);
+    stroke: var(--avl-color-tonal-container);
 }
 
 /* A zero-length dash with round caps would still draw a dot */
@@ -172,4 +172,29 @@
         :is(.avl-progress-indicator, .avl-progress-ring) {
         animation-duration: 4s;
     }
+}
+
+/* Inline: a ring the height of the surrounding text, sitting in a line */
+.avl-progress-inline {
+    display: inline-flex;
+    flex-direction: row;
+    gap: var(--avl-spacing-x1);
+    vertical-align: -0.125em;
+}
+
+.avl-progress-inline .avl-progress-label {
+    /* Ring first, like an icon before its text */
+    order: 1;
+    color: inherit;
+    font-size: inherit;
+}
+
+.avl-progress-inline .avl-progress-ring {
+    width: 1em;
+    height: 1em;
+}
+
+/* Thicker stroke so the ring stays readable at text size */
+.avl-progress-inline .avl-progress-ring circle {
+    stroke-width: 8;
 }

@@ -9,9 +9,10 @@ import {
 } from 'anvilui'
 import { Row, Section } from '../ui'
 
-const pages: { icon: MaterialSymbol; label: string }[] = [
+const pages: { icon: MaterialSymbol; label: string; count?: number }[] = [
     { icon: 'home', label: 'Home' },
-    { icon: 'search', label: 'Search' },
+    { icon: 'inbox', label: 'Inbox', count: 12 },
+    { icon: 'search', label: 'Search', count: 1250 },
     { icon: 'favorite', label: 'Favorites' },
     { icon: 'person', label: 'A very long profile label' },
 ]
@@ -37,6 +38,7 @@ function Demo(props: {
                         key={page.label}
                         icon={page.icon}
                         label={page.label}
+                        end={page.count}
                         href="#"
                         active={current === page.label}
                         onClick={(e) => {

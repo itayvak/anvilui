@@ -1,0 +1,209 @@
+.avl-toggle-group {
+    position: relative;
+    display: inline-flex;
+    padding: var(--avl-spacing-x1);
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2 + var(--avl-spacing-x1))
+    );
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+}
+
+.avl-toggle-group:is(.avl-fill-outlined, .avl-fill-text) {
+    background-color: transparent;
+}
+
+.avl-toggle-group.avl-fill-outlined {
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+}
+
+.avl-toggle-group[data-disabled] {
+    opacity: 0.5;
+}
+
+.avl-toggle-group-indicator {
+    position: absolute;
+    top: var(--avl-spacing-x1);
+    bottom: var(--avl-spacing-x1);
+    /* left and right are set in px by ToggleGroup.tsx */
+    /* a radius larger than the pill would get scaled down, so cap it */
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2)
+    );
+    background-color: var(--avl-toggle-group-selected);
+}
+
+.avl-toggle-group-item:is([data-checked], [data-pressed]) {
+    color: var(--avl-toggle-group-on-selected);
+}
+
+/* the selected pill uses each color's container variant */
+.avl-toggle-group.avl-color-primary {
+    --avl-toggle-group-selected: var(--avl-color-primary-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-primary-container);
+}
+
+.avl-toggle-group.avl-color-tonal {
+    --avl-toggle-group-selected: var(--avl-color-tonal-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-tonal-container);
+}
+
+.avl-toggle-group.avl-color-success {
+    --avl-toggle-group-selected: var(--avl-color-success-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-success-container);
+}
+
+.avl-toggle-group.avl-color-warning {
+    --avl-toggle-group-selected: var(--avl-color-warning-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-warning-container);
+}
+
+.avl-toggle-group.avl-color-error {
+    --avl-toggle-group-selected: var(--avl-color-error-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-error-container);
+}
+
+.avl-toggle-group.avl-color-container {
+    --avl-toggle-group-selected: var(--avl-color-container);
+    --avl-toggle-group-on-selected: var(--avl-color-on-container);
+}
+
+.avl-toggle-group.avl-color-surface {
+    --avl-toggle-group-selected: var(--avl-color-surface);
+    --avl-toggle-group-on-selected: var(--avl-color-on-surface);
+}
+
+.avl-toggle-group[data-ready] .avl-toggle-group-indicator {
+    --avl-toggle-group-lead: var(--avl-ease-length-normal) var(--avl-ease-out);
+    /* slower and a beat late, so the pill stretches before it catches up */
+    --avl-toggle-group-trail: var(--avl-ease-length-slow) var(--avl-ease-out)
+        calc(var(--avl-ease-length-short) / 2);
+    transition:
+        left var(--avl-toggle-group-lead),
+        right var(--avl-toggle-group-lead),
+        opacity var(--avl-ease-length-normal) ease-out;
+}
+
+.avl-toggle-group[data-ready]
+    .avl-toggle-group-indicator[data-direction='forward'] {
+    transition:
+        right var(--avl-toggle-group-lead),
+        left var(--avl-toggle-group-trail),
+        opacity var(--avl-ease-length-normal) ease-out;
+}
+
+.avl-toggle-group[data-ready]
+    .avl-toggle-group-indicator[data-direction='backward'] {
+    transition:
+        left var(--avl-toggle-group-lead),
+        right var(--avl-toggle-group-trail),
+        opacity var(--avl-ease-length-normal) ease-out;
+}
+
+.avl-toggle-group-item {
+    /* above the indicator */
+    position: relative;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--avl-spacing-x2);
+    min-height: var(--avl-button-height);
+    padding: 0 var(--avl-toggle-group-padding);
+    border: none;
+    outline: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        color var(--avl-ease-length-normal) ease-out,
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-toggle-group-item:focus-visible {
+    /* not the nested main color: outlined/text set it to transparent */
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+    border-radius: var(--avl-radius-small);
+}
+
+.avl-toggle-group-item:active:not([data-disabled]) {
+    transform: scale(0.96);
+    transition: 10ms var(--avl-ease-out);
+}
+
+.avl-toggle-group-item[data-disabled] {
+    cursor: default;
+}
+
+.avl-toggle-group-item .avl-icon {
+    font-size: 1.25em;
+}
+
+.avl-toggle-group-size-small {
+    --avl-button-height: var(--avl-spacing-x8);
+    --avl-toggle-group-padding: var(--avl-spacing-x3);
+    font-size: var(--avl-font-size-label-small);
+}
+
+.avl-toggle-group-size-normal {
+    --avl-button-height: var(--avl-spacing-x10);
+    --avl-toggle-group-padding: var(--avl-spacing-x4);
+    font-size: var(--avl-font-size-label);
+}
+
+.avl-toggle-group-size-big {
+    --avl-button-height: var(--avl-spacing-x12);
+    --avl-toggle-group-padding: var(--avl-spacing-x8);
+    font-size: var(--avl-font-size-label-large);
+}
+
+/* Multiple: each pressed segment gets its own pill, and neighbors that are
+   both on merge into one by squaring off the corners they share */
+.avl-toggle-group[data-multiple] .avl-toggle-group-item {
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2)
+    );
+    transition:
+        color var(--avl-ease-length-normal) ease-out,
+        background-color var(--avl-ease-length-normal) ease-out,
+        border-radius var(--avl-ease-length-normal) var(--avl-ease-out),
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-toggle-group-item[data-pressed] {
+    background-color: var(--avl-toggle-group-selected);
+}
+
+.avl-toggle-group-item[data-pressed]:has(+ [data-pressed]) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+}
+
+.avl-toggle-group-item[data-pressed] + [data-pressed] {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+}
+
+/* Collapsed to nothing (gap included) until its segment is pressed */
+.avl-toggle-group-check {
+    width: 0;
+    margin-inline-end: calc(-1 * var(--avl-spacing-x2));
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        width var(--avl-ease-length-normal) var(--avl-ease-out),
+        margin var(--avl-ease-length-normal) var(--avl-ease-out),
+        opacity var(--avl-ease-length-short) linear;
+}
+
+.avl-toggle-group-item[data-pressed] .avl-toggle-group-check {
+    width: 1em;
+    margin-inline-end: 0;
+    opacity: 1;
+}

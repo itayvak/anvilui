@@ -1,12 +1,17 @@
 .avl-switch {
+    /* Inner height of the track; the thumb sits centered in a square of it
+       at either end */
+    --avl-switch-inner: calc(
+        var(--avl-spacing-x8) - 2 * var(--avl-outline-size)
+    );
+    --avl-switch-thumb-size: var(--avl-spacing-x4);
     position: relative;
     display: inline-flex;
-    align-items: center;
     flex-shrink: 0;
     box-sizing: border-box;
     width: var(--avl-spacing-x13);
     height: var(--avl-spacing-x8);
-    padding: var(--avl-spacing-x1);
+    padding: 0;
     cursor: pointer;
     border: var(--avl-outline-size) solid var(--avl-color-outline);
     border-radius: var(--avl-radius-button);
@@ -15,26 +20,20 @@
 }
 
 .avl-switch[data-checked] {
+    --avl-switch-thumb-size: var(--avl-spacing-x6);
     border-color: var(--avl-color-primary);
     background-color: var(--avl-color-primary);
 }
 
 .avl-switch:is(:active, :has(~ input:active)):not([data-disabled]) {
+    --avl-switch-thumb-size: var(--avl-spacing-x6);
     transform: scale(0.97);
 }
 
-.avl-switch:is(:active, :has(~ input:active)):not([data-disabled])
-    .avl-switch-thumb {
-    width: var(--avl-spacing-x6);
-    height: var(--avl-spacing-x6);
-    transform: translateX(-5%);
-}
-
-.avl-switch[data-checked]:is(:active, :has(~ input:active)):not([data-disabled])
-    .avl-switch-thumb {
-    width: var(--avl-spacing-x7);
-    height: var(--avl-spacing-x7);
-    transform: translateX(calc(var(--avl-spacing-x5) - 10%));
+.avl-switch[data-checked]:is(:active, :has(~ input:active)):not(
+        [data-disabled]
+    ) {
+    --avl-switch-thumb-size: var(--avl-spacing-x7);
 }
 
 .avl-switch[data-disabled] {
@@ -42,17 +41,42 @@
     cursor: default;
 }
 
+/* Positioned by its two edges, so each can move at its own speed: the
+   leading edge goes first and the trailing one catches up, stretching the
+   thumb on the way */
 .avl-switch-thumb {
-    width: var(--avl-spacing-x4);
-    height: var(--avl-spacing-x4);
+    --avl-switch-thumb-edge: calc(
+        (var(--avl-switch-inner) - var(--avl-switch-thumb-size)) / 2
+    );
+    --avl-switch-lead: var(--avl-ease-length-normal) var(--avl-ease-out);
+    --avl-switch-trail: var(--avl-ease-length-slow) var(--avl-ease-out)
+        calc(var(--avl-ease-length-short) / 2);
+    position: absolute;
+    top: 50%;
+    left: var(--avl-switch-thumb-edge);
+    right: calc(
+        100% - var(--avl-switch-thumb-edge) - var(--avl-switch-thumb-size)
+    );
+    height: var(--avl-switch-thumb-size);
+    translate: 0 -50%;
     border-radius: var(--avl-radius-button);
     background-color: var(--avl-color-outline);
-    transition: var(--avl-ease-length-normal) var(--avl-ease-out);
+    transition:
+        left var(--avl-switch-lead),
+        right var(--avl-switch-trail),
+        height var(--avl-switch-lead),
+        background-color var(--avl-ease-length-normal) linear;
 }
 
 .avl-switch[data-checked] .avl-switch-thumb {
-    width: var(--avl-spacing-x6);
-    height: var(--avl-spacing-x6);
-    transform: translateX(var(--avl-spacing-x5));
+    left: calc(
+        100% - var(--avl-switch-thumb-edge) - var(--avl-switch-thumb-size)
+    );
+    right: var(--avl-switch-thumb-edge);
     background-color: var(--avl-color-on-primary);
+    transition:
+        right var(--avl-switch-lead),
+        left var(--avl-switch-trail),
+        height var(--avl-switch-lead),
+        background-color var(--avl-ease-length-normal) linear;
 }

@@ -5,10 +5,10 @@ export type ThemePair = { light: Theme; dark: Theme }
 
 export type CreateThemeOptions = {
     /**
-     * Seed for the secondary roles (selected states, secondary buttons), as
+     * Seed for the tonal roles (selected states, tonal buttons), as
      * hex. @default the primary color
      */
-    secondary?: string
+    tonal?: string
 }
 
 /**
@@ -20,7 +20,7 @@ export function createTheme(
     options: CreateThemeOptions = {}
 ): ThemePair {
     const p = toOklch(parseHex(primary))
-    const s = options.secondary ? toOklch(parseHex(options.secondary)) : p
+    const s = options.tonal ? toOklch(parseHex(options.tonal)) : p
     return {
         light: generate(baseLightTheme, p, s),
         dark: generate(baseDarkTheme, p, s),
@@ -48,7 +48,7 @@ export async function createThemeFromImage(
     const [primary, secondary] = mainColors(
         ctx.getImageData(0, 0, size, size).data
     )
-    return createTheme(primary, { secondary })
+    return createTheme(primary, { tonal: secondary })
 }
 
 // ---- Generation ----------------------------------------------------------
@@ -62,12 +62,7 @@ const primaryRoles = [
     'onPrimaryContainer',
     'inversePrimary',
 ]
-const secondaryRoles = [
-    'secondary',
-    'onSecondary',
-    'secondaryContainer',
-    'onSecondaryContainer',
-]
+const tonalRoles = ['tonal', 'onTonal', 'tonalContainer', 'onTonalContainer']
 const neutralRoles = [
     'background',
     'onBackground',
@@ -100,7 +95,7 @@ function generate(base: Theme, primary: Lch, secondary: Lch): Theme {
         }
     }
     set(primaryRoles, primary, false)
-    set(secondaryRoles, secondary, false)
+    set(tonalRoles, secondary, false)
     set(neutralRoles, primary, true)
     return theme
 }

@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import {
     Switch,
-    Toolbar,
-    ToolbarButton,
-    ToolbarSeparator,
+    FloatingToolbar,
+    FloatingToolbarButton,
+    FloatingToolbarSeparator,
     Typography,
     useSnackbar,
 } from 'anvilui'
 import { Row, Section, Labeled } from '../ui'
 
-export function ToolbarPlayground() {
+export function FloatingToolbarPlayground() {
     const snackbar = useSnackbar()
     const [inverse, setInverse] = useState(false)
     const say = (message: string) => () => snackbar.show({ message })
@@ -26,78 +26,87 @@ export function ToolbarPlayground() {
                     </Labeled>
                 </Row>
                 <Row>
-                    <Toolbar inverseColor={inverse} aria-label="Browser">
-                        <ToolbarButton
+                    <FloatingToolbar
+                        inverseColor={inverse}
+                        aria-label="Browser"
+                    >
+                        <FloatingToolbarButton
                             icon="arrow_back"
                             aria-label="Back"
                             onClick={say('Back')}
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="arrow_forward"
                             aria-label="Forward"
                             onClick={say('Forward')}
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="add"
                             aria-label="New tab"
                             fillType="filled"
                             onClick={say('New tab')}
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="tab"
                             aria-label="Tabs"
                             onClick={say('Tabs')}
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="more_vert"
                             aria-label="More"
                             onClick={say('More')}
                         />
-                    </Toolbar>
+                    </FloatingToolbar>
                 </Row>
             </Section>
             <Section title="With a separator, one disabled">
                 <Row>
-                    <Toolbar inverseColor={inverse} aria-label="Formatting">
-                        <ToolbarButton icon="format_bold" aria-label="Bold" />
-                        <ToolbarButton
+                    <FloatingToolbar
+                        inverseColor={inverse}
+                        aria-label="Formatting"
+                    >
+                        <FloatingToolbarButton
+                            icon="format_bold"
+                            aria-label="Bold"
+                        />
+                        <FloatingToolbarButton
                             icon="format_italic"
                             aria-label="Italic"
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="format_underlined"
                             aria-label="Underline"
                             disabled
                         />
-                        <ToolbarSeparator />
-                        <ToolbarButton
+                        <FloatingToolbarSeparator />
+                        <FloatingToolbarButton
                             icon="format_align_left"
                             aria-label="Align left"
                         />
-                        <ToolbarButton
+                        <FloatingToolbarButton
                             icon="format_align_center"
                             aria-label="Align center"
                         />
-                    </Toolbar>
+                    </FloatingToolbar>
                 </Row>
             </Section>
             <Section title="Vertical">
                 <Row>
-                    <Toolbar
+                    <FloatingToolbar
                         inverseColor={inverse}
                         aria-label="Tools"
                         orientation="vertical"
                     >
-                        <ToolbarButton icon="edit" aria-label="Draw" />
-                        <ToolbarButton
+                        <FloatingToolbarButton icon="edit" aria-label="Draw" />
+                        <FloatingToolbarButton
                             icon="add"
                             aria-label="Add"
                             fillType="filled"
                         />
-                        <ToolbarSeparator />
-                        <ToolbarButton icon="undo" aria-label="Undo" />
-                        <ToolbarButton icon="redo" aria-label="Redo" />
-                    </Toolbar>
+                        <FloatingToolbarSeparator />
+                        <FloatingToolbarButton icon="undo" aria-label="Undo" />
+                        <FloatingToolbarButton icon="redo" aria-label="Redo" />
+                    </FloatingToolbar>
                 </Row>
             </Section>
         </>

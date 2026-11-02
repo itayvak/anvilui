@@ -76,18 +76,34 @@
 }
 
 /* Base UI sets --active-tab-left/width on it: the whole tab. Inset so it
-   doesn't run edge to edge (it can't match the label's width exactly). */
+   doesn't run edge to edge (it can't match the label's width exactly).
+   Positioned by its two edges, like the Switch thumb: the edge facing the
+   new tab goes first and the other catches up, stretching the line on the
+   way. `right` is computed from `left` rather than Base UI's
+   --active-tab-right, which counts from the scroll width, not the box. */
 .avl-tabs-indicator {
+    --avl-tabs-lead: var(--avl-ease-length-normal) var(--avl-ease-out);
+    --avl-tabs-trail: var(--avl-ease-length-slow) var(--avl-ease-out)
+        calc(var(--avl-ease-length-short) / 2);
     position: absolute;
     bottom: 0;
     left: calc(var(--active-tab-left) + var(--avl-spacing-x4));
-    width: calc(var(--active-tab-width) - var(--avl-spacing-x8));
+    right: calc(
+        100% - var(--active-tab-left) - var(--active-tab-width) +
+            var(--avl-spacing-x4)
+    );
     height: 3px;
     border-radius: 3px 3px 0 0;
     background-color: var(--avl-color-primary);
     transition:
-        left var(--avl-ease-length-normal) var(--avl-ease-out),
-        width var(--avl-ease-length-normal) var(--avl-ease-out);
+        left var(--avl-tabs-lead),
+        right var(--avl-tabs-trail);
+}
+
+.avl-tabs-indicator[data-activation-direction='right'] {
+    transition:
+        right var(--avl-tabs-lead),
+        left var(--avl-tabs-trail);
 }
 
 .avl-tabs-panel {

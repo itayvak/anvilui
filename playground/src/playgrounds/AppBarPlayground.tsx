@@ -63,8 +63,14 @@ export function AppBarPlayground() {
             <Section title="Colors">
                 <AppBar
                     style={box}
-                    fillType="filled"
-                    label="Tinted (container, filled)"
+                    label="Default (container, filled)"
+                    start={menu}
+                    end={actions}
+                />
+                <AppBar
+                    style={box}
+                    fillType="text"
+                    label="Colorless (text)"
                     start={menu}
                     end={actions}
                 />
@@ -78,9 +84,9 @@ export function AppBarPlayground() {
                 />
                 <AppBar
                     style={box}
-                    color="secondary"
+                    color="tonal"
                     fillType="filled"
-                    label="Secondary"
+                    label="Tonal"
                     start={back}
                     end={actions}
                 />

@@ -68,8 +68,8 @@
 .avl-filter-chip[data-pressed] {
     padding-inline-start: var(--avl-spacing-x2);
     border-color: transparent;
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
 }
 
 .avl-filter-chip[data-pressed] .avl-filter-chip-check {
@@ -79,8 +79,8 @@
 .avl-filter-chip[data-pressed]:hover:not([data-disabled]) {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-secondary-container) 92%,
-        var(--avl-color-on-secondary-container)
+        var(--avl-color-tonal-container) 92%,
+        var(--avl-color-on-tonal-container)
     );
 }
 
@@ -130,4 +130,10 @@
 
 .avl-input-chip-remove:disabled {
     cursor: default;
+}
+
+/* Clips the label while InputChip's exit animation squeezes it to nothing */
+.avl-input-chip[data-removing] {
+    overflow: hidden;
+    pointer-events: none;
 }

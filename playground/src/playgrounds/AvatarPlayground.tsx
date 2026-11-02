@@ -5,7 +5,7 @@ import { Row, Section, SelectControl } from '../ui'
 const sizes = ['small', 'normal', 'big'] as const
 const colors = [
     'primary',
-    'secondary',
+    'tonal',
     'success',
     'warning',
     'error',

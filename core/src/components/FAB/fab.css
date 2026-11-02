@@ -20,7 +20,19 @@
     white-space: nowrap;
     cursor: pointer;
     box-shadow: var(--avl-shadow-medium);
+    /* Sticks to a nearby cursor (set by FAB.tsx); on release it springs
+       back with the transition below. Separate from `transform`, so it adds
+       to the press squish instead of replacing it. */
+    translate: var(--avl-fab-pull-x, 0) var(--avl-fab-pull-y, 0);
     transition: var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+/* While stuck: follow the cursor closely, without bounce */
+.avl-fab[data-stuck]:not(:active) {
+    transition:
+        translate var(--avl-ease-length-short) var(--avl-ease-smooth),
+        background-color var(--avl-ease-length-normal) var(--avl-ease-out),
+        box-shadow var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
 .avl-fab .avl-icon {

@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import {
     Button as BaseButton,
     type ButtonProps as BaseButtonProps,
@@ -5,7 +6,8 @@ import {
 import type { MaterialSymbol } from 'material-symbols'
 import { colorClass, type ColorProps } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
-import { cx, withClass } from '../../utils'
+import { useMagnet } from './magnet'
+import { cx, mergeRefs, withClass } from '../../utils'
 import './fab.css'
 
 export type FABProps = Omit<BaseButtonProps, 'children'> &
@@ -14,6 +16,8 @@ export type FABProps = Omit<BaseButtonProps, 'children'> &
         icon: MaterialSymbol
         /** 40px, 56px or 96px tall. @default 'normal' */
         size?: 'small' | 'normal' | 'big'
+        /** Stick to a mouse cursor that comes close. @default true */
+        sticky?: boolean
     } & (
         | {
               /** Visible text next to the icon: makes it an extended FAB. */
@@ -35,14 +39,20 @@ export function FAB({
     icon,
     label,
     size = 'normal',
+    sticky = true,
     color,
     fillType,
     className,
+    ref,
     ...props
 }: FABProps) {
+    const local = useRef<HTMLButtonElement>(null)
+    useMagnet(local, sticky && !props.disabled)
+
     return (
         <BaseButton
             {...props}
+            ref={mergeRefs(local, ref)}
             className={withClass(
                 cx(
                     'avl-fab',

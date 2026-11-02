@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import { colorClass, type ComponentColor } from '../../colors/colors'
 import { cx } from '../../utils'
+import { AnimatedNumber } from '../AnimatedNumber/AnimatedNumber'
 import './badge.css'
 
 export type BadgeProps = ComponentProps<'span'> & {
@@ -40,7 +41,13 @@ export function Badge({
                 )}
                 {...(!children && props)}
             >
-                {count !== undefined && (count > max ? `${max}+` : count)}
+                {/* Digits roll when the count changes */}
+                {count !== undefined && (
+                    <>
+                        <AnimatedNumber value={Math.min(count, max)} />
+                        {count > max && '+'}
+                    </>
+                )}
             </span>
         )
 

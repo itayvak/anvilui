@@ -92,8 +92,8 @@
 }
 
 .avl-select-item[data-selected]:not([data-highlighted]) {
-    background-color: var(--avl-color-secondary-container);
-    color: var(--avl-color-on-secondary-container);
+    background-color: var(--avl-color-tonal-container);
+    color: var(--avl-color-on-tonal-container);
 }
 
 .avl-select-item-indicator {

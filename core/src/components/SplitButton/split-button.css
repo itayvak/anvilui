@@ -1,0 +1,38 @@
+.avl-split-button {
+    display: inline-flex;
+    gap: 2px;
+}
+
+/* buttons in the middle get the small radius */
+.avl-split-button > :is(.avl-button, .avl-icon-button) {
+    border-radius: var(--avl-radius-small);
+    /* A radius larger than the button (like the 1000px pill) makes the browser
+       scale every corner down to fit, which would flatten the small inner
+       corners. Cap it at half the height so the corners never get scaled. */
+    --avl-split-button-outer-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2)
+    );
+    --avl-button-active-transform: scaleY(0.9) scaleX(1.02);
+}
+
+/* Only the two outer edges keep the normal radius. First and last among the
+   buttons, not :first-child / :last-child: an open Menu or Popover puts
+   invisible focus-guard elements next to its trigger. */
+.avl-split-button
+    > :is(.avl-button, .avl-icon-button):not(
+        :is(.avl-button, .avl-icon-button) ~ *
+    ) {
+    border-start-start-radius: var(--avl-split-button-outer-radius);
+    border-end-start-radius: var(--avl-split-button-outer-radius);
+    --avl-button-active-transform: scaleX(0.97) scaleY(1.03) translateX(2%);
+}
+
+.avl-split-button
+    > :is(.avl-button, .avl-icon-button):not(
+        :has(~ :is(.avl-button, .avl-icon-button))
+    ) {
+    border-start-end-radius: var(--avl-split-button-outer-radius);
+    border-end-end-radius: var(--avl-split-button-outer-radius);
+    --avl-button-active-transform: scaleX(0.97) scaleY(1.03) translateX(-2%);
+}
