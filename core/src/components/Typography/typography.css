@@ -17,7 +17,7 @@
 .avl-typography-h5,
 .avl-typography-h6 {
     font-family: var(--avl-font-title);
-    font-weight: normal;
+    font-weight: var(--avl-font-weight-regular);
 }
 
 .avl-typography-h1 {

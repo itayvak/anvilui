@@ -11,7 +11,7 @@ import {
     NavigationDrawerTrigger,
     Typography,
 } from 'anvilui'
-import { Section } from '../ui'
+import { Section, Stack } from '../ui'
 
 const mail: { icon: MaterialSymbol; label: string; count?: number }[] = [
     { icon: 'inbox', label: 'Inbox', count: 24 },
@@ -48,7 +48,7 @@ export function NavigationDrawerPlayground() {
 
     return (
         <Section title="In an app bar">
-            <div style={{ maxWidth: 412, border: '1px dashed gray' }}>
+            <Stack style={{ maxWidth: 412, border: '1px dashed gray' }}>
                 <NavigationDrawer>
                     <AppBar
                         label={current}
@@ -84,7 +84,7 @@ export function NavigationDrawerPlayground() {
                 <Typography style={{ padding: 16 }}>
                     Page: {current}. Open the menu; picking an item closes it.
                 </Typography>
-            </div>
+            </Stack>
         </Section>
     )
 }

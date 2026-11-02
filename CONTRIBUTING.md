@@ -116,10 +116,14 @@ Base UI sets `data-*` attributes for state. Style those, so the visuals always m
 | spacing / sizes | `var(--avl-spacing-x1)` … `x20` (multiples of the spacing unit; for more, use `calc(var(--avl-spacing-x1) * n)`)                                                                                           |
 | radius          | `var(--avl-radius-small \| medium \| large \| button \| full)`                                                                                                                                             |
 | font size       | `var(--avl-font-size-body \| caption \| label \| label-small \| label-large \| h1…h6)`                                                                                                                     |
+| font weight     | `var(--avl-font-weight-regular \| medium \| semibold \| bold)`                                                                                                                                             |
+| shadow          | `var(--avl-shadow-small \| medium \| large)`; for a shadow cast sideways or upward, use `var(--avl-color-shadow)`                                                                                          |
+| backdrop        | `var(--avl-color-scrim)` behind dialogs and sheets                                                                                                                                                         |
+| disabled        | `opacity: var(--avl-disabled-opacity)`                                                                                                                                                                     |
 | font            | `var(--avl-font-main \| title \| mono)`                                                                                                                                                                    |
 | motion          | `var(--avl-ease-length-short \| normal \| slow)` + `var(--avl-ease-out \| in \| smooth)`. `out` is springy (buttons, popups); `smooth` has no overshoot (anything sliding across or in from a screen edge) |
 | border          | `var(--avl-outline-size) solid var(--avl-color-outline)`                                                                                                                                                   |
-| theme colors    | `var(--avl-color-<role>)`, e.g. `--avl-color-container-low`, `--avl-color-on-primary`                                                                                                                      |
+| theme colors    | `var(--avl-color-<role>)`, e.g. `--avl-color-surface`, `--avl-color-on-primary`                                                                                                                            |
 
 Small optical tweaks (1–3px offsets, a 10ms press transition) are fine as raw values. Anything a theme might want to change is not.
 
@@ -149,7 +153,7 @@ Hover and press states mix the two colors rather than introducing new ones:
 
 ### Shared visual conventions
 
-- **Disabled:** reduced opacity plus `cursor: default`. No separate disabled colors.
+- **Disabled:** `opacity: var(--avl-disabled-opacity)` plus `cursor: default`. No separate disabled colors.
 - **Press feedback:** a slight `scale()` on `:active` (0.95–0.99), with `transition: 10ms`. Add the class to the reduced-motion list in [global.css](core/src/components/AnvilRoot/global.css).
 - **Focus:** the global `:focus-visible` ring applies automatically. Don't remove `outline` without replacing it with something equally visible.
 - **Small controls** (checkbox, radio) get an invisible `::after` hit area of at least 40px (`--avl-spacing-x10`).
@@ -162,7 +166,8 @@ Hover and press states mix the two colors rather than introducing new ones:
 - Every interactive element has an accessible name: visible text, `aria-label`, or a wrapping `<label>`.
 - Decorative icons are hidden from screen readers (`Icon` does this unless you give it an `aria-label`).
 - Don't hard-code heading levels. Give text components an `as` prop (see [Typography](core/src/components/Typography/Typography.tsx) and `CardTitle`).
-- Text contrast comes from the theme's `on-*` pairs. Always put `on-x` text on an `x` background.
+- Text contrast comes from the theme's `on-*` pairs. Always put `on-x` text on an `x` background. Secondary text uses `--avl-color-on-background-muted`; lines between content use `--avl-color-divider`, not `outline`.
+- Name theme colors by what they're for (`divider`, `onBackgroundMuted`). No `somethingVariant` names.
 
 ## Code style
 

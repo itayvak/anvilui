@@ -17,45 +17,41 @@ export function NavigationBarPlayground() {
         <>
             <Section title="Four destinations">
                 {/* Phone width, so it looks like it would on a phone */}
-                <div style={{ maxWidth: 412 }}>
-                    <NavigationBar aria-label="Main">
-                        {pages.map((page) => (
-                            <NavigationBarItem
-                                key={page.label}
-                                icon={page.icon}
-                                label={page.label}
-                                href="#"
-                                active={current === page.label}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    setCurrent(page.label)
-                                }}
-                            />
-                        ))}
-                    </NavigationBar>
-                </div>
+                <NavigationBar style={{ maxWidth: 412 }} aria-label="Main">
+                    {pages.map((page) => (
+                        <NavigationBarItem
+                            key={page.label}
+                            icon={page.icon}
+                            label={page.label}
+                            href="#"
+                            active={current === page.label}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setCurrent(page.label)
+                            }}
+                        />
+                    ))}
+                </NavigationBar>
             </Section>
             <Section title="Three destinations">
-                <div style={{ maxWidth: 412 }}>
-                    <NavigationBar aria-label="Library">
-                        <NavigationBarItem
-                            icon="music_note"
-                            label="Music"
-                            href="#"
-                            active
-                        />
-                        <NavigationBarItem
-                            icon="podcasts"
-                            label="Podcasts"
-                            href="#"
-                        />
-                        <NavigationBarItem
-                            icon="menu_book"
-                            label="Books"
-                            href="#"
-                        />
-                    </NavigationBar>
-                </div>
+                <NavigationBar style={{ maxWidth: 412 }} aria-label="Library">
+                    <NavigationBarItem
+                        icon="music_note"
+                        label="Music"
+                        href="#"
+                        active
+                    />
+                    <NavigationBarItem
+                        icon="podcasts"
+                        label="Podcasts"
+                        href="#"
+                    />
+                    <NavigationBarItem
+                        icon="menu_book"
+                        label="Books"
+                        href="#"
+                    />
+                </NavigationBar>
             </Section>
         </>
     )

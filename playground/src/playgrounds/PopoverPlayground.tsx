@@ -14,7 +14,7 @@ import {
     Switch,
     Typography,
 } from 'anvilui'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 const sides = ['bottom', 'top', 'left', 'right'] as const
 
@@ -73,14 +73,12 @@ export function PopoverPlayground() {
                         />
                         <PopoverPopup side={side}>
                             <PopoverTitle>Settings</PopoverTitle>
-                            <label className="pg-checkbox">
+                            <Labeled label="Notifications" type="body">
                                 <Switch defaultChecked />
-                                <Typography>Notifications</Typography>
-                            </label>
-                            <label className="pg-checkbox">
+                            </Labeled>
+                            <Labeled label="Compact mode" type="body">
                                 <Switch />
-                                <Typography>Compact mode</Typography>
-                            </label>
+                            </Labeled>
                         </PopoverPopup>
                     </Popover>
                 </Row>

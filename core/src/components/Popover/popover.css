@@ -11,7 +11,7 @@
     color: var(--avl-color-on-background);
     font-family: var(--avl-font-title);
     font-size: var(--avl-font-size-h6);
-    font-weight: normal;
+    font-weight: var(--avl-font-weight-regular);
 }
 
 .avl-popover-description {

@@ -3,6 +3,14 @@
    nothing leaks into the rest of the page. */
 :where(.avl-root, .avl-root *) {
     font-family: var(--avl-font-main);
+    /* Thin, theme-colored scrollbars on a see-through track */
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(
+            in srgb,
+            var(--avl-color-on-background) 30%,
+            transparent
+        )
+        transparent;
 }
 
 :where(.avl-root :focus-visible) {
@@ -24,8 +32,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    /* On descendants, not the root: AnvilRoot sets these inline on the root,
-       and inline styles would beat this rule there. */
+    /* On descendants, not the root: AnvilRoot's own <style> sets these on the
+       root and comes later, so it would win there. */
     .avl-root * {
         --avl-ease-length-short: 0ms;
         --avl-ease-length-normal: 0ms;
@@ -36,6 +44,8 @@
     .avl-root
         :is(
             .avl-button,
+            .avl-calendar-day,
+            .avl-menubar .avl-menu-trigger,
             .avl-icon-button,
             .avl-card-clickable,
             .avl-checkbox,
@@ -44,6 +54,9 @@
             .avl-toggle-group-item,
             .avl-tabs-tab-content,
             .avl-navigation-bar-item-indicator,
+            .avl-accordion-item,
+            .avl-navigation-rail-item-indicator,
+            .avl-navigation-list-item,
             .avl-chip,
             .avl-fab,
             .avl-fab-menu-item,

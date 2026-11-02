@@ -1,8 +1,17 @@
 import { useState } from 'react'
-import { AnvilRoot, IconButton, Typography } from 'anvilui'
+import {
+    AnvilRoot,
+    AppBar,
+    Button,
+    IconButton,
+    NavigationList,
+    NavigationListItem,
+    Select,
+    SelectItem,
+    Typography,
+} from 'anvilui'
 import type { DesignTokens } from 'anvilui'
 import { ColorModeToggle } from './ColorModeToggle'
-import { getStoredColorMode } from './colorMode'
 import { getStoredTokens, storeTokens } from './tokens'
 import { TokensPanel } from './TokensPanel'
 import {
@@ -17,7 +26,13 @@ import { demos } from './demos'
 import { DemosPage } from './DemosPage'
 import './playground.css'
 
-const names = Object.keys(playgrounds)
+const names = Object.keys(playgrounds).sort()
+
+// The URL hash keeps the current playground across reloads
+const fromHash = () => {
+    const hash = decodeURIComponent(location.hash.slice(1))
+    return names.includes(hash) ? hash : names[0]
+}
 
 // No router: the Vite dev server serves index.html for every path, so the
 // page is picked from the URL once on load and links do full navigations.
@@ -26,7 +41,7 @@ const demoSlug = path.match(/^\/demos\/([^/]+)$/)?.[1]
 const onDemos = path === '/demos' || demoSlug !== undefined
 
 export default function App() {
-    const [name, setName] = useState(names[0])
+    const [name, setName] = useState(fromHash)
     const Playground = playgrounds[name]
     const [tokens, setTokens] = useState(getStoredTokens)
     const [tokensOpen, setTokensOpen] = useState(false)
@@ -44,71 +59,67 @@ export default function App() {
 
     return (
         <AnvilRoot
-            defaultColorMode={getStoredColorMode()}
+            storageKey="anvilui-playground-color-mode"
             tokens={tokens}
             lightTheme={palettes[palette].light}
             darkTheme={palettes[palette].dark}
         >
             {/* Demos are whole apps with their own bars, so no playground header */}
             {demoSlug === undefined && (
-                <header className="pg-header">
-                    <div className="pg-header-start">
-                        <nav className="pg-nav">
-                            <a
-                                href="/"
-                                aria-current={onDemos ? undefined : 'page'}
-                            >
-                                Components
-                            </a>
-                            <a
-                                href="/demos"
-                                aria-current={onDemos ? 'page' : undefined}
-                            >
-                                Demos
-                            </a>
-                        </nav>
-                        {!onDemos && (
-                            <label>
-                                <Typography>Component:</Typography>
-                                <select
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                <AppBar
+                    label="AnvilUI Playground"
+                    labelAs="h1"
+                    className="pg-header"
+                    color="surface"
+                    fillType="filled"
+                    end={
+                        <div className="pg-header-end">
+                            <nav className="pg-nav" aria-label="Sections">
+                                <Button
+                                    render={<a href="/" />}
+                                    nativeButton={false}
+                                    fillType={onDemos ? 'text' : 'filled'}
+                                    color="tonal"
+                                    aria-current={onDemos ? undefined : 'page'}
                                 >
-                                    {names.map((n) => (
-                                        <option key={n} value={n}>
-                                            {n}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                        )}
-                    </div>
-                    <div className="pg-header-end">
-                        <label>
-                            <Typography>Palette:</Typography>
-                            <select
+                                    Components
+                                </Button>
+                                <Button
+                                    render={<a href="/demos" />}
+                                    nativeButton={false}
+                                    fillType={onDemos ? 'filled' : 'text'}
+                                    color="tonal"
+                                    aria-current={onDemos ? 'page' : undefined}
+                                >
+                                    Demos
+                                </Button>
+                            </nav>
+                            <Select
+                                label="Palette"
+                                size="small"
+                                className="pg-select"
                                 value={palette}
-                                onChange={(e) =>
-                                    changePalette(e.target.value as PaletteName)
+                                onValueChange={(next) =>
+                                    next && changePalette(next)
                                 }
                             >
                                 {paletteNames.map((n) => (
-                                    <option key={n} value={n}>
+                                    <SelectItem key={n} value={n}>
                                         {n}
-                                    </option>
+                                    </SelectItem>
                                 ))}
-                            </select>
-                        </label>
-                        <IconButton
-                            icon="tune"
-                            aria-label="Edit design tokens"
-                            aria-pressed={tokensOpen}
-                            fillType={tokensOpen ? 'filled' : 'text'}
-                            onClick={() => setTokensOpen(!tokensOpen)}
-                        />
-                        <ColorModeToggle />
-                    </div>
-                </header>
+                            </Select>
+                            <IconButton
+                                icon="tune"
+                                aria-label="Edit design tokens"
+                                aria-pressed={tokensOpen}
+                                fillType={tokensOpen ? 'filled' : 'text'}
+                                onClick={() => setTokensOpen(!tokensOpen)}
+                            />
+                            <ColorModeToggle />
+                        </div>
+                    }
+                />
             )}
             {demoSlug === undefined && tokensOpen && (
                 <TokensPanel
@@ -119,10 +130,30 @@ export default function App() {
             )}
             {demoSlug !== undefined ? (
                 <DemoView slug={demoSlug} />
-            ) : (
+            ) : onDemos ? (
                 <main className="pg-main">
-                    {onDemos ? <DemosPage /> : <Playground />}
+                    <DemosPage />
                 </main>
+            ) : (
+                <div className="pg-layout">
+                    <NavigationList
+                        aria-label="Components"
+                        className="pg-sidebar"
+                    >
+                        {names.map((n) => (
+                            <NavigationListItem
+                                key={n}
+                                label={n}
+                                href={`#${n}`}
+                                active={n === name}
+                                onClick={() => setName(n)}
+                            />
+                        ))}
+                    </NavigationList>
+                    <main className="pg-main">
+                        <Playground />
+                    </main>
+                </div>
             )}
         </AnvilRoot>
     )
@@ -133,9 +164,15 @@ function DemoView({ slug }: { slug: string }) {
     if (!demo) {
         return (
             <main className="pg-main">
-                <Typography>
-                    No demo called "{slug}". <a href="/demos">Back to demos</a>
-                </Typography>
+                <Typography>No demo called "{slug}".</Typography>
+                <Button
+                    render={<a href="/demos" />}
+                    nativeButton={false}
+                    fillType="text"
+                    startIcon="arrow_back"
+                >
+                    Back to demos
+                </Button>
             </main>
         )
     }

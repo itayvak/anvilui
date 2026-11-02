@@ -15,7 +15,7 @@
     cursor: pointer;
     border: var(--avl-outline-size) solid var(--avl-color-outline);
     border-radius: var(--avl-radius-button);
-    background-color: var(--avl-color-container-low);
+    background-color: var(--avl-color-surface);
     transition: var(--avl-ease-length-normal) var(--avl-ease-out);
 }
 
@@ -37,7 +37,7 @@
 }
 
 .avl-switch[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }
 

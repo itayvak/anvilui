@@ -10,7 +10,7 @@ import {
     Typography,
 } from 'anvilui'
 import type { AvatarGroupProps } from 'anvilui'
-import { RangeControl, Row, Section, SelectControl } from '../ui'
+import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 
@@ -79,10 +79,9 @@ export function AvatarGroupPlayground() {
                         max={people.length}
                         onChange={setCount}
                     />
-                    <label className="pg-checkbox">
+                    <Labeled label="fan">
                         <Checkbox checked={fan} onCheckedChange={setFan} />
-                        <Typography type="caption">fan</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <Typography type="caption">

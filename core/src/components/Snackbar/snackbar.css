@@ -26,7 +26,7 @@
     border-radius: var(--avl-radius-small);
     background-color: var(--avl-color-inverse-surface);
     color: var(--avl-color-inverse-on-surface);
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+    box-shadow: var(--avl-shadow-small);
     /* Stack upward, newest at the bottom. Base UI sets --toast-index (0 is
        the newest) and --toast-offset-y (the height of the ones below). */
     --avl-snackbar-stack-y: calc(

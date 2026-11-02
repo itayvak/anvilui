@@ -1,0 +1,126 @@
+/* Each item is its own surface, 2px apart. Outer corners are large, inner ones
+   small, like grouped menus. An open item pulls away from its neighbours and
+   gets large corners all round, and so do the corners facing it. */
+.avl-accordion {
+    --avl-accordion-motion: var(--avl-ease-length-slow) var(--avl-ease-smooth);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.avl-accordion-item {
+    border-radius: var(--avl-radius-small);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+    transition:
+        border-radius var(--avl-accordion-motion),
+        margin var(--avl-accordion-motion),
+        transform var(--avl-ease-length-normal) var(--avl-ease-out);
+}
+
+.avl-accordion-item:first-child,
+.avl-accordion-item[data-open] + .avl-accordion-item {
+    border-start-start-radius: var(--avl-radius-medium);
+    border-start-end-radius: var(--avl-radius-medium);
+}
+
+.avl-accordion-item:last-child,
+.avl-accordion-item:has(+ .avl-accordion-item[data-open]) {
+    border-end-start-radius: var(--avl-radius-medium);
+    border-end-end-radius: var(--avl-radius-medium);
+}
+
+.avl-accordion-item[data-open] {
+    border-radius: var(--avl-radius-medium);
+}
+
+.avl-accordion-item[data-open]:not(:first-child) {
+    margin-top: var(--avl-spacing-x2);
+}
+
+.avl-accordion-item[data-open]:not(:last-child) {
+    margin-bottom: var(--avl-spacing-x2);
+}
+
+/* Press feedback on the whole item, not just the title row */
+.avl-accordion-item:has(
+    > .avl-accordion-header > .avl-accordion-trigger:active:not([data-disabled])
+) {
+    transform: scale(0.99);
+    transition: transform 10ms var(--avl-ease-out);
+}
+
+/* Header and trigger follow the item's corners, so the hover tint does too */
+.avl-accordion-header {
+    margin: 0;
+    border-radius: inherit;
+}
+
+.avl-accordion-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x3);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--avl-spacing-x14);
+    padding: var(--avl-spacing-x3) var(--avl-spacing-x4);
+    border: none;
+    border-radius: inherit;
+    background-color: transparent;
+    color: inherit;
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+    font-weight: var(--avl-font-weight-medium);
+    text-align: start;
+    cursor: pointer;
+    transition: background-color var(--avl-ease-length-short) linear;
+}
+
+.avl-accordion-trigger[data-panel-open] {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+}
+
+.avl-accordion-trigger:hover:not([data-disabled]) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-surface) 8%,
+        transparent
+    );
+}
+
+.avl-accordion-trigger[data-disabled] {
+    opacity: var(--avl-disabled-opacity);
+    cursor: default;
+}
+
+.avl-accordion-trigger-label {
+    flex: 1;
+    min-width: 0;
+}
+
+.avl-accordion-trigger .avl-icon {
+    flex-shrink: 0;
+    transition: transform var(--avl-accordion-motion);
+}
+
+.avl-accordion-trigger[data-panel-open] .avl-icon {
+    transform: rotate(180deg);
+}
+
+/* Base UI measures the content into --accordion-panel-height */
+.avl-accordion-panel {
+    height: var(--accordion-panel-height);
+    overflow: hidden;
+    transition: height var(--avl-accordion-motion);
+}
+
+.avl-accordion-panel[data-starting-style],
+.avl-accordion-panel[data-ending-style] {
+    height: 0;
+}
+
+.avl-accordion-panel-content {
+    padding: 0 var(--avl-spacing-x4) var(--avl-spacing-x4);
+    font-size: var(--avl-font-size-body);
+}

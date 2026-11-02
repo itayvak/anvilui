@@ -16,10 +16,10 @@
     color: var(--avl-nested-color-on-main);
     font-family: inherit;
     font-size: var(--avl-font-size-body);
-    font-weight: 500;
+    font-weight: var(--avl-font-weight-medium);
     white-space: nowrap;
     cursor: pointer;
-    box-shadow: 0 3px 8px rgb(0 0 0 / 0.25);
+    box-shadow: var(--avl-shadow-medium);
     /* Sticks to a nearby cursor (set by FAB.tsx); on release it springs
        back with the transition below. Separate from `transform`, so it adds
        to the press squish instead of replacing it. */
@@ -79,7 +79,7 @@
         var(--avl-nested-color-main) 90%,
         var(--avl-nested-color-on-main) 10%
     );
-    box-shadow: 0 5px 12px rgb(0 0 0 / 0.3);
+    box-shadow: var(--avl-shadow-large);
 }
 
 .avl-fab:active:not(:disabled) {
@@ -93,7 +93,7 @@
 }
 
 .avl-fab:disabled {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
     box-shadow: none;
 }

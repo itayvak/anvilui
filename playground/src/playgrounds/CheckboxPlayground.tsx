@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Checkbox, Typography } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 export function CheckboxPlayground() {
     const [disabled, setDisabled] = useState(false)
@@ -9,35 +9,30 @@ export function CheckboxPlayground() {
     return (
         <Section title="States">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
             </Row>
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="unchecked" type="body">
                     <Checkbox disabled={disabled} />
-                    <Typography>unchecked</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="checked" type="body">
                     <Checkbox disabled={disabled} defaultChecked />
-                    <Typography>checked</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="indeterminate" type="body">
                     <Checkbox disabled={disabled} indeterminate />
-                    <Typography>indeterminate</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label={<>controlled: {String(checked)}</>} type="body">
                     <Checkbox
                         disabled={disabled}
                         checked={checked}
                         onCheckedChange={setChecked}
                     />
-                    <Typography>controlled: {String(checked)}</Typography>
-                </label>
+                </Labeled>
             </Row>
         </Section>
     )

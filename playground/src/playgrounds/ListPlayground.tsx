@@ -104,7 +104,7 @@ export function ListPlayground() {
                         description="The engine works! Come see it this afternoon if you're free."
                         end={
                             <Badge count={2}>
-                                <span>10:42</span>
+                                <Typography type="caption">10:42</Typography>
                             </Badge>
                         }
                     />

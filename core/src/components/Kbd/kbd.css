@@ -11,8 +11,8 @@
     border: var(--avl-outline-size) solid var(--avl-color-outline);
     border-bottom-width: var(--avl-kbd-depth);
     border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-container-low);
-    color: var(--avl-color-on-container-low);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
     font-family: var(--avl-font-mono);
     font-size: var(--avl-font-size-label-small);
     font-weight: 500;

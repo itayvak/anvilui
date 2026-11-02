@@ -10,7 +10,7 @@ import {
 } from 'anvilui'
 import type { ComponentColor, ComponentFillType } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { Grid, Row, Section } from '../ui'
+import { Grid, Row, Section, Labeled, Stack } from '../ui'
 
 // A button in the card's own color would vanish on a filled card, so pick one
 // that stands out from the fill.
@@ -32,35 +32,31 @@ export function CardPlayground() {
     return (
         <Section title="Colors and fill types">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="title">
                     <Checkbox checked={title} onCheckedChange={setTitle} />
-                    <Typography type="caption">title</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="actions">
                     <Checkbox checked={actions} onCheckedChange={setActions} />
-                    <Typography type="caption">actions</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="clickable">
                     <Checkbox
                         checked={clickable}
                         onCheckedChange={setClickable}
                     />
-                    <Typography type="caption">clickable</Typography>
-                </label>
-                <label className="pg-checkbox">
+                </Labeled>
+                <Labeled label="disabled">
                     <Checkbox
                         checked={disabled}
                         onCheckedChange={setDisabled}
                         disabled={!clickable}
                     />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
                 <Typography type="caption">card clicked: {clicked}</Typography>
             </Row>
             <Grid>
                 {colors.flatMap((color) =>
                     fillTypes.map((fillType) => (
-                        <div key={`${color}-${fillType}`}>
+                        <Stack key={`${color}-${fillType}`}>
                             <Typography type="caption">
                                 {color} / {fillType}
                             </Typography>
@@ -101,7 +97,7 @@ export function CardPlayground() {
                                     </CardActions>
                                 )}
                             </Card>
-                        </div>
+                        </Stack>
                     ))
                 )}
             </Grid>

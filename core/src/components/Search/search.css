@@ -1,0 +1,84 @@
+/* Material 3 search bar. The popup builds on menu.css; only what differs. */
+.avl-search {
+    display: flex;
+    align-items: center;
+    gap: var(--avl-spacing-x1);
+    box-sizing: border-box;
+    width: calc(var(--avl-spacing-x20) * 4);
+    max-width: 100%;
+    height: var(--avl-spacing-x14);
+    padding: 0 var(--avl-spacing-x2) 0 var(--avl-spacing-x4);
+    border-radius: var(--avl-radius-full);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+    cursor: text;
+    transition: background-color var(--avl-ease-length-short) linear;
+}
+
+.avl-search:hover:not(:has(:disabled)) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-surface) 92%,
+        var(--avl-color-on-surface) 8%
+    );
+}
+
+/* The input's own ring would be a box inside the pill, so the pill gets it */
+.avl-search:focus-within {
+    outline: 2px solid var(--avl-color-primary);
+}
+
+.avl-search > .avl-icon {
+    flex-shrink: 0;
+    margin-inline-end: var(--avl-spacing-x2);
+}
+
+.avl-search-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-search-input::placeholder {
+    color: color-mix(in srgb, var(--avl-color-on-surface) 70%, transparent);
+}
+
+/* Native search inputs add their own clear button in some browsers */
+.avl-search-input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.avl-search:has(:disabled) {
+    opacity: var(--avl-disabled-opacity);
+    cursor: default;
+}
+
+/* As wide as the bar */
+.avl-search-popup {
+    width: var(--anchor-width);
+    max-height: min(var(--available-height), calc(var(--avl-spacing-x20) * 4));
+    overflow-y: auto;
+}
+
+/* Nothing to show (no matches, no `empty`): hide the empty container.
+   Base UI always renders the Empty div, filling it only when nothing matches. */
+.avl-search-popup:not(:has(.avl-menu-item, .avl-search-empty:not(:empty))) {
+    display: none;
+}
+
+.avl-search-empty {
+    padding: var(--avl-spacing-x3);
+    color: var(--avl-color-on-surface);
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-search-empty:empty {
+    display: none;
+}

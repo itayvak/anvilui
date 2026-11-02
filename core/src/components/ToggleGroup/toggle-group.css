@@ -6,8 +6,8 @@
         var(--avl-radius-button),
         calc(var(--avl-button-height) / 2 + var(--avl-spacing-x1))
     );
-    background-color: var(--avl-color-container-low);
-    color: var(--avl-color-on-container-low);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
 }
 
 .avl-toggle-group:is(.avl-fill-outlined, .avl-fill-text) {
@@ -68,6 +68,11 @@
 .avl-toggle-group.avl-color-container {
     --avl-toggle-group-selected: var(--avl-color-container);
     --avl-toggle-group-on-selected: var(--avl-color-on-container);
+}
+
+.avl-toggle-group.avl-color-surface {
+    --avl-toggle-group-selected: var(--avl-color-surface);
+    --avl-toggle-group-on-selected: var(--avl-color-on-surface);
 }
 
 .avl-toggle-group[data-ready] .avl-toggle-group-indicator {

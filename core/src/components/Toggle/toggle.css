@@ -1,0 +1,29 @@
+/* Builds on button.css / icon-button.css; only what differs. The color swap
+   comes from the color classes, and the buttons' transition animates it. */
+
+/* Off: the same pill, but with its real radius (half the height) instead of
+   the 1000px token. Animating from 1000px, the springy ease overshoots far
+   below 0 and the corners flash square. The :is() outranks button.css
+   whatever order the stylesheets load in. */
+.avl-toggle:is(.avl-button, .avl-icon-button) {
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) / 2)
+    );
+}
+
+/* On: the pill morphs into a rounded square, sized to the button's height.
+   min() keeps it from getting rounder than a theme's square buttons. */
+.avl-toggle[data-pressed] {
+    border-radius: min(
+        var(--avl-radius-button),
+        calc(var(--avl-button-height) * 0.3)
+    );
+}
+
+.avl-toggle[data-pressed] .avl-icon {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0;
+}

@@ -1,0 +1,75 @@
+/* Material 3 docked date picker */
+.avl-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-calendar-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avl-calendar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.avl-calendar-nav-label {
+    min-width: var(--avl-spacing-x10);
+    font-size: var(--avl-font-size-label);
+    text-align: center;
+}
+
+.avl-calendar-grid {
+    border-collapse: collapse;
+}
+
+.avl-calendar-grid :is(th, td) {
+    padding: 0;
+}
+
+.avl-calendar-weekday {
+    height: var(--avl-spacing-x10);
+    font-size: var(--avl-font-size-label);
+    font-weight: var(--avl-font-weight-regular);
+}
+
+.avl-calendar-day {
+    width: var(--avl-spacing-x10);
+    height: var(--avl-spacing-x10);
+    padding: 0;
+    border: none;
+    border-radius: var(--avl-radius-full);
+    background-color: transparent;
+    color: var(--avl-color-on-surface);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-label);
+    cursor: pointer;
+    transition:
+        background-color var(--avl-ease-length-short) linear,
+        transform 10ms;
+}
+
+.avl-calendar-day:hover {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-on-surface) 8%,
+        transparent
+    );
+}
+
+.avl-calendar-day:active {
+    transform: scale(0.95);
+}
+
+.avl-calendar-day[aria-current='date'] {
+    border: var(--avl-outline-size) solid var(--avl-color-primary);
+    color: var(--avl-color-primary);
+}
+
+.avl-calendar-day[data-selected] {
+    border: none;
+    background-color: var(--avl-color-primary);
+    color: var(--avl-color-on-primary);
+}

@@ -1,0 +1,10 @@
+/* A link in running text; the popup reuses popover.css */
+.avl-preview-card-trigger {
+    color: var(--avl-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.avl-preview-card-trigger[data-popup-open] {
+    text-decoration-thickness: 2px;
+}

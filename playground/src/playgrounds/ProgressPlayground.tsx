@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Progress } from 'anvilui'
+import { Progress, Typography } from 'anvilui'
 import { RangeControl, Row, Section } from '../ui'
 
 export function ProgressPlayground() {
@@ -72,23 +72,23 @@ export function ProgressPlayground() {
             </Section>
             <Section title="Inline">
                 <Row>
-                    <p>
+                    <Typography>
                         <Progress
                             type="inline"
                             aria-label="Saving"
                             value={null}
                         />{' '}
                         Saving your changes
-                    </p>
+                    </Typography>
                 </Row>
                 <Row>
-                    <p>
+                    <Typography>
                         <Progress
                             type="inline"
                             label="Syncing 3 files"
                             value={value}
                         />
-                    </p>
+                    </Typography>
                 </Row>
             </Section>
         </>

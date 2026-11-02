@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input, Switch, Typography } from 'anvilui'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 export function InputPlayground() {
     const [disabled, setDisabled] = useState(false)
@@ -10,10 +10,9 @@ export function InputPlayground() {
     return (
         <Section title="States">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Switch checked={disabled} onCheckedChange={setDisabled} />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
                 <SelectControl
                     label="size"
                     value={size}

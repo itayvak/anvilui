@@ -14,6 +14,7 @@ import {
     NavigationDrawerTrigger,
     NavigationRail,
     NavigationRailItem,
+    NavigationRailToggle,
     Popover,
     PopoverClose,
     PopoverPopup,
@@ -307,8 +308,8 @@ export function AMailDemo() {
                     <NavigationRail
                         className="am-sidebar am-wide-only"
                         aria-label="Folders"
-                        hasExpandButton
                     >
+                        <NavigationRailToggle aria-label="Menu" />
                         {navItems.map((item) => (
                             <NavigationRailItem
                                 key={item.view}

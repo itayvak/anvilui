@@ -1,0 +1,102 @@
+/* A row of Material 3 outlined boxes, one character each */
+.avl-pin-input {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-pin-input-label {
+    color: var(--avl-color-on-background);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-label);
+}
+
+.avl-pin-input-slots {
+    display: flex;
+    gap: var(--avl-spacing-x2);
+}
+
+.avl-pin-input-slot {
+    box-sizing: border-box;
+    width: var(--avl-spacing-x12);
+    height: var(--avl-spacing-x14);
+    padding: 0;
+    border: var(--avl-outline-size) solid var(--avl-color-outline);
+    border-radius: var(--avl-radius-small);
+    outline: none;
+    background: transparent;
+    color: var(--avl-color-on-background);
+    caret-color: var(--avl-color-primary);
+    font-family: var(--avl-font-main);
+    font-size: var(--avl-font-size-h6);
+    text-align: center;
+    transition:
+        border-color var(--avl-ease-length-short) linear,
+        box-shadow var(--avl-ease-length-short) linear;
+}
+
+.avl-pin-input-slot:hover:not(:disabled) {
+    border-color: var(--avl-color-on-background);
+}
+
+/* Replaces the focus ring: a thicker primary border, like Input.
+   Inset shadow instead of border-width, so the text doesn't shift. */
+.avl-pin-input-slot:focus {
+    border-color: var(--avl-color-primary);
+    box-shadow: inset 0 0 0 1px var(--avl-color-primary);
+}
+
+/* Invalid: Base UI Field sets data-invalid; aria-invalid works standalone */
+.avl-pin-input-slot:is([data-invalid], [aria-invalid='true']) {
+    border-color: var(--avl-color-error);
+}
+
+.avl-pin-input-slot:is([data-invalid], [aria-invalid='true']):focus {
+    box-shadow: inset 0 0 0 1px var(--avl-color-error);
+}
+
+.avl-pin-input-size-small .avl-pin-input-slot {
+    width: var(--avl-spacing-x10);
+    height: var(--avl-spacing-x10);
+    font-size: var(--avl-font-size-body);
+}
+
+.avl-pin-input:has(:disabled) {
+    opacity: var(--avl-disabled-opacity);
+}
+
+.avl-pin-input-slot:disabled {
+    cursor: default;
+}
+
+/* Filled: a tinted box with no border. Focus and errors draw an inset ring. */
+.avl-pin-input-fill-filled .avl-pin-input-slot {
+    border: none;
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+    transition:
+        box-shadow var(--avl-ease-length-short) linear,
+        background-color var(--avl-ease-length-short) linear;
+}
+
+.avl-pin-input-fill-filled .avl-pin-input-slot:hover:not(:disabled) {
+    background-color: color-mix(
+        in srgb,
+        var(--avl-color-surface) 92%,
+        var(--avl-color-on-surface) 8%
+    );
+}
+
+.avl-pin-input-fill-filled .avl-pin-input-slot:focus {
+    box-shadow: inset 0 0 0 2px var(--avl-color-primary);
+}
+
+.avl-pin-input-fill-filled
+    .avl-pin-input-slot:is([data-invalid], [aria-invalid='true']) {
+    box-shadow: inset 0 0 0 var(--avl-outline-size) var(--avl-color-error);
+}
+
+.avl-pin-input-fill-filled
+    .avl-pin-input-slot:is([data-invalid], [aria-invalid='true']):focus {
+    box-shadow: inset 0 0 0 2px var(--avl-color-error);
+}

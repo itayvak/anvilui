@@ -23,7 +23,7 @@ export type AppBarProps = ComponentProps<'header'> & {
     centered?: boolean
     /**
      * Color role from the theme. The default `container` gives the bar the
-     * navigation color (the theme's `containerLow`), so it matches a
+     * navigation color (the theme's `surface`), so it matches a
      * NavigationRail or NavigationDrawer beside it. @default 'container'
      */
     color?: ComponentColor

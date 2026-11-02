@@ -18,8 +18,8 @@
 /* The bar is navigation, so its neutral fill is navigation's color, the same
    as NavigationRail and NavigationDrawer, not the darker container */
 .avl-app-bar.avl-color-container.avl-fill-filled {
-    --avl-nested-color-main: var(--avl-color-container-low);
-    --avl-nested-color-on-main: var(--avl-color-on-container-low);
+    --avl-nested-color-main: var(--avl-color-surface);
+    --avl-nested-color-on-main: var(--avl-color-on-surface);
 }
 
 .avl-app-bar.avl-fill-outlined {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Checkbox, Kbd, Typography } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 const rows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM']
 
@@ -48,13 +48,12 @@ export function KbdPlayground() {
             </Section>
             <Section title="A little keyboard">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="listen">
                         <Checkbox
                             checked={listen}
                             onCheckedChange={setListen}
                         />
-                        <Typography type="caption">listen</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <div
                     style={{

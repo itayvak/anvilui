@@ -241,7 +241,7 @@
 }
 
 .am-row:hover:not([data-active]) {
-    background-color: var(--avl-color-container-low);
+    background-color: var(--avl-color-surface);
 }
 
 /* The sender button stretches over the whole row, so clicking anywhere

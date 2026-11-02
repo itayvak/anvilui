@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import {
     AnvilContext,
+    AnvilRoot,
     Button,
     Card,
     CardContent,
@@ -14,15 +15,19 @@ import {
     MenuTrigger,
     NavigationRail,
     NavigationRailItem,
+    NavigationRailToggle,
     Radio,
     ToggleGroup,
     ToggleGroupItem,
     RadioGroup,
     Switch,
     Typography,
+    createTheme,
+    createThemeFromImage,
 } from 'anvilui'
+import type { ThemePair } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { Grid, Row, Section } from '../ui'
+import { Grid, Labeled, Row, Section } from '../ui'
 
 const lowerFirst = (text: string) =>
     text.charAt(0).toLowerCase() + text.slice(1)
@@ -75,8 +80,76 @@ function Swatch(props: { name: string; value: string; partner?: string }) {
 
 export function ThemePlayground() {
     const avl = useContext(AnvilContext)
-    const [railExpanded, setRailExpanded] = useState(true)
+    const [seed, setSeed] = useState('#0B6E4F')
+    // null previews the playground's palette; set once a color or image is picked
+    const [generated, setGenerated] = useState<ThemePair | null>(null)
+    const [error, setError] = useState('')
     if (!avl) throw new Error('ThemePlayground must be used inside AnvilRoot')
+
+    return (
+        <>
+            <Section title="Generate a theme">
+                <Row>
+                    <Labeled label="primary color">
+                        <input
+                            type="color"
+                            value={seed}
+                            onChange={(e) => {
+                                setSeed(e.target.value)
+                                setGenerated(createTheme(e.target.value))
+                            }}
+                        />
+                    </Labeled>
+                    <Labeled label="or pick an image">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                                const file = e.target.files?.[0]
+                                if (!file) return
+                                try {
+                                    const t = await createThemeFromImage(file)
+                                    setError('')
+                                    setGenerated(t)
+                                    setSeed(t.light.primary.toLowerCase())
+                                } catch (err) {
+                                    setError(String(err))
+                                }
+                            }}
+                        />
+                    </Labeled>
+                    {generated && (
+                        <Button
+                            fillType="text"
+                            onClick={() => setGenerated(null)}
+                        >
+                            Back to the playground palette
+                        </Button>
+                    )}
+                </Row>
+                {error && <Typography>{error}</Typography>}
+            </Section>
+            {generated ? (
+                // Follows the playground's own light/dark toggle
+                <AnvilRoot
+                    colorMode={avl.colorMode}
+                    lightTheme={generated.light}
+                    darkTheme={generated.dark}
+                >
+                    <ThemePreview />
+                </AnvilRoot>
+            ) : (
+                <ThemePreview />
+            )}
+        </>
+    )
+}
+
+// Every color of the nearest AnvilRoot's theme, on components and as swatches
+function ThemePreview() {
+    const avl = useContext(AnvilContext)!
+    const [railExpanded, setRailExpanded] = useState(true)
+    const [railPage, setRailPage] = useState('Profile')
 
     const { colorMode, lightTheme, darkTheme } = avl
     const theme = colorMode === 'light' ? lightTheme : darkTheme
@@ -121,22 +194,18 @@ export function ThemePlayground() {
 
             <Section title="Controls">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="unchecked" type="body">
                         <Checkbox />
-                        <Typography>unchecked</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="checked" type="body">
                         <Checkbox defaultChecked />
-                        <Typography>checked</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="off" type="body">
                         <Switch />
-                        <Typography>off</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="on" type="body">
                         <Switch defaultChecked />
-                        <Typography>on</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <RadioGroup
@@ -145,10 +214,9 @@ export function ThemePlayground() {
                         style={{ flexDirection: 'row' }}
                     >
                         {['a', 'b', 'c'].map((value) => (
-                            <label key={value} className="pg-checkbox">
+                            <Labeled key={value} label={value} type="body">
                                 <Radio value={value} />
-                                <Typography>{value}</Typography>
-                            </label>
+                            </Labeled>
                         ))}
                     </RadioGroup>
                     <ToggleGroup aria-label="Toggle group" defaultValue="Week">
@@ -197,26 +265,30 @@ export function ThemePlayground() {
             <Section title="Navigation rail">
                 <div className="pg-frame">
                     <NavigationRail
-                        hasExpandButton
+                        aria-label="Preview"
                         expanded={railExpanded}
-                        setExpanded={setRailExpanded}
-                        defaultValue={['profile']}
+                        onExpandedChange={setRailExpanded}
                     >
-                        <NavigationRailItem
-                            value="profile"
-                            icon="person"
-                            title="Profile"
-                        />
-                        <NavigationRailItem
-                            value="photos"
-                            icon="photo"
-                            title="Photos"
-                        />
-                        <NavigationRailItem
-                            value="settings"
-                            icon="settings"
-                            title="Settings"
-                        />
+                        <NavigationRailToggle aria-label="Menu" />
+                        {(
+                            [
+                                ['person', 'Profile'],
+                                ['photo', 'Photos'],
+                                ['settings', 'Settings'],
+                            ] as const
+                        ).map(([icon, label]) => (
+                            <NavigationRailItem
+                                key={label}
+                                icon={icon}
+                                label={label}
+                                href="#"
+                                active={railPage === label}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setRailPage(label)
+                                }}
+                            />
+                        ))}
                     </NavigationRail>
                 </div>
             </Section>

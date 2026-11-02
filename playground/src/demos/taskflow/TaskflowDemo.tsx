@@ -25,6 +25,7 @@ import {
     NavigationDrawerTrigger,
     NavigationRail,
     NavigationRailItem,
+    NavigationRailToggle,
     Popover,
     PopoverClose,
     PopoverPopup,
@@ -79,9 +80,9 @@ export function TaskflowDemo() {
             <NavigationRail
                 aria-label="Main"
                 className="tf-wide-only"
-                hasExpandButton
                 defaultExpanded={false}
             >
+                <NavigationRailToggle aria-label="Menu" />
                 {pages.map((p) => (
                     <NavigationRailItem
                         key={p.id}

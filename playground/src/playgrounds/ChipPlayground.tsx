@@ -7,7 +7,7 @@ import {
     Typography,
     useSnackbar,
 } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 const sizes = ['Small', 'Medium', 'Large', 'Extra large']
 
@@ -21,13 +21,12 @@ export function ChipPlayground() {
         <>
             <Section title="Chip (assist, suggestion)">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="disabled">
                         <Switch
                             checked={disabled}
                             onCheckedChange={setDisabled}
                         />
-                        <Typography type="caption">disabled</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <Chip

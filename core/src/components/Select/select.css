@@ -77,7 +77,7 @@
 }
 
 .avl-select:has([data-disabled]) {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
 }
 
 .avl-select-trigger[data-disabled] {

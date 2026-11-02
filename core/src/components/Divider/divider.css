@@ -3,7 +3,7 @@
     margin: 0;
     border: none;
     border-radius: var(--avl-radius-full);
-    background-color: var(--avl-color-outline);
+    background-color: var(--avl-color-divider);
 }
 
 .avl-divider[data-orientation='horizontal'] {
@@ -50,7 +50,7 @@
 }
 
 .avl-divider-label {
-    color: var(--avl-color-on-container-low);
+    color: var(--avl-color-on-surface);
     font-size: var(--avl-font-size-label-small);
     white-space: nowrap;
 }

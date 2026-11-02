@@ -7,7 +7,7 @@ import {
     Typography,
     useSnackbar,
 } from 'anvilui'
-import { Row, Section } from '../ui'
+import { Row, Section, Labeled } from '../ui'
 
 export function FloatingToolbarPlayground() {
     const snackbar = useSnackbar()
@@ -18,13 +18,12 @@ export function FloatingToolbarPlayground() {
         <>
             <Section title="Like the screenshot">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="inverseColor">
                         <Switch
                             checked={inverse}
                             onCheckedChange={setInverse}
                         />
-                        <Typography type="caption">inverseColor</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <FloatingToolbar

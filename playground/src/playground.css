@@ -10,22 +10,9 @@ body {
 }
 
 .pg-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1;
-    padding: var(--avl-spacing-x3) var(--avl-spacing-x6);
-    background-color: var(--avl-color-container);
-    color: var(--avl-color-on-container);
-    border-bottom: 1px solid var(--avl-color-outline);
-}
-
-.pg-header-start {
-    display: flex;
-    align-items: center;
-    gap: var(--avl-spacing-x6);
 }
 
 .pg-nav {
@@ -33,28 +20,27 @@ body {
     gap: var(--avl-spacing-x4);
 }
 
-.pg-nav a {
-    color: inherit;
-    font-family: var(--avl-font-main);
-    text-decoration: none;
-    opacity: 0.7;
-}
-
-.pg-nav a[aria-current='page'] {
-    font-weight: 600;
-    opacity: 1;
-}
-
-.pg-header label {
+.pg-layout {
     display: flex;
-    align-items: center;
-    gap: var(--avl-spacing-x2);
+    align-items: flex-start;
+}
+
+/* The NavigationList: sticks under the 64px header and scrolls on its own */
+.pg-sidebar {
+    position: sticky;
+    top: var(--avl-spacing-x16);
+    flex-shrink: 0;
+    width: 240px;
+    height: calc(100vh - var(--avl-spacing-x16));
+    overflow-y: auto;
 }
 
 .pg-main {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: var(--avl-spacing-x8);
+    min-width: 0;
     max-width: 960px;
     margin: 0 auto;
     padding: var(--avl-spacing-x6);
@@ -64,14 +50,11 @@ body {
     margin-top: var(--avl-spacing-x3);
 }
 
-.pg-control {
-    display: flex;
-    width: fit-content;
-    flex-direction: column;
-    gap: var(--avl-spacing-x1);
+.pg-.pg-range {
+    width: calc(var(--avl-spacing-x10) * 5);
 }
 
-.pg-checkbox {
+.pg-labeled {
     display: flex;
     align-items: center;
     gap: var(--avl-spacing-x2);
@@ -90,24 +73,10 @@ body {
     gap: var(--avl-spacing-x6) var(--avl-spacing-x3);
 }
 
-.pg-grid > div {
+.pg-stack {
     display: flex;
     flex-direction: column;
     gap: var(--avl-spacing-x1);
-}
-
-.pg-matrix {
-    border-collapse: collapse;
-}
-
-.pg-matrix th {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    font-weight: 500;
-    text-align: left;
-}
-
-.pg-matrix td {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
 }
 
 /* Clips a component that fills its parent's height, like the navigation rail */
@@ -146,15 +115,6 @@ body {
 .pg-swatch-value {
     font-family: var(--avl-font-mono);
     text-transform: uppercase;
-}
-
-select {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    border: 1px solid var(--avl-color-outline);
-    border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-background);
-    color: var(--avl-color-on-background);
-    font-size: var(--avl-font-size-body);
 }
 
 /* A demo app fills the screen under the header and scrolls inside itself */
@@ -236,24 +196,13 @@ select {
     gap: var(--avl-spacing-x2);
 }
 
-.pg-token-number input[type='range'] {
+.pg-token-slider {
     flex: 1;
     min-width: 0;
 }
 
-.pg-token-number input[type='number'] {
-    width: 64px;
-}
-
-.pg-token input[type='text'],
-.pg-token input[type='number'] {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    border: 1px solid var(--avl-color-outline);
-    border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-background);
-    color: var(--avl-color-on-background);
-    font-family: var(--avl-font-mono);
-    font-size: var(--avl-font-size-caption);
+.pg-token-amount {
+    width: calc(var(--avl-spacing-x1) * 20);
 }
 
 @media (max-width: 720px) {

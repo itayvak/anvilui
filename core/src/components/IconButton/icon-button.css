@@ -35,7 +35,7 @@
 }
 
 .avl-icon-button:disabled {
-    opacity: 0.4;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }
 

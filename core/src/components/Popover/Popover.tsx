@@ -60,10 +60,11 @@ export function PopoverTrigger({
 export type PopoverPopupProps = BasePopover.Popup.Props &
     Pick<
         BasePopover.Positioner.Props,
-        'side' | 'align' | 'sideOffset' | 'alignOffset'
+        'side' | 'align' | 'sideOffset' | 'alignOffset' | 'anchor'
     >
 
 export function PopoverPopup({
+    anchor,
     side,
     align,
     sideOffset,
@@ -80,6 +81,7 @@ export function PopoverPopup({
         <BasePopover.Portal container={avl?.rootRef}>
             <BasePopover.Positioner
                 className="avl-menu-positioner"
+                anchor={anchor}
                 side={side}
                 align={align}
                 sideOffset={sideOffset ?? 4}

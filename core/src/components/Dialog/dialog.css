@@ -2,7 +2,7 @@
     position: fixed;
     z-index: 1000;
     inset: 0;
-    background-color: rgb(0 0 0 / 0.4);
+    background-color: var(--avl-color-scrim);
     transition: opacity var(--avl-ease-length-normal) linear;
 }
 
@@ -28,9 +28,9 @@
     overflow-y: auto;
     padding: var(--avl-spacing-x6);
     border-radius: var(--avl-radius-large);
-    background-color: var(--avl-color-container-low);
-    color: var(--avl-color-on-container-low);
-    box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
+    box-shadow: var(--avl-shadow-large);
     outline: none;
     transform: translate(-50%, -50%);
     transition:
@@ -62,7 +62,7 @@
     color: var(--avl-color-on-background);
     font-family: var(--avl-font-title);
     font-size: var(--avl-font-size-h5);
-    font-weight: normal;
+    font-weight: var(--avl-font-weight-regular);
 }
 
 .avl-dialog-description {

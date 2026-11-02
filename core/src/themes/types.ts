@@ -3,20 +3,25 @@ export type ThemeMode = 'light' | 'dark'
 export type Theme = {
     background: string
     onBackground: string
+    /** Secondary text on `background`: descriptions, placeholders, hints. */
+    onBackgroundMuted: string
     container: string
     onContainer: string
     /**
      * One step from the background toward `container`: navigation, menus,
-     * dialogs and sheets. Material 3's "surface container low".
+     * dialogs and sheets.
      */
-    containerLow: string
-    /** Text and icons on `containerLow`. */
-    onContainerLow: string
-    /** @deprecated Renamed to `containerLow`. Still read if that's missing. */
+    surface: string
+    /** Text and icons on `surface`. */
+    onSurface: string
+    /** @deprecated Renamed to `surface`. Still read if that's missing. */
     surfaceVariant?: string
-    /** @deprecated Renamed to `onContainerLow`. Still read if that's missing. */
+    /** @deprecated Renamed to `onSurface`. Still read if that's missing. */
     onSurfaceVariant?: string
+    /** Borders of inputs and outlined controls. */
     outline: string
+    /** Thin lines between content: dividers, table lines, tab underlines. */
+    divider: string
     primary: string
     onPrimary: string
     primaryContainer: string
@@ -49,4 +54,8 @@ export type Theme = {
      * `primary` mixed toward `background`, which is readable but approximate.
      */
     inversePrimary?: string
+    /** Color of elevation shadows, alpha included. Defaults to black at 30%. */
+    shadow?: string
+    /** The dimmed backdrop behind dialogs and sheets. Defaults to black at 40%. */
+    scrim?: string
 }

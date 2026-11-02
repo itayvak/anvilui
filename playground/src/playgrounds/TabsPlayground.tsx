@@ -54,17 +54,15 @@ export function TabsPlayground() {
                 <Typography>value: {String(value)}</Typography>
             </Section>
             <Section title="Many tabs (scrolls)">
-                <div style={{ maxWidth: 360 }}>
-                    <Tabs defaultValue="1">
-                        <TabsList>
-                            {Array.from({ length: 10 }, (_, i) => (
-                                <TabsTab key={i} value={String(i + 1)}>
-                                    Tab {i + 1}
-                                </TabsTab>
-                            ))}
-                        </TabsList>
-                    </Tabs>
-                </div>
+                <Tabs defaultValue="1" style={{ maxWidth: 360 }}>
+                    <TabsList>
+                        {Array.from({ length: 10 }, (_, i) => (
+                            <TabsTab key={i} value={String(i + 1)}>
+                                Tab {i + 1}
+                            </TabsTab>
+                        ))}
+                    </TabsList>
+                </Tabs>
             </Section>
         </>
     )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Select, SelectItem, Switch, Typography } from 'anvilui'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 const fruits = {
     apple: 'Apple',
@@ -29,10 +29,9 @@ export function SelectPlayground() {
     return (
         <Section title="States">
             <Row>
-                <label className="pg-checkbox">
+                <Labeled label="disabled">
                     <Switch checked={disabled} onCheckedChange={setDisabled} />
-                    <Typography type="caption">disabled</Typography>
-                </label>
+                </Labeled>
                 <SelectControl
                     label="size"
                     value={size}

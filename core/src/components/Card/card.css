@@ -38,7 +38,7 @@
 }
 
 .avl-card-clickable[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }
 

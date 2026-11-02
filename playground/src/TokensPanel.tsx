@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Button, IconButton, Typography, baseDesignTokens } from 'anvilui'
+import {
+    Button,
+    IconButton,
+    Input,
+    Slider,
+    Typography,
+    baseDesignTokens,
+} from 'anvilui'
 import type { DesignTokens } from 'anvilui'
 
 type Range = { min: number; max: number; step: number }
@@ -32,28 +39,31 @@ function NumberField(props: {
 }) {
     const { label, value, unit, range, changed, onChange } = props
     return (
-        <label className="pg-token" data-changed={changed || undefined}>
+        <div className="pg-token" data-changed={changed || undefined}>
             <Typography type="caption">{label}</Typography>
             <div className="pg-token-number">
-                <input
-                    type="range"
+                <Slider
+                    className="pg-token-slider"
+                    aria-label={label}
                     min={range.min}
                     max={Math.max(range.max, value)}
                     step={range.step}
                     value={value}
-                    onChange={(e) => onChange(Number(e.target.value))}
+                    onValueChange={onChange}
                 />
-                <input
+                <Input
                     type="number"
+                    size="small"
+                    className="pg-token-amount"
                     min={0}
                     step={range.step}
                     value={value}
                     aria-label={`${label} (${unit})`}
-                    onChange={(e) => onChange(Number(e.target.value))}
+                    onValueChange={(v) => onChange(Number(v))}
                 />
                 <Typography type="caption">{unit}</Typography>
             </div>
-        </label>
+        </div>
     )
 }
 
@@ -98,14 +108,15 @@ function TokenField(props: {
     }
 
     return (
-        <label className="pg-token" data-changed={changed || undefined}>
+        <div className="pg-token" data-changed={changed || undefined}>
             <Typography type="caption">{name}</Typography>
-            <input
-                type="text"
+            <Input
+                size="small"
+                aria-label={name}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onValueChange={onChange}
             />
-        </label>
+        </div>
     )
 }
 
