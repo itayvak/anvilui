@@ -75,7 +75,7 @@ input.avl-time-picker-box:focus {
 }
 
 .avl-time-picker-colon {
-    color: var(--avl-color-on-surface-variant);
+    color: var(--avl-color-on-surface);
     font-size: var(--avl-font-size-h2);
 }
 

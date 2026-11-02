@@ -11,6 +11,7 @@ import {
     RadioButtonGroup,
 } from '../RadioButtonGroup/RadioButtonGroup'
 import { cx } from '../../utils'
+import { parseTime, type Time } from '../../datetime'
 import '../Input/input.css'
 import '../Select/select.css'
 import './time-picker.css'
@@ -55,15 +56,9 @@ export type TimePickerProps = Omit<
           }
     )
 
-type Time = { h: number; m: number }
 type Mode = 'hour' | 'minute'
 
 const pad = (n: number) => String(n).padStart(2, '0')
-
-function parse(value: string | null | undefined): Time | null {
-    const match = value ? /^(\d{1,2}):(\d{2})/.exec(value) : null
-    return match ? { h: +match[1] % 24, m: +match[2] % 60 } : null
-}
 
 function localeHourCycle(): 12 | 24 {
     const { hour12 } = new Intl.DateTimeFormat(undefined, {
@@ -98,7 +93,7 @@ export function TimePicker({
 }: TimePickerProps) {
     const [internal, setInternal] = useState(defaultValue)
     const value = valueProp !== undefined ? valueProp : internal
-    const time = parse(value)
+    const time = parseTime(value)
     const cycle = hourCycle ?? localeHourCycle()
     const labelId = useId()
     const valueId = useId()

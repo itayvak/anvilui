@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { AnvilRoot, AppBar, NavigationList, NavigationListItem } from 'anvilui'
 import { ColorModeToggle } from './ColorModeToggle'
-import { getStoredColorMode } from './colorMode'
 import { playgrounds } from './playgrounds'
 import './playground.css'
 
@@ -18,7 +17,7 @@ export default function App() {
     const Playground = playgrounds[name]
 
     return (
-        <AnvilRoot defaultColorMode={getStoredColorMode()}>
+        <AnvilRoot storageKey="anvilui-playground-color-mode">
             <AppBar
                 label="AnvilUI Playground"
                 labelAs="h1"

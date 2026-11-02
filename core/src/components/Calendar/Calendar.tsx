@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IconButton } from '../IconButton/IconButton'
 import { cx } from '../../utils'
+import { fromIso, toIso } from '../../datetime'
 import './calendar.css'
 
 export type CalendarProps = Omit<
@@ -13,26 +14,6 @@ export type CalendarProps = Omit<
     defaultValue?: string | null
     /** Called with the picked `"YYYY-MM-DD"`. */
     onValueChange?: (value: string) => void
-}
-
-const pad = (n: number, length = 2) => String(n).padStart(length, '0')
-
-export const toIso = (d: Date) =>
-    `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
-
-// new Date() rolls 31 Feb over into March; reject that instead
-export function makeDate(y: number, m: number, d: number): Date | null {
-    const date = new Date(y, m, d)
-    return date.getFullYear() === y &&
-        date.getMonth() === m &&
-        date.getDate() === d
-        ? date
-        : null
-}
-
-export function fromIso(value: string | null | undefined): Date | null {
-    const match = value ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(value) : null
-    return match ? makeDate(+match[1], +match[2] - 1, +match[3]) : null
 }
 
 // 0 = Sunday. Intl.Locale's week info isn't in every browser yet.

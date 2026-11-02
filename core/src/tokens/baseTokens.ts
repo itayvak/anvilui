@@ -28,6 +28,18 @@ export const baseDesignTokens: DesignTokens = {
         full: '1000px',
     },
     outlineSize: '1.5px',
+    disabledOpacity: '0.5',
+    fontWeight: {
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+    },
+    shadow: {
+        small: '0 2px 6px var(--avl-color-shadow)',
+        medium: '0 3px 8px var(--avl-color-shadow)',
+        large: '0 4px 16px var(--avl-color-shadow)',
+    },
     ease: {
         out: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
         in: 'cubic-bezier(0.36, 0, 0.66, -0.56)',

@@ -4,6 +4,10 @@ export type DesignTokens = {
     fontSize: FontSize
     radius: BorderRadius
     outlineSize: string
+    /** Opacity of disabled controls. */
+    disabledOpacity: string
+    fontWeight: FontWeight
+    shadow: Shadow
     ease: Ease
     easeLength: EaseLength
 }
@@ -20,6 +24,20 @@ export type EaseLength = {
     short: string
     normal: string
     slow: string
+}
+
+export type FontWeight = {
+    regular: string
+    medium: string
+    semibold: string
+    bold: string
+}
+
+/** Elevation. Use `var(--avl-color-shadow)` so the color follows the theme. */
+export type Shadow = {
+    small: string
+    medium: string
+    large: string
 }
 
 export type Font = {

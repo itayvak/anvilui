@@ -2,7 +2,7 @@
     flex-shrink: 0;
     margin: 0;
     border: none;
-    background-color: var(--avl-color-outline);
+    background-color: var(--avl-color-divider);
 }
 
 .avl-divider[data-orientation='horizontal'] {

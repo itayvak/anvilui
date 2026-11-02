@@ -15,11 +15,7 @@
 }
 
 .avl-field-description {
-    color: color-mix(
-        in srgb,
-        var(--avl-color-on-background) 60%,
-        var(--avl-color-background)
-    );
+    color: var(--avl-color-on-background-muted);
 }
 
 .avl-field-error {

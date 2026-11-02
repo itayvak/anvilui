@@ -5,8 +5,8 @@
     box-sizing: border-box;
     min-height: var(--avl-spacing-x20);
     padding-block: var(--avl-spacing-x3) var(--avl-spacing-x4);
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
 }
 
 .avl-navigation-bar-item {
@@ -55,7 +55,7 @@
 .avl-navigation-bar-item:hover .avl-navigation-bar-item-indicator {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-on-surface-variant) 8%,
+        var(--avl-color-on-surface) 8%,
         transparent
     );
 }
@@ -95,5 +95,5 @@
 
 .avl-navigation-bar-item[aria-current='page'] .avl-navigation-bar-item-label {
     color: var(--avl-color-on-background);
-    font-weight: 600;
+    font-weight: var(--avl-font-weight-semibold);
 }

@@ -1,6 +1,6 @@
 /**
  * A color role from the theme. `container` is the neutral one; `surface` is
- * the theme's `surfaceVariant`, the background of navigation like
+ * the background of navigation and popups, like
  * `NavigationRail` and `NavigationList`.
  */
 export type ComponentColor =

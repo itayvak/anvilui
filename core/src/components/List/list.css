@@ -8,7 +8,7 @@
 }
 
 .avl-list-divided > .avl-list-item-wrapper + .avl-list-item-wrapper {
-    border-top: 1px solid var(--avl-color-outline);
+    border-top: 1px solid var(--avl-color-divider);
 }
 
 .avl-list-item {
@@ -102,11 +102,7 @@
 .avl-list-item-description {
     display: -webkit-box;
     overflow: hidden;
-    color: color-mix(
-        in srgb,
-        var(--avl-color-on-background) 60%,
-        var(--avl-color-background)
-    );
+    color: var(--avl-color-on-background-muted);
     font-size: var(--avl-font-size-label);
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

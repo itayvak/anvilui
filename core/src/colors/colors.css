@@ -40,8 +40,8 @@
 }
 
 .avl-color-surface.avl-fill-filled {
-    --avl-nested-color-main: var(--avl-color-surface-variant);
-    --avl-nested-color-on-main: var(--avl-color-on-surface-variant);
+    --avl-nested-color-main: var(--avl-color-surface);
+    --avl-nested-color-on-main: var(--avl-color-on-surface);
 }
 
 *:is(.avl-fill-outlined, .avl-fill-text) {
@@ -80,5 +80,5 @@
 
 .avl-color-surface:is(.avl-fill-outlined, .avl-fill-text) {
     --avl-nested-color-main: transparent;
-    --avl-nested-color-on-main: var(--avl-color-on-surface-variant);
+    --avl-nested-color-on-main: var(--avl-color-on-surface);
 }

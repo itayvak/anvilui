@@ -1,9 +1,16 @@
 import { useId, useRef, useState, type ReactNode } from 'react'
 import { Input as BaseInput } from '@base-ui/react/input'
 import { IconButton } from '../IconButton/IconButton'
-import { Calendar, fromIso, makeDate, toIso } from '../Calendar/Calendar'
+import { Calendar } from '../Calendar/Calendar'
 import { Popover, PopoverPopup, PopoverTrigger } from '../Popover/Popover'
 import { cx } from '../../utils'
+import {
+    fieldOrder,
+    fromIso,
+    parseTyped,
+    placeholderFor,
+    toIso,
+} from '../../datetime'
 import '../Input/input.css'
 import './date-input.css'
 
@@ -50,36 +57,6 @@ const numericFormat = () =>
         month: '2-digit',
         day: '2-digit',
     })
-
-const fieldOrder = (fmt: Intl.DateTimeFormat) =>
-    fmt
-        .formatToParts(new Date(2000, 10, 22))
-        .filter(
-            (p) => p.type === 'year' || p.type === 'month' || p.type === 'day'
-        )
-        .map((p) => p.type as 'year' | 'month' | 'day')
-
-// "MM/DD/YYYY" in the locale's order and separators
-function placeholderFor(fmt: Intl.DateTimeFormat) {
-    const hint = { year: 'YYYY', month: 'MM', day: 'DD' }
-    return fmt
-        .formatToParts(new Date(2000, 10, 22))
-        .map((p) =>
-            p.type === 'literal'
-                ? p.value
-                : (hint[p.type as keyof typeof hint] ?? '')
-        )
-        .join('')
-}
-
-// Any separator works; the year needs all 4 digits so "26" isn't guessed
-function parseTyped(text: string, order: ('year' | 'month' | 'day')[]) {
-    const numbers = text.match(/\d+/g)
-    if (numbers?.length !== 3) return null
-    const parts = Object.fromEntries(order.map((type, i) => [type, numbers[i]]))
-    if (parts.year.length !== 4) return null
-    return makeDate(+parts.year, +parts.month - 1, +parts.day)
-}
 
 /**
  * A text field for a date, typed in the locale's format (10/29/2026,

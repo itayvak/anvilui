@@ -105,7 +105,7 @@
 }
 
 .avl-slider[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
 }
 
 /* Squiggly: Progress's proportions. The track is the 12px wave area, the

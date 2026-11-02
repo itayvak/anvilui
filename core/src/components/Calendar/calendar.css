@@ -32,7 +32,7 @@
 .avl-calendar-weekday {
     height: var(--avl-spacing-x10);
     font-size: var(--avl-font-size-label);
-    font-weight: normal;
+    font-weight: var(--avl-font-weight-regular);
 }
 
 .avl-calendar-day {
@@ -42,7 +42,7 @@
     border: none;
     border-radius: var(--avl-radius-full);
     background-color: transparent;
-    color: var(--avl-color-on-surface-variant);
+    color: var(--avl-color-on-surface);
     font-family: var(--avl-font-main);
     font-size: var(--avl-font-size-label);
     cursor: pointer;
@@ -54,7 +54,7 @@
 .avl-calendar-day:hover {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-on-surface-variant) 8%,
+        var(--avl-color-on-surface) 8%,
         transparent
     );
 }

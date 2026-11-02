@@ -24,7 +24,7 @@
 
 .avl-combobox-empty {
     padding: var(--avl-spacing-x3);
-    color: var(--avl-color-on-surface-variant);
+    color: var(--avl-color-on-surface);
     font-size: var(--avl-font-size-body);
 }
 

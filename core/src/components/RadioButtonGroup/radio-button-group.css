@@ -6,8 +6,8 @@
         var(--avl-radius-button),
         calc(var(--avl-button-height) / 2 + var(--avl-spacing-x1))
     );
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
 }
 
 .avl-radio-button-group:is(.avl-fill-outlined, .avl-fill-text) {
@@ -19,7 +19,7 @@
 }
 
 .avl-radio-button-group[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
 }
 
 .avl-radio-button-group-indicator {
@@ -71,8 +71,8 @@
 }
 
 .avl-radio-button-group.avl-color-surface {
-    --avl-radio-button-selected: var(--avl-color-surface-variant);
-    --avl-radio-button-on-selected: var(--avl-color-on-surface-variant);
+    --avl-radio-button-selected: var(--avl-color-surface);
+    --avl-radio-button-on-selected: var(--avl-color-on-surface);
 }
 
 .avl-radio-button-group[data-ready] .avl-radio-button-group-indicator {

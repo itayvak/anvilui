@@ -41,6 +41,7 @@ import { TextareaPlayground } from './TextareaPlayground'
 import { TimePickerPlayground } from './TimePickerPlayground'
 import { TogglePlayground } from './TogglePlayground'
 import { ToolbarPlayground } from './ToolbarPlayground'
+import { ThemePlayground } from './ThemePlayground'
 import { TooltipPlayground } from './TooltipPlayground'
 import { TypographyPlayground } from './TypographyPlayground'
 import { NavigationBarPlayground } from './NavigationBarPlayground'
@@ -92,6 +93,7 @@ export const playgrounds: Record<string, ComponentType> = {
     TimePicker: TimePickerPlayground,
     Toggle: TogglePlayground,
     Toolbar: ToolbarPlayground,
+    Theme: ThemePlayground,
     Tooltip: TooltipPlayground,
     Typography: TypographyPlayground,
     NavigationBar: NavigationBarPlayground,

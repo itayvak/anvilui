@@ -1,17 +1,8 @@
-import { useContext, useEffect } from 'react'
-import { AnvilContext, IconButton } from 'anvilui'
-import { storeColorMode } from './colorMode'
+import { IconButton, useAnvil } from 'anvilui'
 
 export function ColorModeToggle() {
-    const avl = useContext(AnvilContext)
-    if (!avl) throw new Error('ColorModeToggle must be used inside AnvilRoot')
-
-    const { colorMode, setColorMode } = avl
+    const { colorMode, setColorMode } = useAnvil()
     const isDark = colorMode === 'dark'
-
-    useEffect(() => {
-        storeColorMode(colorMode)
-    }, [colorMode])
 
     return (
         <IconButton

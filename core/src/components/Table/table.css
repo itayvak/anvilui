@@ -13,7 +13,7 @@
 /* Outside the border, so it's not clipped or boxed in with the cells */
 .avl-table-caption {
     padding-bottom: var(--avl-spacing-x2);
-    color: var(--avl-color-on-surface-variant);
+    color: var(--avl-color-on-surface);
     font-size: var(--avl-font-size-caption);
     text-align: start;
 }
@@ -22,8 +22,8 @@
 .avl-table-cell {
     height: var(--avl-spacing-x12);
     padding: var(--avl-spacing-x2) var(--avl-spacing-x4);
-    border-bottom: 1px solid var(--avl-color-outline);
-    border-inline-end: 1px solid var(--avl-color-outline);
+    border-bottom: 1px solid var(--avl-color-divider);
+    border-inline-end: 1px solid var(--avl-color-divider);
     text-align: start;
     vertical-align: middle;
 }
@@ -67,11 +67,11 @@
 }
 
 .avl-table-head .avl-table-header-cell {
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
     font-family: var(--avl-font-title);
     font-size: var(--avl-font-size-label-large);
-    font-weight: 600;
+    font-weight: var(--avl-font-weight-semibold);
 }
 
 /* On the cells, not the row: only cells get the rounded corners above */

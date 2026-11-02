@@ -29,8 +29,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    /* On descendants, not the root: AnvilRoot sets these inline on the root,
-       and inline styles would beat this rule there. */
+    /* On descendants, not the root: AnvilRoot's own <style> sets these on the
+       root and comes later, so it would win there. */
     .avl-root * {
         --avl-ease-length-short: 0ms;
         --avl-ease-length-normal: 0ms;

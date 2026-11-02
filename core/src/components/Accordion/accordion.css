@@ -10,8 +10,8 @@
 
 .avl-accordion-item {
     border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
     transition:
         border-radius var(--avl-accordion-motion),
         margin var(--avl-accordion-motion),
@@ -70,7 +70,7 @@
     color: inherit;
     font-family: var(--avl-font-main);
     font-size: var(--avl-font-size-body);
-    font-weight: 500;
+    font-weight: var(--avl-font-weight-medium);
     text-align: start;
     cursor: pointer;
     transition: background-color var(--avl-ease-length-short) linear;
@@ -84,13 +84,13 @@
 .avl-accordion-trigger:hover:not([data-disabled]) {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-on-surface-variant) 8%,
+        var(--avl-color-on-surface) 8%,
         transparent
     );
 }
 
 .avl-accordion-trigger[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }
 

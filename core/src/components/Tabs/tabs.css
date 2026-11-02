@@ -6,7 +6,7 @@
     /* Too many tabs to fit: scroll sideways instead of squeezing them */
     overflow-x: auto;
     scrollbar-width: none;
-    border-bottom: 1px solid var(--avl-color-outline);
+    border-bottom: 1px solid var(--avl-color-divider);
 }
 
 .avl-tabs-tab {
@@ -18,7 +18,7 @@
     padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
     border: none;
     background-color: transparent;
-    color: var(--avl-color-on-surface-variant);
+    color: var(--avl-color-on-surface);
     font-family: inherit;
     font-size: var(--avl-font-size-label);
     white-space: nowrap;
@@ -71,7 +71,7 @@
 }
 
 .avl-tabs-tab[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }
 

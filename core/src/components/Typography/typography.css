@@ -17,12 +17,12 @@
 .avl-typography-h5,
 .avl-typography-h6 {
     font-family: var(--avl-font-title);
-    font-weight: normal;
+    font-weight: var(--avl-font-weight-regular);
 }
 
 .avl-typography-h1 {
     font-size: var(--avl-font-size-h1);
-    font-weight: bold;
+    font-weight: var(--avl-font-weight-bold);
 }
 
 .avl-typography-h2 {

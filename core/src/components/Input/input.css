@@ -1,12 +1,7 @@
 /* Material 3 outlined text field */
 .avl-input {
-    /* Muted text for placeholder and resting label. Mixed rather than
-       on-surface-variant, which is too close to the text color (identical in dark). */
-    --avl-input-placeholder-color: color-mix(
-        in srgb,
-        var(--avl-color-on-background) 60%,
-        var(--avl-color-background)
-    );
+    /* Muted text for placeholder and resting label */
+    --avl-input-placeholder-color: var(--avl-color-on-background-muted);
     position: relative;
     display: inline-flex;
     box-sizing: border-box;
@@ -160,6 +155,6 @@
 }
 
 .avl-input:has(:disabled) {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
     cursor: default;
 }

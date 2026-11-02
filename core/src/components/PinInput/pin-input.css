@@ -62,7 +62,7 @@
 }
 
 .avl-pin-input:has(:disabled) {
-    opacity: 0.5;
+    opacity: var(--avl-disabled-opacity);
 }
 
 .avl-pin-input-slot:disabled {
@@ -72,8 +72,8 @@
 /* Filled: a tinted box with no border. Focus and errors draw an inset ring. */
 .avl-pin-input-fill-filled .avl-pin-input-slot {
     border: none;
-    background-color: var(--avl-color-surface-variant);
-    color: var(--avl-color-on-surface-variant);
+    background-color: var(--avl-color-surface);
+    color: var(--avl-color-on-surface);
     transition:
         box-shadow var(--avl-ease-length-short) linear,
         background-color var(--avl-ease-length-short) linear;
@@ -82,8 +82,8 @@
 .avl-pin-input-fill-filled .avl-pin-input-slot:hover:not(:disabled) {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-surface-variant) 92%,
-        var(--avl-color-on-surface-variant) 8%
+        var(--avl-color-surface) 92%,
+        var(--avl-color-on-surface) 8%
     );
 }
 

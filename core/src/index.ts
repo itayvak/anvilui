@@ -334,10 +334,15 @@ export type {
 } from './tokens/types'
 
 export { baseLightTheme, baseDarkTheme } from './themes/baseTheme'
+export { createTheme, createThemeFromImage } from './themes/createTheme'
+export type { ThemePair, CreateThemeOptions } from './themes/createTheme'
 export type { Theme } from './themes/types'
 
 export { AnvilRoot } from './components/AnvilRoot/AnvilRoot'
 export type { AnvilRootProps } from './components/AnvilRoot/AnvilRoot'
 
-export { AnvilContext } from './components/AnvilRoot/AnvilContext'
-export type { ColorType } from './components/AnvilRoot/AnvilContext'
+export { AnvilContext, useAnvil } from './components/AnvilRoot/AnvilContext'
+export type {
+    ColorType,
+    ColorModeSetting,
+} from './components/AnvilRoot/AnvilContext'

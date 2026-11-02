@@ -1,6 +1,6 @@
 .avl-skeleton {
     display: block;
-    background-color: var(--avl-color-surface-variant);
+    background-color: var(--avl-color-surface);
 }
 
 /* Sized from the surrounding font, so it lines up with the text it stands in for */
