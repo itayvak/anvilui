@@ -2,9 +2,12 @@ import { useState } from 'react'
 import {
     AnvilRoot,
     AppBar,
+    Button,
     IconButton,
     NavigationList,
     NavigationListItem,
+    Select,
+    SelectItem,
     Typography,
 } from 'anvilui'
 import type { DesignTokens } from 'anvilui'
@@ -72,36 +75,40 @@ export default function App() {
                     end={
                         <div className="pg-header-end">
                             <nav className="pg-nav" aria-label="Sections">
-                                <a
-                                    href="/"
+                                <Button
+                                    render={<a href="/" />}
+                                    nativeButton={false}
+                                    fillType={onDemos ? 'text' : 'filled'}
+                                    color="tonal"
                                     aria-current={onDemos ? undefined : 'page'}
                                 >
                                     Components
-                                </a>
-                                <a
-                                    href="/demos"
+                                </Button>
+                                <Button
+                                    render={<a href="/demos" />}
+                                    nativeButton={false}
+                                    fillType={onDemos ? 'filled' : 'text'}
+                                    color="tonal"
                                     aria-current={onDemos ? 'page' : undefined}
                                 >
                                     Demos
-                                </a>
+                                </Button>
                             </nav>
-                            <label>
-                                <Typography>Palette:</Typography>
-                                <select
-                                    value={palette}
-                                    onChange={(e) =>
-                                        changePalette(
-                                            e.target.value as PaletteName
-                                        )
-                                    }
-                                >
-                                    {paletteNames.map((n) => (
-                                        <option key={n} value={n}>
-                                            {n}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
+                            <Select
+                                label="Palette"
+                                size="small"
+                                className="pg-select"
+                                value={palette}
+                                onValueChange={(next) =>
+                                    next && changePalette(next)
+                                }
+                            >
+                                {paletteNames.map((n) => (
+                                    <SelectItem key={n} value={n}>
+                                        {n}
+                                    </SelectItem>
+                                ))}
+                            </Select>
                             <IconButton
                                 icon="tune"
                                 aria-label="Edit design tokens"
@@ -157,9 +164,15 @@ function DemoView({ slug }: { slug: string }) {
     if (!demo) {
         return (
             <main className="pg-main">
-                <Typography>
-                    No demo called "{slug}". <a href="/demos">Back to demos</a>
-                </Typography>
+                <Typography>No demo called "{slug}".</Typography>
+                <Button
+                    render={<a href="/demos" />}
+                    nativeButton={false}
+                    fillType="text"
+                    startIcon="arrow_back"
+                >
+                    Back to demos
+                </Button>
             </main>
         )
     }

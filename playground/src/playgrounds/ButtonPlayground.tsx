@@ -1,5 +1,15 @@
 import { useState } from 'react'
-import { Button, Checkbox, Typography } from 'anvilui'
+import {
+    Button,
+    Checkbox,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeaderCell,
+    TableRow,
+    Typography,
+} from 'anvilui'
 import type { ButtonProps } from 'anvilui'
 import { colors, fillTypes, sampleIcons } from '../options'
 import { Labeled, Row, Section, SelectControl } from '../ui'
@@ -44,29 +54,29 @@ export function ButtonPlayground() {
                         />
                     </Labeled>
                 </Row>
-                <table className="pg-matrix">
-                    <thead>
-                        <tr>
-                            <th />
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableHeaderCell />
                             {colors.map((color) => (
-                                <th key={color}>
+                                <TableHeaderCell key={color}>
                                     <Typography type="caption">
                                         {color}
                                     </Typography>
-                                </th>
+                                </TableHeaderCell>
                             ))}
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {fillTypes.map((fillType) => (
-                            <tr key={fillType}>
-                                <th scope="row">
+                            <TableRow key={fillType}>
+                                <TableHeaderCell scope="row">
                                     <Typography type="caption">
                                         {fillType}
                                     </Typography>
-                                </th>
+                                </TableHeaderCell>
                                 {colors.map((color) => (
-                                    <td key={color}>
+                                    <TableCell key={color}>
                                         <Button
                                             size={size}
                                             color={color}
@@ -85,12 +95,12 @@ export function ButtonPlayground() {
                                         >
                                             Button
                                         </Button>
-                                    </td>
+                                    </TableCell>
                                 ))}
-                            </tr>
+                            </TableRow>
                         ))}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </Section>
             <Section title="Long label">
                 <Button

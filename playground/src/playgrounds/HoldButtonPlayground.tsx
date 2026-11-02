@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Checkbox, HoldButton, Typography, useSnackbar } from 'anvilui'
 import type { HoldButtonProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { RangeControl, Row, Section, SelectControl } from '../ui'
+import { RangeControl, Row, Section, SelectControl, Labeled } from '../ui'
 
 const sizes = ['small', 'normal', 'big'] as const
 
@@ -68,13 +68,12 @@ export function HoldButtonPlayground() {
                         max={4000}
                         onChange={setDuration}
                     />
-                    <label className="pg-checkbox">
+                    <Labeled label="disabled">
                         <Checkbox
                             checked={disabled}
                             onCheckedChange={setDisabled}
                         />
-                        <Typography type="caption">disabled</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     {colors.map((color) => (

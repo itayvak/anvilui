@@ -8,7 +8,7 @@ import {
 } from 'anvilui'
 import type { FABMenuProps } from 'anvilui'
 import { colors, fillTypes } from '../options'
-import { Row, Section, SelectControl } from '../ui'
+import { Row, Section, SelectControl, Labeled } from '../ui'
 
 const sides = ['top', 'bottom'] as const
 const aligns = ['end', 'center', 'start'] as const
@@ -69,22 +69,18 @@ export function FABMenuPlayground() {
                         options={closeIcons}
                         onChange={setCloseIcon}
                     />
-                    <label className="pg-checkbox">
+                    <Labeled label="sticky">
                         <Checkbox
                             checked={sticky}
                             onCheckedChange={setSticky}
                         />
-                        <Typography type="caption">sticky</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label={'disable "Upload"'}>
                         <Checkbox
                             checked={disabledItem}
                             onCheckedChange={setDisabledItem}
                         />
-                        <Typography type="caption">
-                            disable &quot;Upload&quot;
-                        </Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <Typography type="caption">

@@ -194,22 +194,18 @@ function ThemePreview() {
 
             <Section title="Controls">
                 <Row>
-                    <label className="pg-checkbox">
+                    <Labeled label="unchecked" type="body">
                         <Checkbox />
-                        <Typography>unchecked</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="checked" type="body">
                         <Checkbox defaultChecked />
-                        <Typography>checked</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="off" type="body">
                         <Switch />
-                        <Typography>off</Typography>
-                    </label>
-                    <label className="pg-checkbox">
+                    </Labeled>
+                    <Labeled label="on" type="body">
                         <Switch defaultChecked />
-                        <Typography>on</Typography>
-                    </label>
+                    </Labeled>
                 </Row>
                 <Row>
                     <RadioGroup
@@ -218,10 +214,9 @@ function ThemePreview() {
                         style={{ flexDirection: 'row' }}
                     >
                         {['a', 'b', 'c'].map((value) => (
-                            <label key={value} className="pg-checkbox">
+                            <Labeled key={value} label={value} type="body">
                                 <Radio value={value} />
-                                <Typography>{value}</Typography>
-                            </label>
+                            </Labeled>
                         ))}
                     </RadioGroup>
                     <ToggleGroup aria-label="Toggle group" defaultValue="Week">

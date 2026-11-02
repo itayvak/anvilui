@@ -20,24 +20,6 @@ body {
     gap: var(--avl-spacing-x4);
 }
 
-.pg-nav a {
-    color: inherit;
-    font-family: var(--avl-font-main);
-    text-decoration: none;
-    opacity: 0.7;
-}
-
-.pg-nav a[aria-current='page'] {
-    font-weight: 600;
-    opacity: 1;
-}
-
-.pg-header label {
-    display: flex;
-    align-items: center;
-    gap: var(--avl-spacing-x2);
-}
-
 .pg-layout {
     display: flex;
     align-items: flex-start;
@@ -68,11 +50,7 @@ body {
     margin-top: var(--avl-spacing-x3);
 }
 
-.pg-select {
-    width: calc(var(--avl-spacing-x10) * 4);
-}
-
-.pg-range {
+.pg-.pg-range {
     width: calc(var(--avl-spacing-x10) * 5);
 }
 
@@ -99,20 +77,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--avl-spacing-x1);
-}
-
-.pg-matrix {
-    border-collapse: collapse;
-}
-
-.pg-matrix th {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    font-weight: 500;
-    text-align: left;
-}
-
-.pg-matrix td {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
 }
 
 /* Clips a component that fills its parent's height, like the navigation rail */
@@ -151,15 +115,6 @@ body {
 .pg-swatch-value {
     font-family: var(--avl-font-mono);
     text-transform: uppercase;
-}
-
-select {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    border: 1px solid var(--avl-color-outline);
-    border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-background);
-    color: var(--avl-color-on-background);
-    font-size: var(--avl-font-size-body);
 }
 
 /* A demo app fills the screen under the header and scrolls inside itself */
@@ -241,24 +196,13 @@ select {
     gap: var(--avl-spacing-x2);
 }
 
-.pg-token-number input[type='range'] {
+.pg-token-slider {
     flex: 1;
     min-width: 0;
 }
 
-.pg-token-number input[type='number'] {
-    width: 64px;
-}
-
-.pg-token input[type='text'],
-.pg-token input[type='number'] {
-    padding: var(--avl-spacing-x1) var(--avl-spacing-x2);
-    border: 1px solid var(--avl-color-outline);
-    border-radius: var(--avl-radius-small);
-    background-color: var(--avl-color-background);
-    color: var(--avl-color-on-background);
-    font-family: var(--avl-font-mono);
-    font-size: var(--avl-font-size-caption);
+.pg-token-amount {
+    width: calc(var(--avl-spacing-x1) * 20);
 }
 
 @media (max-width: 720px) {

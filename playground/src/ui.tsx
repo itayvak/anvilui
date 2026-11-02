@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { Select, SelectItem, Slider, Typography } from 'anvilui'
+import { Input, Select, SelectItem, Slider, Typography } from 'anvilui'
 import type { TypographyType } from 'anvilui'
 
 // The only raw HTML in the playground lives here: AnvilUI has no layout or
@@ -97,13 +97,11 @@ export function TextControl(props: {
     onChange: (value: string) => void
 }) {
     return (
-        <label className="pg-control">
-            <Typography type="caption">{props.label}</Typography>
-            <input
-                type="text"
-                value={props.value}
-                onChange={(e) => props.onChange(e.target.value)}
-            />
-        </label>
+        <Input
+            label={props.label}
+            value={props.value}
+            onValueChange={props.onChange}
+            className="pg-select"
+        />
     )
 }
