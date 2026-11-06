@@ -13,6 +13,15 @@ import './navigation-bar.css'
  */
 export type NavigationBarProps = ComponentProps<'nav'>
 
+/**
+ * Bottom navigation for small screens.
+ *
+ * @example
+ * <NavigationBar aria-label="Main">
+ *     <NavigationBarItem icon="home" label="Home" href="/" active />
+ *     <NavigationBarItem icon="search" label="Search" render={<Link to="/search" />} />
+ * </NavigationBar>
+ */
 export function NavigationBar({ className, ...props }: NavigationBarProps) {
     return <nav {...props} className={cx('avl-navigation-bar', className)} />
 }
@@ -28,6 +37,7 @@ export type NavigationBarItemProps = useRender.ComponentProps<'a'> & {
     active?: boolean
 }
 
+/** One destination: an `<a>` by default (give it `href`), or a router link via `render`. */
 export function NavigationBarItem({
     icon,
     label,

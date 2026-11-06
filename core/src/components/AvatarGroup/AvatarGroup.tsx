@@ -21,6 +21,11 @@ export type AvatarGroupProps = ComponentProps<'div'> & {
  * A row of overlapping `Avatar`s that fans out on hover. Give it an
  * `aria-label` ("Project members") so screen readers know what the
  * avatars are.
+ *
+ * @example
+ * <AvatarGroup max={4} aria-label="Project members">
+ *     {people.map((p) => <Avatar key={p.id} name={p.name} src={p.photo} />)}
+ * </AvatarGroup>
  */
 export function AvatarGroup({
     max,

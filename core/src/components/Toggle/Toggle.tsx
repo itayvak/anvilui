@@ -4,6 +4,7 @@ import type { MaterialSymbol } from 'material-symbols'
 import { colorClass, type ColorProps } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { cx } from '../../utils'
+import { checkName } from '../../dev'
 import '../Button/button.css'
 import '../IconButton/icon-button.css'
 import './toggle.css'
@@ -17,10 +18,13 @@ export type ToggleProps = Omit<BaseToggle.Props, 'children'> &
         fillType?: ColorProps['fillType']
     } & (
         | {
+              /** The visible label. */
               children: ReactNode
+              /** Material Symbol before the label. */
               startIcon?: MaterialSymbol
+              /** Material Symbol after the label. */
               endIcon?: MaterialSymbol
-              /** @default 'normal' */
+              /** Same heights as `Button`. @default 'normal' */
               size?: 'small' | 'normal' | 'big'
               icon?: never
           }
@@ -39,6 +43,10 @@ export type ToggleProps = Omit<BaseToggle.Props, 'children'> &
 /**
  * A button that stays on or off, like Bold or Favorite. Holds its state
  * (`pressed` / `defaultPressed` / `onPressedChange`) and sets aria-pressed.
+ *
+ * @example
+ * <Toggle startIcon="format_bold" defaultPressed>Bold</Toggle>
+ * <Toggle icon="favorite" aria-label="Favorite" pressed={fav} onPressedChange={setFav} />
  */
 export function Toggle({
     icon,
@@ -51,6 +59,14 @@ export function Toggle({
     className,
     ...props
 }: ToggleProps) {
+    if (process.env.NODE_ENV !== 'production' && icon) {
+        checkName(
+            props,
+            'Toggle',
+            '<Toggle icon="favorite" aria-label="Favorite" />',
+            'toggle.md'
+        )
+    }
     return (
         <BaseToggle
             {...props}

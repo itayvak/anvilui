@@ -3,6 +3,7 @@ import { Popover as BasePopover } from '@base-ui/react/popover'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { mergeRefs, withClass } from '../../utils'
 import { MorphContext, useMorphOpen } from '../../morph'
+import { checkAsChild, checkRoot } from '../../dev'
 import '../Menu/menu.css'
 import './popover.css'
 
@@ -14,6 +15,22 @@ export type PopoverProps = BasePopover.Root.Props & {
     morph?: boolean
 }
 
+/**
+ * A floating panel anchored to its trigger, for content users interact with
+ * (forms, details). Holds the open state: `open` / `defaultOpen` /
+ * `onOpenChange`. Parts: `PopoverTrigger`, `PopoverPopup` (includes portal
+ * and positioner; takes `side` / `align`), `PopoverTitle`,
+ * `PopoverDescription`, `PopoverClose`.
+ *
+ * @example
+ * <Popover>
+ *     <PopoverTrigger render={<IconButton icon="info" aria-label="Details" />} />
+ *     <PopoverPopup side="bottom" align="start">
+ *         <PopoverTitle>Details</PopoverTitle>
+ *         <PopoverDescription>Last edited today.</PopoverDescription>
+ *     </PopoverPopup>
+ * </Popover>
+ */
 export function Popover({
     morph = false,
     defaultOpen = false,
@@ -37,15 +54,18 @@ export function Popover({
     )
 }
 
-// Renders a bare button. Pass `render={<Button />}` to use the library button.
 export type PopoverTriggerProps = BasePopover.Trigger.Props
 
+/** Opens the popover. Renders a bare `<button>`; pass `render={<Button />}` to use the library's. */
 export function PopoverTrigger({
     className,
     ref,
     ...props
 }: PopoverTriggerProps) {
     const morph = useContext(MorphContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkAsChild(props, 'PopoverTrigger', 'popover.md')
+    }
 
     return (
         <BasePopover.Trigger
@@ -56,13 +76,14 @@ export function PopoverTrigger({
     )
 }
 
-// Also renders the portal and positioner, so it takes their placement props.
+/** The panel. Also renders the portal and positioner, so it takes their placement props. */
 export type PopoverPopupProps = BasePopover.Popup.Props &
     Pick<
         BasePopover.Positioner.Props,
         'side' | 'align' | 'sideOffset' | 'alignOffset' | 'anchor'
     >
 
+/** The panel. Takes `side`, `align`, `sideOffset`, `alignOffset` and `anchor`. */
 export function PopoverPopup({
     anchor,
     side,
@@ -75,6 +96,9 @@ export function PopoverPopup({
 }: PopoverPopupProps) {
     const avl = useContext(AnvilContext)
     const morph = useContext(MorphContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'PopoverPopup')
+    }
 
     return (
         // Into the AnvilRoot, not body, so the popup sees the theme variables
@@ -101,10 +125,12 @@ export function PopoverPopup({
     )
 }
 
-// Names the popup for screen readers. Renders an <h2>; pass `render={<h3 />}`
-// (or another level) to fit the page's headings.
 export type PopoverTitleProps = BasePopover.Title.Props
 
+/**
+ * Names the popup for screen readers. Renders an `<h2>`; pass
+ * `render={<h3 />}` (or another level) to fit the page's headings.
+ */
 export function PopoverTitle({ className, ...props }: PopoverTitleProps) {
     return (
         <BasePopover.Title
@@ -116,6 +142,7 @@ export function PopoverTitle({ className, ...props }: PopoverTitleProps) {
 
 export type PopoverDescriptionProps = BasePopover.Description.Props
 
+/** Supporting text in the popover. */
 export function PopoverDescription({
     className,
     ...props
@@ -128,11 +155,16 @@ export function PopoverDescription({
     )
 }
 
-// Closes the popover. Renders a bare button; pass `render={<Button />}` or
-// `render={<IconButton ... />}` to use the library's.
 export type PopoverCloseProps = BasePopover.Close.Props
 
+/**
+ * Closes the popover. Renders a bare `<button>`; pass `render={<Button />}`
+ * or `render={<IconButton ... />}` to use the library's.
+ */
 export function PopoverClose({ className, ...props }: PopoverCloseProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkAsChild(props, 'PopoverClose', 'popover.md')
+    }
     return (
         <BasePopover.Close
             {...props}

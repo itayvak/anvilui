@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Slider as BaseSlider } from '@base-ui/react/slider'
 import { SquigglyWave, type WaveSpan } from '../SquigglyWave/SquigglyWave'
 import { cx, withClass } from '../../utils'
+import { checkName } from '../../dev'
 import '../Tooltip/tooltip.css'
 import './slider.css'
 
@@ -33,6 +34,11 @@ export type SliderProps<
 /**
  * Pass an array as `value` / `defaultValue` for a range with several handles.
  * `orientation="vertical"` is 160px tall by default; set a height via `className`.
+ * `onValueChange` gets a number (or an array for a range), not an event.
+ *
+ * @example
+ * <Slider label="Volume" defaultValue={50} />
+ * <Slider aria-label="Price" value={range} onValueChange={setRange} min={0} max={500} />
  */
 export function Slider<Value extends number | readonly number[]>({
     label,
@@ -42,6 +48,14 @@ export function Slider<Value extends number | readonly number[]>({
     className,
     ...props
 }: SliderProps<Value>) {
+    if (process.env.NODE_ENV !== 'production' && label == null) {
+        checkName(
+            { 'aria-label': ariaLabel, ...props },
+            'Slider',
+            '<Slider label="Volume" />   // or <Slider aria-label="Volume" />',
+            'slider.md'
+        )
+    }
     const initial = props.value ?? props.defaultValue
     const thumbCount = Array.isArray(initial) ? initial.length : 1
     const wavy = squiggly && props.orientation !== 'vertical'

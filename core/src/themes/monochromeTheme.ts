@@ -4,6 +4,7 @@ import { Theme } from './types'
 // Black and white with neutral greys. Error, warning and success keep the
 // base theme's hues so they still read as status colors.
 
+/** A black-and-white light theme. Pass as `<AnvilRoot lightTheme={monochromeLightTheme}>`. */
 export const monochromeLightTheme: Theme = {
     ...baseLightTheme,
     background: '#FFFFFF',
@@ -28,6 +29,7 @@ export const monochromeLightTheme: Theme = {
     inversePrimary: '#FFFFFF',
 }
 
+/** A black-and-white dark theme. Pass as `<AnvilRoot darkTheme={monochromeDarkTheme}>`. */
 export const monochromeDarkTheme: Theme = {
     ...baseDarkTheme,
     background: '#0F0F0F',

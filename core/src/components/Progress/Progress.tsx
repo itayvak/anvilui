@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { Progress as BaseProgress } from '@base-ui/react/progress'
 import { SquigglyWave, type WaveSpan } from '../SquigglyWave/SquigglyWave'
 import { cx, withClass } from '../../utils'
+import { checkName } from '../../dev'
 import './progress.css'
 
 export type ProgressProps = BaseProgress.Root.Props & {
@@ -32,7 +33,14 @@ export type ProgressProps = BaseProgress.Root.Props & {
 const RING = { r: 20, gap: 8 }
 const INLINE_RING = { r: 18, gap: 12 }
 
-/** Pass `value={null}` while the amount of work is unknown. */
+/**
+ * Shows how far along a task is: `value` from 0 to 100 (or `min`/`max`).
+ * Pass `value={null}` while the amount of work is unknown.
+ *
+ * @example
+ * <Progress label="Uploading" value={progress} />
+ * <Progress type="circular" aria-label="Loading" value={null} />
+ */
 export function Progress({
     type = 'linear',
     squiggly = false,
@@ -42,6 +50,14 @@ export function Progress({
     children,
     ...props
 }: ProgressProps) {
+    if (process.env.NODE_ENV !== 'production' && label == null) {
+        checkName(
+            props,
+            'Progress',
+            '<Progress label="Uploading" value={40} />   // or aria-label="Uploading"',
+            'progress.md'
+        )
+    }
     const { value, min = 0, max = 100 } = props
     const fraction =
         value == null

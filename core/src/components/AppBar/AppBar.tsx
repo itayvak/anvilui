@@ -34,7 +34,18 @@ export type AppBarProps = ComponentProps<'header'> & {
     fillType?: ComponentFillType
 }
 
-/** The bar across the top of a page or screen: title, navigation and actions. */
+/**
+ * The bar across the top of a page or screen: title, navigation and actions.
+ * The title is the `label` prop, not children.
+ *
+ * @example
+ * <AppBar
+ *     label="Inbox"
+ *     labelAs="h1"
+ *     start={<IconButton icon="menu" aria-label="Menu" fillType="text" color="container" />}
+ *     end={<IconButton icon="search" aria-label="Search" fillType="text" color="container" />}
+ * />
+ */
 export function AppBar({
     label,
     labelAs = 'div',

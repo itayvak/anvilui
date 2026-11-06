@@ -11,6 +11,7 @@ import { mergeProps } from '@base-ui/react/merge-props'
 import { Icon } from '../Icon/Icon'
 import { IconButton, type IconButtonProps } from '../IconButton/IconButton'
 import { cx, withClass } from '../../utils'
+import { devError } from '../../dev'
 import './navigation-rail.css'
 
 const RailContext = createContext<{
@@ -33,6 +34,16 @@ export type NavigationRailProps = ComponentProps<'nav'> & {
     onExpandedChange?: (expanded: boolean) => void
 }
 
+/**
+ * Side navigation for medium and large screens.
+ *
+ * @example
+ * <NavigationRail aria-label="Main">
+ *     <NavigationRailToggle aria-label="Toggle navigation" />
+ *     <NavigationRailItem icon="inbox" label="Inbox" href="/inbox" active end="3" />
+ *     <NavigationRailItem icon="send" label="Sent" href="/sent" />
+ * </NavigationRail>
+ */
 export function NavigationRail({
     expanded: expandedProp,
     defaultExpanded = false,
@@ -58,15 +69,22 @@ export function NavigationRail({
     )
 }
 
-// The menu button at the top that expands and collapses the rail.
 export type NavigationRailToggleProps = Omit<IconButtonProps, 'icon'>
 
+/** The menu button at the top that expands and collapses the rail. Needs an `aria-label`. */
 export function NavigationRailToggle({
     className,
     onClick,
     ...props
 }: NavigationRailToggleProps) {
     const rail = useContext(RailContext)
+    if (process.env.NODE_ENV !== 'production' && !rail) {
+        devError(
+            '<NavigationRailToggle> is rendered outside a <NavigationRail>, so it has nothing to expand.',
+            '<NavigationRail aria-label="Main">\n    <NavigationRailToggle aria-label="Toggle navigation" />\n    <NavigationRailItem icon="home" label="Home" href="/" />\n</NavigationRail>',
+            'navigation-rail.md'
+        )
+    }
     const expanded = rail?.expanded ?? false
 
     return (
@@ -101,6 +119,7 @@ export type NavigationRailItemProps = useRender.ComponentProps<'a'> & {
     end?: ReactNode
 }
 
+/** One destination: an `<a>` by default (give it `href`), or a router link via `render`. */
 export function NavigationRailItem({
     icon,
     label,

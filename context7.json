@@ -1,0 +1,22 @@
+{
+    "$schema": "https://context7.com/schema/context7.json",
+    "projectTitle": "AnvilUI",
+    "description": "React 19 components with Material 3 styling, built on Base UI (npm: anvilui)",
+    "folders": ["core"],
+    "excludeFolders": [
+        "core/src",
+        "core/dist",
+        "core/bin",
+        "core/node_modules"
+    ],
+    "excludeFiles": ["CONTRIBUTING.md", "CLAUDE.md"],
+    "rules": [
+        "Import everything from 'anvilui', import 'anvilui/styles.css' once, and wrap the app in <AnvilRoot>.",
+        "Use fillType ('filled' | 'outlined' | 'text') and color ('primary' | 'tonal' | 'success' | 'warning' | 'error' | 'container' | 'surface'), never variant.",
+        "There is no asChild: use the render prop, e.g. <DialogTrigger render={<Button />}>Open</DialogTrigger>.",
+        "Icons are Material Symbols name strings: startIcon=\"add\", <IconButton icon=\"delete\" aria-label=\"Delete\" />.",
+        "Callbacks receive values, not events: onValueChange(value), onCheckedChange(checked), onOpenChange(open).",
+        "Checkbox, Switch and Radio have no label prop; wrap them in <label>.",
+        "Dates are \"YYYY-MM-DD\" strings and times are \"HH:mm\" strings."
+    ]
+}

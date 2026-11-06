@@ -29,6 +29,9 @@ const HOME = 10
 /**
  * A number whose digits roll like an odometer when `value` changes.
  * Screen readers hear the formatted number, not the individual digits.
+ *
+ * @example
+ * <AnimatedNumber value={price} format={{ style: 'currency', currency: 'USD' }} />
  */
 export function AnimatedNumber({
     value,

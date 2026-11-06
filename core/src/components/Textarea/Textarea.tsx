@@ -17,6 +17,14 @@ export type TextareaProps = Omit<ComponentProps<'textarea'>, 'className'> &
         className?: string
     }
 
+/**
+ * A multi-line text field with a floating label. Same API as `Input`:
+ * `onChange` (event) or `onValueChange` (string); `className` goes on the
+ * wrapper, other props on the `<textarea>`.
+ *
+ * @example
+ * <Textarea label="Bio" rows={4} defaultValue="" />
+ */
 export function Textarea({
     label,
     size = 'normal',

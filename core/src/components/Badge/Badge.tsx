@@ -19,6 +19,10 @@ export type BadgeProps = ComponentProps<'span'> & {
  *
  * It's hidden from screen readers: put the count in the wrapped element's
  * name too, e.g. `aria-label="Inbox, 3 unread"`.
+ *
+ * @example
+ * <Badge count={3}><IconButton icon="mail" aria-label="Inbox, 3 unread" /></Badge>
+ * <Badge><Icon name="notifications" /></Badge>   // a dot
  */
 export function Badge({
     count,

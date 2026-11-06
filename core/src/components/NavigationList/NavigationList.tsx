@@ -11,6 +11,15 @@ import './navigation-list.css'
  */
 export type NavigationListProps = ComponentProps<'nav'>
 
+/**
+ * A column of text-only navigation links.
+ *
+ * @example
+ * <NavigationList aria-label="Settings">
+ *     <NavigationListItem label="Profile" href="/settings/profile" active />
+ *     <NavigationListItem label="Billing" href="/settings/billing" />
+ * </NavigationList>
+ */
 export function NavigationList({ className, ...props }: NavigationListProps) {
     return <nav {...props} className={cx('avl-navigation-list', className)} />
 }
@@ -24,6 +33,7 @@ export type NavigationListItemProps = useRender.ComponentProps<'a'> & {
     active?: boolean
 }
 
+/** One link: an `<a>` by default (give it `href`), or a router link via `render`. The text is `label`. */
 export function NavigationListItem({
     label,
     active = false,

@@ -15,6 +15,13 @@ export type ChipProps = BaseButtonProps & {
     startIcon?: MaterialSymbol
 }
 
+/**
+ * A compact button for suggestions and quick actions. For on/off filters
+ * use `FilterChip`; for removable values (tags) use `InputChip`.
+ *
+ * @example
+ * <Chip startIcon="event" onClick={addToCalendar}>Add to calendar</Chip>
+ */
 export function Chip({ startIcon, className, children, ...props }: ChipProps) {
     return (
         <BaseButton
@@ -34,6 +41,13 @@ export function Chip({ startIcon, className, children, ...props }: ChipProps) {
 // Shows a checkmark while on.
 export type FilterChipProps = Toggle.Props
 
+/**
+ * A chip that toggles on and off, showing a checkmark while on. State:
+ * `pressed` / `defaultPressed` / `onPressedChange`.
+ *
+ * @example
+ * <FilterChip pressed={vegan} onPressedChange={setVegan}>Vegan</FilterChip>
+ */
 export function FilterChip({ className, children, ...props }: FilterChipProps) {
     return (
         <Toggle
@@ -59,6 +73,15 @@ export type InputChipProps = ComponentProps<'span'> & {
     disabled?: boolean
 }
 
+/**
+ * A removable value, like a tag or recipient. Plays an exit animation, then
+ * calls `onRemove`: remove it from your list there.
+ *
+ * @example
+ * {tags.map((t) => (
+ *     <InputChip key={t} removeLabel={`Remove ${t}`} onRemove={() => setTags(tags.filter((x) => x !== t))}>{t}</InputChip>
+ * ))}
+ */
 export function InputChip({
     onRemove,
     removeLabel = 'Remove',

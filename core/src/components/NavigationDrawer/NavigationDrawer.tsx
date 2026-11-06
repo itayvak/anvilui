@@ -4,6 +4,7 @@ import type { MaterialSymbol } from 'material-symbols'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
 import { withClass } from '../../utils'
+import { checkAsChild, checkRoot } from '../../dev'
 import './navigation-drawer.css'
 
 /**
@@ -13,17 +14,37 @@ import './navigation-drawer.css'
  */
 export type NavigationDrawerProps = Omit<Drawer.Root.Props, 'swipeDirection'>
 
+/**
+ * Side navigation that slides in over the page, for small screens.
+ *
+ * @example
+ * <NavigationDrawer>
+ *     <NavigationDrawerTrigger render={<IconButton icon="menu" aria-label="Open navigation" />} />
+ *     <NavigationDrawerPopup>
+ *         <NavigationDrawerTitle>Mail</NavigationDrawerTitle>
+ *         <NavigationDrawerItem icon="inbox" label="Inbox" href="/inbox" active />
+ *     </NavigationDrawerPopup>
+ * </NavigationDrawer>
+ */
 export function NavigationDrawer(props: NavigationDrawerProps) {
     return <Drawer.Root {...props} swipeDirection="left" />
 }
 
-// Renders a bare button. Usually `render={<IconButton icon="menu" ... />}`.
 export type NavigationDrawerTriggerProps = Drawer.Trigger.Props
 
+/** Opens the drawer. Renders a bare `<button>`; usually `render={<IconButton icon="menu" aria-label="..." />}`. */
 export function NavigationDrawerTrigger({
     className,
     ...props
 }: NavigationDrawerTriggerProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkAsChild(
+            props,
+            'NavigationDrawerTrigger',
+            'navigation-drawer.md',
+            '<NavigationDrawerTrigger render={<IconButton icon="menu" aria-label="Open navigation" />} />'
+        )
+    }
     return (
         <Drawer.Trigger
             {...props}
@@ -32,15 +53,20 @@ export function NavigationDrawerTrigger({
     )
 }
 
-// Also renders the portal and the dimmed backdrop. Put a NavigationDrawerTitle
-// first (it names the drawer for screen readers), then the items.
 export type NavigationDrawerPopupProps = Drawer.Popup.Props
 
+/**
+ * The drawer panel. Also renders the portal and the dimmed backdrop. Put a
+ * `NavigationDrawerTitle` first (it names the drawer), then the items.
+ */
 export function NavigationDrawerPopup({
     className,
     ...props
 }: NavigationDrawerPopupProps) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'NavigationDrawerPopup')
+    }
 
     return (
         // Into the AnvilRoot, not body, so the drawer sees the theme variables
@@ -59,9 +85,9 @@ export function NavigationDrawerPopup({
     )
 }
 
-// The heading at the top, e.g. the app's name. Renders an <h2>.
 export type NavigationDrawerTitleProps = Drawer.Title.Props
 
+/** The heading at the top, e.g. the app's name. Renders an `<h2>`. */
 export function NavigationDrawerTitle({
     className,
     ...props
@@ -74,8 +100,6 @@ export function NavigationDrawerTitle({
     )
 }
 
-// A link that also closes the drawer. Pass `render` to use a router link
-// instead, e.g. render={<Link to="/photos" />}.
 export type NavigationDrawerItemProps = Omit<Drawer.Close.Props, 'children'> & {
     /** Material Symbol to show. */
     icon: MaterialSymbol
@@ -89,6 +113,10 @@ export type NavigationDrawerItemProps = Omit<Drawer.Close.Props, 'children'> & {
     href?: string
 }
 
+/**
+ * A link that also closes the drawer. Give it `href`, or pass `render` for a
+ * router link, e.g. `render={<Link to="/photos" />}`.
+ */
 export function NavigationDrawerItem({
     icon,
     label,

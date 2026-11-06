@@ -1,7 +1,7 @@
 {
     "name": "anvilui",
     "version": "0.1.0",
-    "description": "Anvil UI",
+    "description": "Material 3 style React components built on Base UI. Ships agent docs in AGENTS.md and docs/.",
     "author": "itayvak",
     "license": "MIT",
     "type": "module",
@@ -20,7 +20,10 @@
         "*.css"
     ],
     "files": [
-        "dist"
+        "dist",
+        "bin",
+        "docs",
+        "AGENTS.md"
     ],
     "scripts": {
         "build": "tsup && tsc -p tsconfig.build.json",
@@ -32,8 +35,8 @@
         "material-symbols": "^0.47.4"
     },
     "peerDependencies": {
-        "react": ">=18",
-        "react-dom": ">=18"
+        "react": ">=19",
+        "react-dom": ">=19"
     },
     "devDependencies": {
         "@types/react": "^19.3.0",
@@ -42,5 +45,22 @@
         "react-dom": "^19.3.0",
         "tsup": "^8.5.1",
         "typescript": "^7.0.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/itayvak/anvilui.git",
+        "directory": "core"
+    },
+    "homepage": "https://github.com/itayvak/anvilui#readme",
+    "keywords": [
+        "react",
+        "components",
+        "ui",
+        "material",
+        "base-ui",
+        "design-system"
+    ],
+    "bin": {
+        "anvilui": "./bin/anvilui.mjs"
     }
 }

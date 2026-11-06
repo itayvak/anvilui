@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Toast } from '@base-ui/react/toast'
 import { Icon } from '../Icon/Icon'
+import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import './snackbar.css'
 
 export type SnackbarOptions = {
@@ -21,10 +22,23 @@ export type SnackbarOptions = {
 type SnackbarData = { closeButton?: boolean }
 
 /**
- * Shows snackbars: `const snackbar = useSnackbar()`, then
- * `snackbar.show({ message: 'Saved' })`. Works anywhere inside `AnvilRoot`.
+ * Shows snackbars (toasts). There is no Snackbar or Toast component to
+ * render: AnvilRoot already renders the viewport. Works anywhere inside
+ * `AnvilRoot`.
+ *
+ * @example
+ * const snackbar = useSnackbar()
+ * snackbar.show({ message: 'Deleted', action: { label: 'Undo', onClick: undo } })
  */
 export function useSnackbar() {
+    const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production' && !avl)
+        throw new Error(
+            '[anvilui] useSnackbar() was called outside <AnvilRoot>.\n\n' +
+                'Fix: call it from a component rendered inside <AnvilRoot>, not in the component that renders AnvilRoot:\n' +
+                '<AnvilRoot><App /></AnvilRoot>   // useSnackbar() inside App works\n\n' +
+                'Docs: node_modules/anvilui/docs/snackbar.md'
+        )
     const manager = Toast.useToastManager<SnackbarData>()
 
     return {

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useContext, useLayoutEffect, useRef } from 'react'
 import {
     Button as BaseButton,
     ButtonProps as BaseButtonProps,
@@ -11,13 +11,23 @@ import {
 } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { mergeRefs, withClass } from '../../utils'
+import { AnvilContext } from '../AnvilRoot/AnvilContext'
+import { checkAsChild, checkProp, checkRoot, OUTSIDE_ROOT } from '../../dev'
 import './button.css'
 
 export type ButtonProps = BaseButtonProps & {
+    /** Height and text size: 32px, 40px or 48px tall. @default 'normal' */
     size?: 'small' | 'normal' | 'big'
+    /**
+     * How the color is applied: solid, bordered, or text only. This is the
+     * prop other libraries call `variant`. @default 'filled'
+     */
     fillType?: ComponentFillType
+    /** Color role from the theme. @default 'primary' */
     color?: ComponentColor
+    /** Material Symbol name shown before the label, e.g. `'add'`. */
     startIcon?: MaterialSymbol
+    /** Material Symbol name shown after the label, e.g. `'arrow_forward'`. */
     endIcon?: MaterialSymbol
     /**
      * Shows a spinner in place of `startIcon` and ignores clicks. Pass the
@@ -27,6 +37,15 @@ export type ButtonProps = BaseButtonProps & {
     loading?: boolean
 }
 
+/**
+ * A button with a text label and optional icons. Renders a `<button>`; for a
+ * link, pass `render={<a href="/x" />}` and `nativeButton={false}`.
+ *
+ * @example
+ * <Button startIcon="add" onClick={create}>New</Button>
+ * <Button fillType="outlined" color="error">Delete</Button>
+ * <Button loading={saving}>{saving ? 'Saving' : 'Save'}</Button>
+ */
 export function Button({
     size,
     fillType,
@@ -41,6 +60,24 @@ export function Button({
     ...props
 }: ButtonProps) {
     const local = useRef<HTMLButtonElement>(null)
+    const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'Button', OUTSIDE_ROOT)
+        checkProp(
+            props,
+            'variant',
+            'Button',
+            'Use `fillType` for the style and `color` for the theme role.',
+            "<Button fillType=\"outlined\" color=\"error\">Delete</Button>\n// fillType: 'filled' | 'outlined' | 'text'\n// color: 'primary' | 'tonal' | 'success' | 'warning' | 'error' | 'container' | 'surface'",
+            'button.md'
+        )
+        checkAsChild(
+            props,
+            'Button',
+            'button.md',
+            '<Button render={<a href="/settings" />} nativeButton={false}>Settings</Button>'
+        )
+    }
     // Only buttons that use `loading` resize smoothly; the rest skip the
     // measuring
     useAnimatedWidth(local, loading !== undefined)

@@ -13,6 +13,11 @@ export type CarouselProps = React.ComponentProps<'div'> & {
  * cut off flat, and their content slides to stay centered in what's visible
  * (in browsers with scroll-driven animations; Firefox cuts them off flat).
  * With a mouse, it can be dragged and thrown like on a touch screen.
+ *
+ * @example
+ * <Carousel aria-label="Featured albums">
+ *     {albums.map((a) => <CarouselItem key={a.id}><img src={a.cover} alt={a.title} /></CarouselItem>)}
+ * </Carousel>
  */
 export function Carousel({
     className,

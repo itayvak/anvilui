@@ -14,7 +14,10 @@ export type HoldButtonProps = Omit<ButtonProps, 'loading'> & {
  * A button for destructive actions: press and hold until the fill sweeps
  * across, instead of a confirm dialog. Letting go early cancels. Works with
  * Space and Enter too; a screen reader's click, which can't be held,
- * confirms straight away.
+ * confirms straight away. Use `onConfirm`, not `onClick`.
+ *
+ * @example
+ * <HoldButton color="error" startIcon="delete" onConfirm={deleteAll}>Hold to delete</HoldButton>
  */
 export function HoldButton({
     onConfirm,

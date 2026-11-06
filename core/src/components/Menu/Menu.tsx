@@ -4,18 +4,37 @@ import type { MaterialSymbol } from 'material-symbols'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
 import { withClass } from '../../utils'
+import { checkAsChild, checkRoot } from '../../dev'
 import './menu.css'
 
 export type MenuProps = BaseMenu.Root.Props
 
+/**
+ * A dropdown menu of actions. Holds the open state (`open` / `defaultOpen` /
+ * `onOpenChange`). Parts: `MenuTrigger`, `MenuPopup` (includes portal and
+ * positioner), `MenuItem`, `MenuGroup` (there is no MenuSeparator: groups
+ * are split visually), `MenuSubmenu` + `MenuSubmenuTrigger`.
+ *
+ * @example
+ * <Menu>
+ *     <MenuTrigger render={<IconButton icon="more_vert" aria-label="More" fillType="text" color="container" />} />
+ *     <MenuPopup align="end">
+ *         <MenuItem startIcon="edit" onClick={rename}>Rename</MenuItem>
+ *         <MenuItem startIcon="delete" onClick={remove}>Delete</MenuItem>
+ *     </MenuPopup>
+ * </Menu>
+ */
 export function Menu(props: MenuProps) {
     return <BaseMenu.Root {...props} />
 }
 
-// Renders a bare button. Pass `render={<Button />}` to use the library button.
 export type MenuTriggerProps = BaseMenu.Trigger.Props
 
+/** Opens the menu. Renders a bare `<button>`; pass `render={<Button />}` to use the library's. */
 export function MenuTrigger({ className, ...props }: MenuTriggerProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkAsChild(props, 'MenuTrigger', 'menu.md')
+    }
     return (
         <BaseMenu.Trigger
             {...props}
@@ -27,13 +46,14 @@ export function MenuTrigger({ className, ...props }: MenuTriggerProps) {
 // True inside a MenuSubmenu, so its popup can space itself from the parent's
 const SubmenuContext = createContext(false)
 
-// Also renders the portal and positioner, so it takes their placement props.
+/** The menu panel. Also renders the portal and positioner, so it takes their placement props. */
 export type MenuPopupProps = BaseMenu.Popup.Props &
     Pick<
         BaseMenu.Positioner.Props,
         'side' | 'align' | 'sideOffset' | 'alignOffset'
     >
 
+/** The menu panel, holding the items. Takes `side`, `align`, `sideOffset`, `alignOffset`. */
 export function MenuPopup({
     side,
     align,
@@ -43,6 +63,9 @@ export function MenuPopup({
     ...props
 }: MenuPopupProps) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'MenuPopup')
+    }
     const isSubmenu = useContext(SubmenuContext)
 
     return (
@@ -66,10 +89,12 @@ export function MenuPopup({
     )
 }
 
-// A menu nested in another one: put a MenuSubmenuTrigger and a MenuPopup in it,
-// and place the whole thing among the parent's items.
 export type MenuSubmenuProps = BaseMenu.SubmenuRoot.Props
 
+/**
+ * A menu nested in another one: put a `MenuSubmenuTrigger` and a
+ * `MenuPopup` in it, and place the whole thing among the parent's items.
+ */
 export function MenuSubmenu(props: MenuSubmenuProps) {
     return (
         <SubmenuContext value={true}>
@@ -78,11 +103,12 @@ export function MenuSubmenu(props: MenuSubmenuProps) {
     )
 }
 
-// Looks like a MenuItem, with an arrow at the end. Opens on hover or click.
 export type MenuSubmenuTriggerProps = BaseMenu.SubmenuTrigger.Props & {
+    /** Material Symbol before the label. */
     startIcon?: MaterialSymbol
 }
 
+/** Looks like a `MenuItem`, with an arrow at the end. Opens its submenu on hover or click. */
 export function MenuSubmenuTrigger({
     startIcon,
     className,
@@ -101,10 +127,13 @@ export function MenuSubmenuTrigger({
     )
 }
 
-// Splits the menu: each group is its own container, with a gap between them.
-// Items placed straight in the popup, outside any group, share a single one.
 export type MenuGroupProps = BaseMenu.Group.Props
 
+/**
+ * Splits the menu: each group is its own container, with a gap between
+ * them. Use it where other libraries use a separator. Items placed straight
+ * in the popup, outside any group, share a single container.
+ */
 export function MenuGroup({ className, ...props }: MenuGroupProps) {
     return (
         <BaseMenu.Group
@@ -115,10 +144,13 @@ export function MenuGroup({ className, ...props }: MenuGroupProps) {
 }
 
 export type MenuItemProps = BaseMenu.Item.Props & {
+    /** Material Symbol before the label. */
     startIcon?: MaterialSymbol
+    /** Material Symbol after the label. */
     endIcon?: MaterialSymbol
 }
 
+/** One action. Use `onClick` (there is no onSelect); the menu closes after it. */
 export function MenuItem({
     startIcon,
     endIcon,

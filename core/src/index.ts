@@ -353,6 +353,9 @@ export type {
     NavigationDrawerItemProps,
 } from './components/NavigationDrawer/NavigationDrawer'
 
+/** Every Material Symbols icon name, the type of `icon`, `startIcon`, `endIcon` and `Icon`'s `name`. */
+export type { MaterialSymbol } from 'material-symbols'
+
 export type { ComponentColor } from './colors/colors'
 export type { ComponentFillType, ColorProps } from './colors/colors'
 

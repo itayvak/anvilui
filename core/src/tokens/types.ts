@@ -1,14 +1,27 @@
+/**
+ * Everything about the look except colors. Each key becomes CSS variables
+ * on AnvilRoot, e.g. `radius.medium` is `--avl-radius-medium`.
+ */
 export type DesignTokens = {
+    /** The spacing unit in px. `--avl-spacing-x1` … `x20` are multiples of it. @default 4 */
     spacing: number
+    /** Font stacks for body text, titles and code. */
     font: Font
+    /** Font sizes for each text style. */
     fontSize: FontSize
+    /** Corner radii. */
     radius: BorderRadius
+    /** Width of borders on inputs and outlined controls. @default '1.5px' */
     outlineSize: string
-    /** Opacity of disabled controls. */
+    /** Opacity of disabled controls. @default '0.5' */
     disabledOpacity: string
+    /** Font weights. */
     fontWeight: FontWeight
+    /** Elevation shadows. */
     shadow: Shadow
+    /** Easing curves. */
     ease: Ease
+    /** Animation durations. */
     easeLength: EaseLength
 }
 

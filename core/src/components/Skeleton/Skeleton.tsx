@@ -15,6 +15,10 @@ export type SkeletonProps = React.ComponentProps<'span'> & {
 /**
  * A placeholder shown while content loads. It's hidden from screen readers:
  * put `aria-busy` on the region that's loading.
+ *
+ * @example
+ * <Skeleton variant="circular" style={{ width: 40, height: 40 }} />
+ * <Skeleton style={{ width: '60%' }} />
  */
 export function Skeleton({
     variant = 'text',

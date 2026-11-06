@@ -1,0 +1,89 @@
+# AnvilUI
+
+> AnvilUI (`anvilui` on npm) is a React 19 component library with Material 3 styling, built on Base UI. Wrap the app in `AnvilRoot` and import `anvilui/styles.css`. Style props are `fillType` and `color` (not `variant`), icons are Material Symbols name strings, and parts are customized with Base UI's `render` prop (not `asChild`).
+
+The same docs ship inside the package at `node_modules/anvilui/AGENTS.md` and `node_modules/anvilui/docs/`, matching the installed version.
+
+## Start here
+
+- [AGENTS.md](https://raw.githubusercontent.com/itayvak/anvilui/main/core/AGENTS.md): rules, setup, every export, props summary, patterns and common mistakes
+- [Full docs](https://raw.githubusercontent.com/itayvak/anvilui/main/public/llms-full.txt): all pages in one file
+
+## Guides
+
+- [Setup](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/setup.md): install, `anvilui/styles.css`, `AnvilRoot`, fonts, Next.js, theme CSS variables
+- [Theming and color mode](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/theming.md): AnvilRoot props, color mode, `useAnvil`, `createTheme`, theme roles, design tokens
+- [Composition: `render`, refs, className](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/composition.md): `render` instead of `asChild`, refs, className, controlled/uncontrolled props
+- [Forms](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/forms.md): building forms, `Field` validation, `FormData`, submit buttons
+- [Icons](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/icons.md): Material Symbols names, `Icon`, which props take icon names
+- [morph and morphBetween](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/morph.md): `morph()` / `morphBetween()` container transforms
+
+## Buttons and actions
+
+- [Button](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/button.md): Button with `fillType`, `color`, `size`, icons, `loading`, links
+- [IconButton](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/icon-button.md): IconButton, icon-only round button (`aria-label` required)
+- [SplitButton](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/split-button.md): SplitButton, a segmented group of buttons
+- [HoldButton](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/hold-button.md): HoldButton, press-and-hold to confirm destructive actions
+- [Toggle](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/toggle.md): Toggle, an on/off button (text or icon)
+- [ToggleGroup](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/toggle-group.md): ToggleGroup, a segmented control, single or multiple
+- [FAB](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/fab.md): FAB, the floating action button
+- [FABMenu](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/fab-menu.md): FABMenu, a FAB that opens a stack of actions
+- [Chip, FilterChip, InputChip](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/chip.md): Chip, FilterChip, InputChip
+
+## Form controls
+
+- [Input](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/input.md): Input, text field with floating label
+- [Textarea](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/textarea.md): Textarea, multi-line text field
+- [Field, FieldDescription, FieldError](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/field.md): Field, FieldDescription, FieldError for helper text and validation
+- [Select, SelectItem](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/select.md): Select, SelectItem dropdown (`items` for labels)
+- [Combobox, ComboboxItem](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/combobox.md): Combobox, ComboboxItem, a filterable picker (render-function children)
+- [Search, SearchItem](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/search.md): Search, SearchItem, a search bar with suggestions
+- [Checkbox](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/checkbox.md): Checkbox (wrap in `<label>`)
+- [Switch](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/switch.md): Switch (wrap in `<label>`)
+- [RadioGroup, Radio](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/radio-group.md): RadioGroup, Radio
+- [Slider](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/slider.md): Slider, single value or range
+- [DateInput](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/date-input.md): DateInput, typed or picked date (`"YYYY-MM-DD"`)
+- [TimePicker](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/time-picker.md): TimePicker, dial or typed time (`"HH:mm"`)
+- [Calendar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/calendar.md): Calendar, a month grid
+- [PinInput](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/pin-input.md): PinInput, one box per character for codes
+
+## Overlays and menus
+
+- [Dialog](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/dialog.md): Dialog and parts (Trigger, Popup, Title, Description, Actions, Close)
+- [BottomSheet](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/bottom-sheet.md): BottomSheet, a sheet that slides up from the bottom
+- [Popover](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/popover.md): Popover, an anchored interactive panel
+- [PreviewCard](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/preview-card.md): PreviewCard, a hover preview for links
+- [Tooltip](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/tooltip.md): Tooltip (`label` + one child element)
+- [Menu](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/menu.md): Menu, MenuTrigger, MenuPopup, MenuItem, MenuGroup, submenus
+- [ContextMenu](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/context-menu.md): ContextMenu, a right-click menu
+- [Menubar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/menubar.md): Menubar, a File/Edit/View row of menus
+- [useSnackbar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/snackbar.md): `useSnackbar()` toasts
+- [useConfetti](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/confetti.md): `useConfetti()` bursts
+
+## Navigation and layout
+
+- [AppBar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/app-bar.md): AppBar, the top bar (`label`, `start`, `end`)
+- [NavigationBar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/navigation-bar.md): NavigationBar, bottom navigation for mobile
+- [NavigationRail](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/navigation-rail.md): NavigationRail, collapsible side navigation
+- [NavigationList](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/navigation-list.md): NavigationList, a text-only sidebar of links
+- [NavigationDrawer](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/navigation-drawer.md): NavigationDrawer, a slide-in side navigation
+- [Tabs](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/tabs.md): Tabs, TabsList, TabsTab, TabsPanel
+- [FloatingToolbar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/floating-toolbar.md): FloatingToolbar, a floating pill of icon buttons
+- [Card](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/card.md): Card, CardTitle, CardContent, CardActions; clickable cards
+- [List, ListItem](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/list.md): List, ListItem rows with start/end slots
+- [Table](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/table.md): Table and its native-element parts
+- [Accordion](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/accordion.md): Accordion, expandable sections
+- [Carousel](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/carousel.md): Carousel, a horizontal scroller
+- [Divider](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/divider.md): Divider, horizontal, vertical or labeled
+- [Typography](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/typography.md): Typography `type` and `as`
+
+## Display
+
+- [Avatar](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/avatar.md): Avatar, image, initials or icon
+- [AvatarGroup](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/avatar-group.md): AvatarGroup, overlapping avatars with "+N"
+- [Badge](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/badge.md): Badge, a dot or count
+- [Progress](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/progress.md): Progress, linear, circular or inline; indeterminate with `value={null}`
+- [Skeleton](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/skeleton.md): Skeleton loading placeholders
+- [Sticker](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/sticker.md): Sticker, a tilted decorative label
+- [AnimatedNumber](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/animated-number.md): AnimatedNumber, a rolling-digit number
+- [Kbd](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/kbd.md): Kbd, a keyboard key

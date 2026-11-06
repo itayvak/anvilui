@@ -34,7 +34,11 @@ const defaultSlotLabel = (index: number, length: number) =>
 /**
  * One box per character, for verification codes and PINs. Typing, paste,
  * backspace and arrow keys move between boxes. Digits only by default; set
- * `validationType` for letters. `mask` hides what's typed.
+ * `validationType` for letters. `mask` hides what's typed. `length` is
+ * required.
+ *
+ * @example
+ * <PinInput label="Verification code" length={6} onValueChange={setCode} />
  */
 export function PinInput({
     label,

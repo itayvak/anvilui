@@ -5,6 +5,7 @@ import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
 import { IconButton } from '../IconButton/IconButton'
 import { cx, withClass } from '../../utils'
+import { checkName, checkRoot, devError } from '../../dev'
 import '../Menu/menu.css'
 import './search.css'
 
@@ -31,7 +32,13 @@ export type SearchProps<Item> = Omit<
 /**
  * Material 3 search bar with a list of suggestions under it. Pass `items`
  * and it filters them as you type. The typed text is `value` /
- * `defaultValue` / `onValueChange`.
+ * `defaultValue` / `onValueChange`. Children must be a function that renders
+ * one suggestion.
+ *
+ * @example
+ * <Search aria-label="Search mail" placeholder="Search mail" items={recent} value={query} onValueChange={setQuery}>
+ *     {(item: string) => <SearchItem key={item} value={item} startIcon="history">{item}</SearchItem>}
+ * </Search>
  */
 export function Search<Item>({
     children,
@@ -43,6 +50,21 @@ export function Search<Item>({
     ...props
 }: SearchProps<Item>) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'Search')
+        checkName(
+            { 'aria-label': ariaLabel },
+            'Search',
+            '<Search aria-label="Search mail" items={items}>{(item) => ...}</Search>',
+            'search.md'
+        )
+        if (typeof children !== 'function')
+            devError(
+                '<Search> children must be a function that renders one suggestion, plus an `items` array to filter.',
+                '<Search aria-label="Search" items={items}>\n    {(item: string) => <SearchItem key={item} value={item}>{item}</SearchItem>}\n</Search>',
+                'search.md'
+            )
+    }
 
     return (
         <BaseAutocomplete.Root {...props}>
@@ -88,12 +110,12 @@ export function Search<Item>({
     )
 }
 
-// One suggestion. Picking it fills the bar with its text.
 export type SearchItemProps = BaseAutocomplete.Item.Props & {
     /** Material Symbol before the text, e.g. `history` for a recent search. */
     startIcon?: MaterialSymbol
 }
 
+/** One suggestion in a `Search`. Needs a `value`. Picking it fills the bar with its text. */
 export function SearchItem({
     startIcon,
     className,

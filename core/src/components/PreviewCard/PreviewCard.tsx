@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { withClass } from '../../utils'
+import { checkAsChild, checkRoot } from '../../dev'
 import '../Menu/menu.css'
 import '../Popover/popover.css'
 import './preview-card.css'
@@ -14,18 +15,38 @@ import './preview-card.css'
  */
 export type PreviewCardProps = BasePreviewCard.Root.Props
 
+/**
+ * A card shown while hovering or focusing a link. Use `Popover` if the
+ * content has anything to click.
+ *
+ * @example
+ * <PreviewCard>
+ *     <PreviewCardTrigger href="/users/ada">@ada</PreviewCardTrigger>
+ *     <PreviewCardPopup>Ada Lovelace, 12 posts</PreviewCardPopup>
+ * </PreviewCard>
+ */
 export function PreviewCard(props: PreviewCardProps) {
     return <BasePreviewCard.Root {...props} />
 }
 
-// Renders an <a>, so give it `href`. Pass `render={<Link />}` for a router link.
-// `delay` / `closeDelay` set how long hovering takes to open and close it.
 export type PreviewCardTriggerProps = BasePreviewCard.Trigger.Props
 
+/**
+ * The link. Renders an `<a>`, so give it `href`; pass `render={<Link />}`
+ * for a router link. `delay` / `closeDelay` set the hover timing.
+ */
 export function PreviewCardTrigger({
     className,
     ...props
 }: PreviewCardTriggerProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkAsChild(
+            props,
+            'PreviewCardTrigger',
+            'preview-card.md',
+            '<PreviewCardTrigger render={<Link to="/users/ada" />}>@ada</PreviewCardTrigger>'
+        )
+    }
     return (
         <BasePreviewCard.Trigger
             {...props}
@@ -41,6 +62,7 @@ export type PreviewCardPopupProps = BasePreviewCard.Popup.Props &
         'side' | 'align' | 'sideOffset' | 'alignOffset'
     >
 
+/** The card. Also renders the portal and positioner; takes `side` / `align`. */
 export function PreviewCardPopup({
     side,
     align,
@@ -50,6 +72,9 @@ export function PreviewCardPopup({
     ...props
 }: PreviewCardPopupProps) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'PreviewCardPopup')
+    }
 
     return (
         // Into the AnvilRoot, not body, so the popup sees the theme variables

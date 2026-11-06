@@ -17,6 +17,9 @@ export type KbdProps = ComponentProps<'kbd'> & {
  * A keyboard key, for shortcuts like ⌘ K. It presses down while the user
  * holds that key on their own keyboard. Put one per key, with a `+` or a
  * space between them for combinations.
+ *
+ * @example
+ * <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
  */
 export function Kbd({
     listen = true,

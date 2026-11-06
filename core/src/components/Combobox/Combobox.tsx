@@ -3,6 +3,7 @@ import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
 import { cx, withClass } from '../../utils'
+import { checkRoot, devError } from '../../dev'
 import '../Input/input.css'
 import '../Menu/menu.css'
 import '../Select/select.css'
@@ -35,6 +36,14 @@ export type ComboboxProps<Item> = Omit<
  * A text field that filters a list of options as you type, and picks one.
  * The picked option is `value` / `defaultValue` / `onValueChange`. For
  * object items, pass `itemToStringLabel` so the field shows a readable label.
+ * Children must be a function that renders one item.
+ *
+ * @example
+ * <Combobox label="Country" items={countries} empty="No matches">
+ *     {(country: string) => (
+ *         <ComboboxItem key={country} value={country}>{country}</ComboboxItem>
+ *     )}
+ * </Combobox>
  */
 export function Combobox<Item>({
     children,
@@ -46,6 +55,15 @@ export function Combobox<Item>({
     ...props
 }: ComboboxProps<Item>) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'Combobox')
+        if (typeof children !== 'function')
+            devError(
+                '<Combobox> children must be a function that renders one item, plus an `items` array to filter.',
+                '<Combobox label="Fruit" items={fruits}>\n    {(fruit: string) => <ComboboxItem key={fruit} value={fruit}>{fruit}</ComboboxItem>}\n</Combobox>',
+                'combobox.md'
+            )
+    }
     const inputId = useId()
     const labelId = useId()
 
@@ -112,6 +130,7 @@ export function Combobox<Item>({
 
 export type ComboboxItemProps = BaseCombobox.Item.Props
 
+/** One option in a `Combobox`. Needs a `value` (the item); children are its label. */
 export function ComboboxItem({
     className,
     children,

@@ -1,6 +1,30 @@
 # anvilui
 
-React components built on [Base UI](https://base-ui.com).
+React components built on [Base UI](https://base-ui.com). Requires React 19.
+
+```sh
+npm install anvilui
+```
+
+## Using with AI coding agents
+
+AnvilUI is new, so AI models don't know its API and will guess it from other libraries. The package ships accurate, version-matched docs for agents: [`AGENTS.md`](AGENTS.md) plus one page per component in [`docs/`](docs/llms-index.md).
+
+Tell your agent to read them. Paste this into your project's `AGENTS.md`, `CLAUDE.md`, `.cursorrules` or `.github/copilot-instructions.md`:
+
+```md
+## AnvilUI
+
+This project uses the `anvilui` React component library. Its API differs from shadcn/ui, Radix and MUI, so don't guess it. Before writing or changing UI code that uses it, read `node_modules/anvilui/AGENTS.md`, then the page for each component you use in `node_modules/anvilui/docs/` (index: `node_modules/anvilui/docs/llms-index.md`). These docs match the installed version; prefer them over memory.
+```
+
+Or run this once in your project, which appends that note to whichever of those files exist (or creates `AGENTS.md`):
+
+```sh
+npx anvilui setup-agents
+```
+
+In development, mistakes like a missing stylesheet, `asChild`, `variant` or a missing `aria-label` log an `[anvilui]` error that shows the fix and names the doc page, so pasting the console output back to your agent is enough. These checks are removed from production builds.
 
 ## Setup
 

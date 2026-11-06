@@ -70,6 +70,9 @@ const displayHour = (h: number, cycle: 12 | 24) =>
 /**
  * A field that opens a Material 3 time picker. The value is a 24-hour
  * `"HH:mm"` string, the same format as `<input type="time">`.
+ *
+ * @example
+ * <TimePicker label="Alarm" defaultValue="07:30" onValueChange={setTime} />
  */
 export function TimePicker({
     type = 'dial',

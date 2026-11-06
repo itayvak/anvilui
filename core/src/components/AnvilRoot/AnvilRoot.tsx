@@ -2,6 +2,7 @@ import {
     Dispatch,
     ReactNode,
     SetStateAction,
+    useEffect,
     useId,
     useLayoutEffect,
     useRef,
@@ -19,10 +20,12 @@ import { DesignTokens } from '../../tokens/types'
 import { baseDesignTokens } from '../../tokens/baseTokens'
 import { tokensToCssVariables } from '../../tokens/toCssVariables'
 import { cx } from '../../utils'
+import { devError } from '../../dev'
 import '../../colors/colors.css'
 import './global.css'
 
 export type AnvilRootProps = {
+    /** Your app. Every AnvilUI component must be somewhere inside. */
     children: ReactNode
     /** Extra classes for the root element, e.g. to make it fill the viewport. */
     className?: string
@@ -84,8 +87,20 @@ const declarations = (vars: Record<string, string>) =>
         .join('')
 
 /**
- * Provides the theme to everything inside it. Only the root's own box is
- * themed; to color the whole page, make it fill the viewport via `className`.
+ * Required at the top of the app. Provides the theme, color mode, tooltip
+ * and snackbar providers, and the element that menus, dialogs and other
+ * popups portal into. Also import `'anvilui/styles.css'` once.
+ *
+ * Only the root's own box is themed; to color the whole page, make it fill
+ * the viewport via `className`.
+ *
+ * @example
+ * import { AnvilRoot } from 'anvilui'
+ * import 'anvilui/styles.css'
+ *
+ * <AnvilRoot defaultColorMode="system" storageKey="color-mode">
+ *     <App />
+ * </AnvilRoot>
  */
 export function AnvilRoot(props: AnvilRootProps) {
     // Server and first client render agree on this; the saved value is
@@ -133,6 +148,25 @@ export function AnvilRoot(props: AnvilRootProps) {
     const lightTheme = props.lightTheme || baseLightTheme
     const darkTheme = props.darkTheme || baseDarkTheme
     const rootRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') return
+        // Late enough for a stylesheet <link> to have loaded
+        const timer = setTimeout(() => {
+            const root = rootRef.current
+            if (!root) return
+            const loaded = getComputedStyle(root)
+                .getPropertyValue('--avl-styles-loaded')
+                .trim()
+            if (!loaded)
+                devError(
+                    "The AnvilUI stylesheet isn't loaded, so components show unstyled.",
+                    "// once, in your entry file (main.tsx, app/layout.tsx, ...)\nimport 'anvilui/styles.css'",
+                    'setup.md'
+                )
+        }, 1000)
+        return () => clearTimeout(timer)
+    }, [])
 
     // The colors live in CSS, not inline styles, so the right mode shows
     // before any JavaScript runs: `system` resolves through a media query,

@@ -29,6 +29,8 @@
     /* Mobile browsers flash a box on every tap. Components show their own
        press feedback, and keyboard focus still gets the ring above. */
     -webkit-tap-highlight-color: transparent;
+    /* Read by AnvilRoot in development to tell whether styles.css loaded */
+    --avl-styles-loaded: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

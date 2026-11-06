@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import type { ComponentColor } from '../../colors/colors'
+import { checkRoot } from '../../dev'
 import './confetti.css'
 
 export type ConfettiOptions = {
@@ -48,6 +49,13 @@ const random = (min: number, max: number) => min + Math.random() * (max - min)
  */
 export function useConfetti() {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(
+            avl !== null,
+            'useConfetti',
+            'It draws into the AnvilRoot element, so without one nothing fires.'
+        )
+    }
 
     return useCallback(
         (origin?: ConfettiOrigin, options: ConfettiOptions = {}) => {

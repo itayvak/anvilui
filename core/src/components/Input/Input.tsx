@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 import { Input as BaseInput } from '@base-ui/react/input'
 import { cx } from '../../utils'
+import { useContext } from 'react'
+import { AnvilContext } from '../AnvilRoot/AnvilContext'
+import { checkRoot, OUTSIDE_ROOT } from '../../dev'
 import './input.css'
 
 export type InputProps = Omit<BaseInput.Props, 'className' | 'size'> & {
@@ -15,6 +18,15 @@ export type InputProps = Omit<BaseInput.Props, 'className' | 'size'> & {
     className?: string
 }
 
+/**
+ * A text field with a floating label. `value` / `defaultValue` with either
+ * `onChange` (event) or `onValueChange` (string). `className` goes on the
+ * wrapper; `ref` and other props go on the `<input>`. Wrap it in a `Field`
+ * for helper text and validation.
+ *
+ * @example
+ * <Input label="Email" type="email" value={email} onValueChange={setEmail} />
+ */
 export function Input({
     label,
     size = 'normal',
@@ -22,6 +34,10 @@ export function Input({
     placeholder,
     ...props
 }: InputProps) {
+    const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'Input', OUTSIDE_ROOT)
+    }
     return (
         <label
             className={cx(

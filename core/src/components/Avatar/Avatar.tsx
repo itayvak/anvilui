@@ -37,6 +37,10 @@ function initials(name: string) {
 /**
  * A picture, initials or an icon that stands for a person or thing.
  * `children` replaces the initials/icon fallback.
+ *
+ * @example
+ * <Avatar name="Ada Lovelace" src="/ada.jpg" />
+ * <Avatar name="Ada Lovelace" color="tonal" size="big" />
  */
 export function Avatar({
     src,

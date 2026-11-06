@@ -1,7 +1,9 @@
 /**
- * A color role from the theme. `container` is the neutral one; `surface` is
- * the background of navigation and popups, like
- * `NavigationRail` and `NavigationList`.
+ * A color role from the theme. `primary` is the brand color, `tonal` a
+ * softer accent for selected and secondary actions, `container` the neutral
+ * one (use it for "secondary" or "default" buttons), and `surface` the
+ * background of navigation and popups. There is no `secondary`, `danger` or
+ * `destructive`: use `tonal` or `container`, and `error`.
  */
 export type ComponentColor =
     | 'primary'
@@ -13,6 +15,8 @@ export type ComponentColor =
     | 'surface'
 
 /**
+ * How a color is applied. Takes the place of the `variant` prop other
+ * libraries use.
  * - `filled`: solid background in the color
  * - `outlined`: transparent with a border, text in the color
  * - `text`: transparent, no border, text in the color

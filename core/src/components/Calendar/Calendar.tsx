@@ -33,7 +33,11 @@ function localeWeekStart(): number {
 /**
  * A month grid to pick a date from. Arrow keys move by day and week, Page
  * Up/Down by month (with Shift, by year), Home/End to the ends of the week.
- * The first weekday and all names follow the user's locale.
+ * The first weekday and all names follow the user's locale. Values are
+ * `"YYYY-MM-DD"` strings, not `Date` objects.
+ *
+ * @example
+ * <Calendar value={date} onValueChange={setDate} />
  */
 export function Calendar({
     value: valueProp,

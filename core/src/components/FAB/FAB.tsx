@@ -8,6 +8,7 @@ import { colorClass, type ColorProps } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { useMagnet } from './magnet'
 import { cx, mergeRefs, withClass } from '../../utils'
+import { checkName } from '../../dev'
 import './fab.css'
 
 export type FABProps = Omit<BaseButtonProps, 'children'> &
@@ -34,6 +35,10 @@ export type FABProps = Omit<BaseButtonProps, 'children'> &
 /**
  * The floating action button: the screen's main action. Place it yourself,
  * usually `position: fixed` in the bottom-end corner.
+ *
+ * @example
+ * <FAB icon="edit" aria-label="Compose" style={{ position: 'fixed', insetInlineEnd: 16, bottom: 16 }} />
+ * <FAB icon="edit" label="Compose" />
  */
 export function FAB({
     icon,
@@ -47,6 +52,14 @@ export function FAB({
     ...props
 }: FABProps) {
     const local = useRef<HTMLButtonElement>(null)
+    if (process.env.NODE_ENV !== 'production' && !label) {
+        checkName(
+            props,
+            'FAB',
+            '<FAB icon="add" aria-label="Create" />   // or <FAB icon="add" label="Create" />',
+            'fab.md'
+        )
+    }
     useMagnet(local, sticky && !props.disabled)
 
     return (

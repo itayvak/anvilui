@@ -7,10 +7,11 @@ import type { MaterialSymbol } from 'material-symbols'
 import { ColorProps, colorClass } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { mergeRefs, withClass } from '../../utils'
+import { devError } from '../../dev'
 import './toggle-group.css'
 
 type ToggleGroupCommonProps = ColorProps & {
-    /** @default 'normal' */
+    /** Same heights as `Button`. @default 'normal' */
     size?: 'small' | 'normal' | 'big'
 }
 
@@ -19,21 +20,35 @@ export type ToggleGroupProps<Value = any> = ToggleGroupCommonProps &
         | (BaseRadioGroup.Props<Value> & {
               /**
                * Let several segments be on at once. `value` is then an array
-               * of strings. @default false
+               * of strings. Without it, `value` is a single value, not an
+               * array. @default false
                */
               multiple?: false
           })
-        | (BaseToggleGroup.Props<string> & { multiple: true })
+        | (BaseToggleGroup.Props<string> & {
+              /**
+               * Let several segments be on at once. `value` is then an array
+               * of strings. Without it, `value` is a single value, not an
+               * array. @default false
+               */
+              multiple: true
+          })
     )
 
-// Items render as radios or as toggles depending on the group
-const MultipleContext = createContext(false)
+// Items render as radios or as toggles depending on the group; null outside one
+const MultipleContext = createContext<boolean | null>(null)
 
 /**
  * A segmented control: buttons in a row. By default exactly one is selected,
  * with a pill that stretches over to it. With `multiple`, each one toggles on
  * and off. Use it for 2-5 short options; for longer lists or forms, use
  * `RadioGroup` or checkboxes.
+ *
+ * @example
+ * <ToggleGroup aria-label="View" value={view} onValueChange={setView}>
+ *     <ToggleGroupItem value="list" startIcon="list">List</ToggleGroupItem>
+ *     <ToggleGroupItem value="grid" startIcon="grid_view">Grid</ToggleGroupItem>
+ * </ToggleGroup>
  */
 export function ToggleGroup<Value>({
     size = 'normal',
@@ -152,7 +167,15 @@ export function ToggleGroupItem<Value>({
     value,
     ...props
 }: ToggleGroupItemProps<Value>) {
-    const multiple = useContext(MultipleContext)
+    const group = useContext(MultipleContext)
+    if (process.env.NODE_ENV !== 'production' && group === null) {
+        devError(
+            '<ToggleGroupItem> is rendered outside a <ToggleGroup>.',
+            '<ToggleGroup aria-label="View" defaultValue="list">\n    <ToggleGroupItem value="list">List</ToggleGroupItem>\n    <ToggleGroupItem value="grid">Grid</ToggleGroupItem>\n</ToggleGroup>',
+            'toggle-group.md'
+        )
+    }
+    const multiple = group ?? false
     const classes = withClass(
         'avl-toggle-group-item',
         className as string | undefined

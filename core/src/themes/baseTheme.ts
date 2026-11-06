@@ -4,6 +4,7 @@ import { Theme } from './types'
 // AnvilUI's roles. Warning and success aren't part of the export, so they're
 // kept from the previous theme.
 
+/** The default light theme (purple). AnvilRoot uses it unless you pass `lightTheme`. */
 export const baseLightTheme: Theme = {
     background: '#FDF7FF',
     onBackground: '#1D1B20',
@@ -39,6 +40,7 @@ export const baseLightTheme: Theme = {
     inversePrimary: '#CFBDFE',
 }
 
+/** The default dark theme (purple). AnvilRoot uses it unless you pass `darkTheme`. */
 export const baseDarkTheme: Theme = {
     background: '#141218',
     onBackground: '#E6E0E9',

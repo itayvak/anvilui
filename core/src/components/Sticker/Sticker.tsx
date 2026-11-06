@@ -18,6 +18,9 @@ export type StickerProps = ComponentProps<'span'> & {
  * A small tilted label that looks like a die-cut sticker ("NEW", "BETA",
  * "50% off"). Straightens up on hover. Purely visual: its text is read
  * like any other text.
+ *
+ * @example
+ * <Sticker color="warning" startIcon="bolt">NEW</Sticker>
  */
 export function Sticker({
     color = 'primary',

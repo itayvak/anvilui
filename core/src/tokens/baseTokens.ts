@@ -1,5 +1,9 @@
 import { DesignTokens } from './types'
 
+/**
+ * The default design tokens. To change some, pass only those categories to
+ * AnvilRoot: `tokens={{ radius: { ...baseDesignTokens.radius, medium: '8px' } }}`.
+ */
 export const baseDesignTokens: DesignTokens = {
     font: {
         main: '"Google Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',

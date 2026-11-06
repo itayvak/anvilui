@@ -10,6 +10,18 @@ import './accordion.css'
  */
 export type AccordionProps = BaseAccordion.Root.Props
 
+/**
+ * A stack of expandable sections. `value` is an array of open item values
+ * (even when only one can be open). Pass `multiple` to allow several.
+ *
+ * @example
+ * <Accordion defaultValue={['shipping']}>
+ *     <AccordionItem value="shipping">
+ *         <AccordionTrigger>Shipping</AccordionTrigger>
+ *         <AccordionPanel>Ships in 2 days.</AccordionPanel>
+ *     </AccordionItem>
+ * </Accordion>
+ */
 export function Accordion({ className, ...props }: AccordionProps) {
     return (
         <BaseAccordion.Root
@@ -19,10 +31,12 @@ export function Accordion({ className, ...props }: AccordionProps) {
     )
 }
 
-// One section: an AccordionTrigger, then an AccordionPanel. Give it a `value`
-// to control it from the Accordion.
 export type AccordionItemProps = BaseAccordion.Item.Props
 
+/**
+ * One section: an `AccordionTrigger`, then an `AccordionPanel`. Give it a
+ * `value` to control it from the Accordion.
+ */
 export function AccordionItem({ className, ...props }: AccordionItemProps) {
     return (
         <BaseAccordion.Item
@@ -37,7 +51,7 @@ export type AccordionTriggerProps = BaseAccordion.Trigger.Props & {
     as?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
-// The section's title row. Renders a button inside a heading.
+/** The section's title row. Renders a button inside an `<h3>` (change with `as`). */
 export function AccordionTrigger({
     as: Heading = 'h3',
     className,
@@ -62,6 +76,7 @@ export function AccordionTrigger({
 
 export type AccordionPanelProps = BaseAccordion.Panel.Props
 
+/** The section's content, shown while it's open. */
 export function AccordionPanel({
     className,
     children,

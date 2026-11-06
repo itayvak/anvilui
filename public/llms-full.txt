@@ -1,0 +1,4022 @@
+# AnvilUI documentation (all pages)
+
+Generated from core/AGENTS.md and core/docs/*.md. Relative links point into the docs/ folder.
+
+<!-- file: AGENTS.md -->
+
+# AnvilUI: reference for AI coding agents
+
+`anvilui` is a React 19 component library with Material 3 styling, built on [Base UI](https://base-ui.com) (`@base-ui/react`). It has ~50 accessible components (buttons, inputs, selects, dialogs, menus, navigation, …), a theme system driven by CSS variables, and Material Symbols icons referenced by name. It is **not** shadcn/ui, Radix or MUI: names and props differ. This file matches the installed version. Read it before writing code; per-component pages are in [`docs/`](docs/llms-index.md) (`node_modules/anvilui/docs/<name>.md`).
+
+## Rules that prevent most errors
+
+1. `import 'anvilui/styles.css'` once, and wrap the whole app in `<AnvilRoot>`. Nothing is themed outside it.
+2. Everything imports from `'anvilui'`. No subpaths (`anvilui/button` doesn't exist) except `'anvilui/styles.css'`.
+3. **No `asChild`.** Use `render`: `<DialogTrigger render={<Button />}>Open</DialogTrigger>`. Trigger and Close parts render bare, unstyled buttons without it.
+4. **No `variant`.** Style is `fillType: 'filled' | 'outlined' | 'text'`; color is `color: 'primary' | 'tonal' | 'success' | 'warning' | 'error' | 'container' | 'surface'`. No `secondary` / `destructive` / `ghost`.
+5. **Icons are strings** (Material Symbols names): `startIcon="add"`, `<IconButton icon="delete" aria-label="Delete" />`, `<Icon name="home" />`. Don't pass icon components.
+6. Callbacks get **values, not events**: `onValueChange(value)`, `onCheckedChange(checked)`, `onOpenChange(open)`, `onPressedChange(pressed)`. No `onChange` except on `Input`/`Textarea` (native).
+7. `Checkbox`, `Switch`, `Radio` have **no `label` prop**: wrap them in `<label>`. Most other controls take `label`.
+8. Titles and text often go in **`label`, not children**: `AppBar`, `ListItem`, `Tooltip`, nav items, `Input`, `Select`, `Slider`, `Progress`.
+9. Icon-only controls require `aria-label` (`IconButton`, `FAB` without `label`, icon `Toggle`, `Slider`/`Progress` without `label`, `Search`, `Carousel`).
+10. `Button` defaults to `type="button"`. Use `type="submit"` in forms.
+11. Dates are `"YYYY-MM-DD"` strings, times `"HH:mm"` strings. Not `Date` objects.
+12. No layout components (`Box`, `Stack`, `Grid`, `Container`, `Flex`) and no `sx`. Use plain elements with `style` / CSS and theme variables like `var(--avl-spacing-x4)`.
+
+## Setup
+
+Requires `react` and `react-dom` 19+, and a bundler that handles CSS from `node_modules` (Vite, Next.js, webpack).
+
+```tsx
+// main.tsx
+import { createRoot } from 'react-dom/client'
+import { AnvilRoot } from 'anvilui'
+import 'anvilui/styles.css'
+import { App } from './App'
+
+createRoot(document.getElementById('root')!).render(
+    <AnvilRoot
+        defaultColorMode="system"
+        storageKey="color-mode"
+        className="app-root"
+    >
+        <App />
+    </AnvilRoot>
+)
+```
+
+- `AnvilRoot` is the only provider (theme, color mode, tooltips, snackbars, portal container). Don't add `ThemeProvider`, `Toaster` or `TooltipProvider`.
+- Give it a class with `min-height: 100vh` so the background covers the page.
+- Hooks `useAnvil()` and `useSnackbar()` work only in components **inside** it.
+- Next.js App Router: render `AnvilRoot` in a `'use client'` component and use AnvilUI from client components. Details: [docs/setup.md](docs/setup.md).
+- Fonts: Google Sans is not loaded for you (falls back to the system font). See setup.md.
+
+## Exports
+
+| Area | Exports | Doc |
+| --- | --- | --- |
+| Root & theme | `AnvilRoot`, `useAnvil`, `AnvilContext`, `createTheme`, `createThemeFromImage`, `baseLightTheme`, `baseDarkTheme`, `monochromeLightTheme`, `monochromeDarkTheme`, `baseDesignTokens` | [theming.md](docs/theming.md) |
+| Buttons | `Button`, `IconButton`, `SplitButton`, `HoldButton`, `Toggle`, `ToggleGroup`, `ToggleGroupItem`, `FAB`, `FABMenu`, `FABMenuItem` | [button](docs/button.md), [icon-button](docs/icon-button.md), [split-button](docs/split-button.md), [hold-button](docs/hold-button.md), [toggle](docs/toggle.md), [toggle-group](docs/toggle-group.md), [fab](docs/fab.md), [fab-menu](docs/fab-menu.md) |
+| Chips | `Chip`, `FilterChip`, `InputChip` | [chip.md](docs/chip.md) |
+| Form controls | `Input`, `Textarea`, `Select`, `SelectItem`, `Combobox`, `ComboboxItem`, `Search`, `SearchItem`, `Checkbox`, `Switch`, `RadioGroup`, `Radio`, `Slider`, `DateInput`, `TimePicker`, `Calendar`, `PinInput`, `Field`, `FieldDescription`, `FieldError` | [forms.md](docs/forms.md) + one page each |
+| Overlays | `Dialog`(+`Trigger`, `Popup`, `Title`, `Description`, `Actions`, `Close`), `BottomSheet`(+`Trigger`, `Popup`, `Title`, `Description`, `Close`), `Popover`(+`Trigger`, `Popup`, `Title`, `Description`, `Close`), `PreviewCard`(+`Trigger`, `Popup`), `Tooltip` | [dialog](docs/dialog.md), [bottom-sheet](docs/bottom-sheet.md), [popover](docs/popover.md), [preview-card](docs/preview-card.md), [tooltip](docs/tooltip.md) |
+| Menus | `Menu`, `MenuTrigger`, `MenuPopup`, `MenuItem`, `MenuGroup`, `MenuSubmenu`, `MenuSubmenuTrigger`, `ContextMenu`, `ContextMenuTrigger`, `Menubar` | [menu](docs/menu.md), [context-menu](docs/context-menu.md), [menubar](docs/menubar.md) |
+| Navigation | `AppBar`, `NavigationBar`(+`Item`), `NavigationRail`(+`Toggle`, `Item`), `NavigationList`(+`Item`), `NavigationDrawer`(+`Trigger`, `Popup`, `Title`, `Item`), `Tabs`, `TabsList`, `TabsTab`, `TabsPanel`, `FloatingToolbar`(+`Button`, `Separator`) | [app-bar](docs/app-bar.md), [navigation-bar](docs/navigation-bar.md), [navigation-rail](docs/navigation-rail.md), [navigation-list](docs/navigation-list.md), [navigation-drawer](docs/navigation-drawer.md), [tabs](docs/tabs.md), [floating-toolbar](docs/floating-toolbar.md) |
+| Content | `Card`, `CardTitle`, `CardContent`, `CardActions`, `List`, `ListItem`, `Table`, `TableCaption`, `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`, `TableCell`, `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionPanel`, `Carousel`, `CarouselItem`, `Divider`, `Typography` | [card](docs/card.md), [list](docs/list.md), [table](docs/table.md), [accordion](docs/accordion.md), [carousel](docs/carousel.md), [divider](docs/divider.md), [typography](docs/typography.md) |
+| Display | `Avatar`, `AvatarGroup`, `Badge`, `Icon`, `Progress`, `Skeleton`, `Sticker`, `AnimatedNumber`, `Kbd` | [avatar](docs/avatar.md), [avatar-group](docs/avatar-group.md), [badge](docs/badge.md), [icons](docs/icons.md), [progress](docs/progress.md), [skeleton](docs/skeleton.md), [sticker](docs/sticker.md), [animated-number](docs/animated-number.md), [kbd](docs/kbd.md) |
+| Hooks | `useSnackbar` (toasts), `useConfetti`, `useAnvil` | [snackbar](docs/snackbar.md), [confetti](docs/confetti.md), [theming](docs/theming.md) |
+| Motion | `morph`, `morphBetween` | [morph.md](docs/morph.md) |
+| Types | `<Name>Props` for every component; `MaterialSymbol` (icon names), `ComponentColor`, `ComponentFillType`, `ColorProps`, `Theme`, `ThemePair`, `CreateThemeOptions`, `DesignTokens`, `Font`, `FontSize`, `Ease`, `EaseLength`, `ColorType`, `ColorModeSetting`, `TypographyType`, `TypographyTag`, `SnackbarOptions`, `ConfettiOptions`, `ConfettiOrigin`, `MorphOptions` | |
+
+Nothing else is exported. Not in the library: `Box`, `Stack`, `Grid`, `Container`, `Label`, `FieldLabel`, `Form`, `Spinner`, `Toast`/`Toaster`, `Alert`, `Banner`, `Breadcrumbs`, `Pagination`, `Stepper`, `DataGrid`, `DatePicker` (use `DateInput`), `Drawer` (use `NavigationDrawer` / `BottomSheet`), `DropdownMenu` (use `Menu`), `Separator` (use `Divider`), `Sheet` (use `BottomSheet`).
+
+## Component reference
+
+Props marked * are required. All components also take `className`, `style`, `ref` and the props of their underlying element / Base UI part. Full tables: `docs/<name>.md`.
+
+### Buttons
+
+| Component | Key props | Usage |
+| --- | --- | --- |
+| `Button` | `fillType`, `color`, `size: 'small'\|'normal'\|'big'`, `startIcon`, `endIcon`, `loading`, `disabled`, `type`, `render` | `<Button startIcon="add" onClick={create}>New</Button>` |
+| `IconButton` | `icon`_, `aria-label`_, `fillType`, `color`. No size, no children | `<IconButton icon="close" aria-label="Close" fillType="text" color="container" />` |
+| `SplitButton` | `<div>` props | `<SplitButton><Button>Save</Button><IconButton icon="arrow_drop_down" aria-label="More" /></SplitButton>` |
+| `HoldButton` | `onConfirm`*, `holdDuration` (1500), Button props | `<HoldButton color="error" onConfirm={del}>Hold to delete</HoldButton>` |
+| `Toggle` | `pressed`/`defaultPressed`/`onPressedChange`, `color`, `fillType`; text: `children`, `startIcon`, `size`; icon: `icon` + `aria-label` | `<Toggle icon="favorite" aria-label="Favorite" />` |
+| `ToggleGroup` | `value`/`defaultValue`/`onValueChange` (single value; array with `multiple`), `multiple`, `color`, `fillType`, `size` | `<ToggleGroup aria-label="View" defaultValue="list">…</ToggleGroup>` |
+| `ToggleGroupItem` | `value`*, `startIcon`, `endIcon`, `children` | `<ToggleGroupItem value="list">List</ToggleGroupItem>` |
+| `FAB` | `icon`_, `label` or `aria-label`_, `size`, `color`, `fillType`, `sticky` | `<FAB icon="add" aria-label="New" style={{ position: 'fixed', right: 16, bottom: 16 }} />` |
+| `FABMenu` | `icon`_, `aria-label`_, `children`* (`FABMenuItem`s), `side`, `align`, `color` | `<FABMenu icon="add" aria-label="Create"><FABMenuItem icon="folder">Folder</FABMenuItem></FABMenu>` |
+| `Chip` / `FilterChip` / `InputChip` | `startIcon`; FilterChip `pressed`/`onPressedChange`; InputChip `onRemove`*, `removeLabel` | `<FilterChip pressed={on} onPressedChange={setOn}>Vegan</FilterChip>` |
+
+### Form controls
+
+| Component | Key props | Usage |
+| --- | --- | --- |
+| `Input` | `label`, `size: 'small'\|'normal'`, `value`/`defaultValue`, `onValueChange(string)` or `onChange(event)`, input attrs | `<Input label="Email" type="email" value={v} onValueChange={setV} />` |
+| `Textarea` | same as Input + `rows` | `<Textarea label="Bio" rows={4} />` |
+| `Select` | `items` (map or `{value,label}[]`), `value`/`defaultValue`/`onValueChange(value)`, `label`, `placeholder`, `multiple`, `name` | `<Select label="Fruit" items={fruits} defaultValue="apple">{…SelectItem}</Select>` |
+| `SelectItem` | `value`*, children = label | `<SelectItem value="apple">Apple</SelectItem>` |
+| `Combobox` | `items`, `children`* = `(item) => <ComboboxItem/>`, `value`/`onValueChange(item)`, `itemToStringLabel`, `label`, `empty` | `<Combobox label="Fruit" items={list}>{(f: string) => <ComboboxItem key={f} value={f}>{f}</ComboboxItem>}</Combobox>` |
+| `Search` | `aria-label`_, `items`, `children`_ = `(item) => <SearchItem/>`, `value`/`onValueChange(text)`, `placeholder`, `empty` | `<Search aria-label="Search" items={[]} onValueChange={setQ}>{(i: string) => <SearchItem key={i} value={i}>{i}</SearchItem>}</Search>` |
+| `Checkbox` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `indeterminate`, `name` | `<label><Checkbox checked={c} onCheckedChange={setC} /> Remember me</label>` |
+| `Switch` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `name` | `<label><Switch defaultChecked /> Wi-Fi</label>` |
+| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
+| `Slider` | `label` or `aria-label`*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
+| `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
+| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
+| `Calendar` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange` | `<Calendar value={d} onValueChange={setD} />` |
+| `PinInput` | `length`_, `label` or `aria-label`_, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
+| `Field` | `name`, `validate`, `validationMode: 'onSubmit'\|'onBlur'\|'onChange'`, `invalid`, `disabled` | `<Field name="email"><Input label="Email" required /><FieldError /></Field>` |
+| `FieldDescription` / `FieldError` | FieldError `match` | `<FieldError match="valueMissing">Required</FieldError>` |
+
+### Overlays and menus
+
+| Component | Parts and key props | Usage |
+| --- | --- | --- |
+| `Dialog` | `open`/`defaultOpen`/`onOpenChange`; `DialogTrigger`, `DialogPopup` (includes portal + backdrop), `DialogTitle`, `DialogDescription`, `DialogActions`, `DialogClose` | see Patterns |
+| `BottomSheet` | same shape: `BottomSheetTrigger`, `BottomSheetPopup`, `BottomSheetTitle`, `BottomSheetDescription`, `BottomSheetClose`; `snapPoints` | |
+| `Popover` | `PopoverTrigger`, `PopoverPopup` (`side`, `align`, `sideOffset`), `PopoverTitle`, `PopoverDescription`, `PopoverClose` | |
+| `PreviewCard` | `PreviewCardTrigger` (an `<a href>`), `PreviewCardPopup` | |
+| `Tooltip` | `label`_, one element child_, `side`, `align`, `delay` | `<Tooltip label="Delete"><IconButton icon="delete" aria-label="Delete" /></Tooltip>` |
+| `Menu` | `MenuTrigger`, `MenuPopup` (`side`, `align`), `MenuItem` (`onClick`, `startIcon`, `endIcon`, `disabled`), `MenuGroup`, `MenuSubmenu` + `MenuSubmenuTrigger` | see Patterns |
+| `ContextMenu` | `ContextMenuTrigger` (area) + `MenuPopup` / `MenuItem` | |
+| `Menubar` | contains `Menu`s | |
+| `useSnackbar()` | `.show({ message*, action?: { label, onClick }, closeButton, timeout (5000), priority })`, `.close(id?)` | `snackbar.show({ message: 'Saved' })` |
+
+### Navigation and layout
+
+| Component | Key props | Usage |
+| --- | --- | --- |
+| `AppBar` | `label`*, `labelAs`, `start`, `end`, `size: 'normal'\|'big'`, `centered`, `color` ('container') | `<AppBar label="Inbox" start={…} end={…} />` |
+| `NavigationBar` / `NavigationBarItem` | item: `icon`_, `label`_, `active`, `href` or `render={<Link/>}` | `<NavigationBarItem icon="home" label="Home" href="/" active />` |
+| `NavigationRail` / `NavigationRailToggle` / `NavigationRailItem` | rail: `expanded`/`defaultExpanded`/`onExpandedChange`; toggle: `aria-label`_; item: `icon`_, `label`*, `active`, `end`, `href` | |
+| `NavigationList` / `NavigationListItem` | item: `label`*, `active`, `href`, `render` | |
+| `NavigationDrawer` | `NavigationDrawerTrigger`, `NavigationDrawerPopup`, `NavigationDrawerTitle`, `NavigationDrawerItem` (`icon`_, `label`_, `active`, `href`) | |
+| `Tabs` | `value`/`defaultValue`/`onValueChange`; `TabsList`, `TabsTab` (`value`_, `icon`), `TabsPanel` (`value`_). Always set `defaultValue` | see Patterns |
+| `FloatingToolbar` | `inverseColor`; `FloatingToolbarButton` (IconButton props), `FloatingToolbarSeparator` | |
+| `Card` | `color` ('container'), `fillType`, `clickable`; `CardTitle` (`as`), `CardContent`, `CardActions` | |
+| `List` / `ListItem` | list: `divided`; item: `label`*, `description`, `start`, `end`, `render`. No children | `<ListItem label="Wi-Fi" end={<Switch />} render={<label />} />` |
+| `Table` | `TableCaption`, `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`, `TableCell` (native elements) | |
+| `Accordion` | `value`/`defaultValue` (array), `multiple`; `AccordionItem` (`value`), `AccordionTrigger` (`as`), `AccordionPanel` | |
+| `Carousel` / `CarouselItem` | `aria-label`* | |
+| `Divider` | `orientation`, `label`, `squiggly` | `<Divider label="or" />` |
+| `Typography` | `type: 'body'\|'caption'\|'h1'…'h6'` (not `variant`), `as` | `<Typography type="h5" as="h1">Settings</Typography>` |
+
+### Display
+
+| Component | Key props | Usage |
+| --- | --- | --- |
+| `Avatar` | `name`, `src`, `icon`, `size` (32/40/56px), `color` | `<Avatar name="Ada Lovelace" src={url} />` |
+| `AvatarGroup` | `max`, `size`, `fan`, `aria-label` | `<AvatarGroup max={3} aria-label="Team">{avatars}</AvatarGroup>` |
+| `Badge` | `count` (omit for dot, 0 hides), `max`, `color` ('error'), wraps children | `<Badge count={3}><IconButton icon="mail" aria-label="Mail, 3 new" /></Badge>` |
+| `Icon` | `name`* | `<Icon name="star" />` |
+| `Progress` | `value`* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
+| `Skeleton` | `variant: 'text'\|'circular'\|'rectangular'`, `animation`; size via `style` | `<Skeleton style={{ width: 120 }} />` |
+| `Sticker` | `color`, `startIcon`, `tilt` | `<Sticker>NEW</Sticker>` |
+| `AnimatedNumber` | `value`*, `format`, `locales` | `<AnimatedNumber value={n} />` |
+| `Kbd` | `children`, `listen`, `listenFor` | `<Kbd>⌘</Kbd><Kbd>K</Kbd>` |
+
+## Patterns
+
+### App shell: app bar, side navigation, content
+
+```tsx
+import {
+    AppBar,
+    Avatar,
+    IconButton,
+    NavigationRail,
+    NavigationRailItem,
+    NavigationRailToggle,
+} from 'anvilui'
+
+export function Shell({ children }: { children: React.ReactNode }) {
+    return (
+        <div style={{ display: 'flex', height: '100vh' }}>
+            <NavigationRail aria-label="Main">
+                <NavigationRailToggle aria-label="Toggle navigation" />
+                <NavigationRailItem
+                    icon="dashboard"
+                    label="Dashboard"
+                    href="/"
+                    active
+                />
+                <NavigationRailItem
+                    icon="settings"
+                    label="Settings"
+                    href="/settings"
+                />
+            </NavigationRail>
+            <div
+                style={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: 0,
+                }}
+            >
+                <AppBar
+                    label="Dashboard"
+                    labelAs="h1"
+                    end={
+                        <>
+                            <IconButton
+                                icon="notifications"
+                                aria-label="Notifications"
+                                fillType="text"
+                                color="container"
+                            />
+                            <Avatar name="Ada Lovelace" size="small" />
+                        </>
+                    }
+                />
+                <main
+                    style={{
+                        flex: 1,
+                        overflow: 'auto',
+                        padding: 'var(--avl-spacing-x6)',
+                    }}
+                >
+                    {children}
+                </main>
+            </div>
+        </div>
+    )
+}
+```
+
+### Settings page: tabs, form fields, switches
+
+```tsx
+import { useState } from 'react'
+import {
+    Button,
+    Field,
+    FieldError,
+    Input,
+    List,
+    ListItem,
+    Select,
+    SelectItem,
+    Switch,
+    Tabs,
+    TabsList,
+    TabsPanel,
+    TabsTab,
+    useSnackbar,
+} from 'anvilui'
+
+const languages = { en: 'English', fr: 'Français', ja: '日本語' }
+
+export function Settings() {
+    const snackbar = useSnackbar()
+    const [name, setName] = useState('Ada')
+    const [language, setLanguage] = useState<string | null>('en')
+    return (
+        <Tabs defaultValue="profile">
+            <TabsList>
+                <TabsTab value="profile" icon="person">
+                    Profile
+                </TabsTab>
+                <TabsTab value="notifications" icon="notifications">
+                    Notifications
+                </TabsTab>
+            </TabsList>
+            <TabsPanel value="profile">
+                <form
+                    style={{
+                        display: 'grid',
+                        gap: 16,
+                        maxWidth: 400,
+                        paddingBlock: 16,
+                    }}
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        snackbar.show({ message: 'Profile saved' })
+                    }}
+                >
+                    <Field name="name">
+                        <Input
+                            label="Display name"
+                            required
+                            value={name}
+                            onValueChange={setName}
+                        />
+                        <FieldError />
+                    </Field>
+                    <Select
+                        label="Language"
+                        items={languages}
+                        value={language}
+                        onValueChange={setLanguage}
+                    >
+                        {Object.entries(languages).map(([value, label]) => (
+                            <SelectItem key={value} value={value}>
+                                {label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Button type="submit" style={{ justifySelf: 'start' }}>
+                        Save
+                    </Button>
+                </form>
+            </TabsPanel>
+            <TabsPanel value="notifications">
+                <List divided>
+                    <ListItem
+                        label="Email"
+                        description="Weekly summary"
+                        end={<Switch defaultChecked />}
+                        render={<label />}
+                    />
+                    <ListItem
+                        label="Push"
+                        end={<Switch />}
+                        render={<label />}
+                    />
+                </List>
+            </TabsPanel>
+        </Tabs>
+    )
+}
+```
+
+### Confirm dialog opened from a row menu
+
+```tsx
+import { useState } from 'react'
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogClose,
+    DialogDescription,
+    DialogPopup,
+    DialogTitle,
+    IconButton,
+    List,
+    ListItem,
+    Menu,
+    MenuItem,
+    MenuPopup,
+    MenuTrigger,
+} from 'anvilui'
+
+export function Files() {
+    const [files, setFiles] = useState(['report.pdf', 'notes.txt'])
+    // Separate from `open`, so the title still reads right while it animates closed
+    const [toDelete, setToDelete] = useState('')
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <List divided>
+                {files.map((file) => (
+                    <ListItem
+                        key={file}
+                        label={file}
+                        end={
+                            <Menu>
+                                <MenuTrigger
+                                    render={
+                                        <IconButton
+                                            icon="more_vert"
+                                            aria-label={`Actions for ${file}`}
+                                            fillType="text"
+                                            color="container"
+                                        />
+                                    }
+                                />
+                                <MenuPopup align="end">
+                                    <MenuItem
+                                        startIcon="delete"
+                                        onClick={() => {
+                                            setToDelete(file)
+                                            setOpen(true)
+                                        }}
+                                    >
+                                        Delete
+                                    </MenuItem>
+                                </MenuPopup>
+                            </Menu>
+                        }
+                    />
+                ))}
+            </List>
+            {/* Controlled, outside the menu, so closing the menu doesn't unmount it */}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogPopup>
+                    <DialogTitle>Delete {toDelete}?</DialogTitle>
+                    <DialogDescription>This can't be undone.</DialogDescription>
+                    <DialogActions>
+                        <DialogClose render={<Button fillType="text" />}>
+                            Cancel
+                        </DialogClose>
+                        <Button
+                            color="error"
+                            onClick={() => {
+                                setFiles(files.filter((f) => f !== toDelete))
+                                setOpen(false)
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </DialogPopup>
+            </Dialog>
+        </>
+    )
+}
+```
+
+### Router links
+
+Nav items, `ListItem`, `MenuItem`, `PreviewCardTrigger` and `Card clickable` take `render`: `<NavigationRailItem icon="home" label="Home" render={<Link to="/" />} active={pathname === '/'} />`. On `Button` also pass `nativeButton={false}`: `<Button render={<Link to="/new" />} nativeButton={false}>New</Button>`.
+
+### Switching views without URLs
+
+Nav items render `<a>` by default. For in-page state, pass a plain button: `<NavigationRailItem icon="home" label="Home" active={view === 'home'} render={<button type="button" onClick={() => setView('home')} />} />` (no `nativeButton` needed). Same for `NavigationBarItem`, `NavigationListItem`, `NavigationDrawerItem` (still closes the drawer) and `ListItem`.
+
+### Inline success / error messages
+
+There is no `Alert` or `Banner`. For a message after an action, use a snackbar (`useSnackbar().show(...)`). For a message that stays on the page, use a colored card: `<Card color="success" role="status"><CardContent>Account created</CardContent></Card>` (`color="error"` with `role="alert"` for errors). For a field's error, use `Field` + `FieldError`.
+
+### Typing state for value callbacks
+
+`Value` is inferred from your `value` / `defaultValue`, so union-typed state works directly: `const [plan, setPlan] = useState<'free' | 'pro'>('free')` then `<ToggleGroup value={plan} onValueChange={setPlan}>` (also `RadioGroup`, `Tabs`, `Select`). `Slider` too: a number `value` gives a `(value: number)` callback, an array a `number[]` one, so `onValueChange={setVolume}` works. To type an icon field yourself: `import type { MaterialSymbol } from 'anvilui'`.
+
+### Theme colors in your own CSS
+
+Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)`, `var(--avl-color-on-background-muted)`, `var(--avl-color-primary)`, `var(--avl-color-surface)`, `var(--avl-color-divider)`, spacing `var(--avl-spacing-x1…x20)` (4px steps), radius `var(--avl-radius-medium)`. Custom brand: `createTheme('#0B6E4F')` → `<AnvilRoot lightTheme={t.light} darkTheme={t.dark}>` ([theming.md](docs/theming.md)).
+
+## Common mistakes
+
+| Wrong (other libraries) | Right (AnvilUI) |
+| --- | --- |
+| `<Button variant="outline">` | `<Button fillType="outlined">` |
+| `<Button variant="ghost">` / `variant="link"` | `<Button fillType="text">` |
+| `<Button variant="destructive">` / `color="danger"` | `<Button color="error">` |
+| `<Button variant="secondary">` / `color="secondary"` | `<Button color="container">` or `color="tonal"` |
+| `<Button size="lg">` / `size="sm"` | `size="big"` / `size="small"` |
+| `<Button><Plus /> Add</Button>` | `<Button startIcon="add">Add</Button>` |
+| `<IconButton><DeleteIcon /></IconButton>` | `<IconButton icon="delete" aria-label="Delete" />` |
+| `<IconButton icon="x" size="small" />` | IconButton has no `size`; it's always 40px |
+| `<DialogTrigger asChild><Button>Open</Button></DialogTrigger>` | `<DialogTrigger render={<Button />}>Open</DialogTrigger>` |
+| `<DialogTrigger>Open</DialogTrigger>` expecting a styled button | It's a bare `<button>`; add `render={<Button />}` |
+| `<DialogContent>`, `<DialogHeader>`, `<DialogFooter>` | `<DialogPopup>`, (nothing), `<DialogActions>` |
+| `<Dialog><DialogPortal><DialogOverlay/>…` | `DialogPopup` already includes portal and backdrop |
+| `<Tooltip content="Hi">` / `<TooltipTrigger>` | `<Tooltip label="Hi"><IconButton … /></Tooltip>` |
+| `<Tooltip label="Hi">text</Tooltip>` | One element child: `<Tooltip label="Hi"><span tabIndex={0}>text</span></Tooltip>` |
+| `<Checkbox label="Accept" />` | `<label><Checkbox /> Accept</label>` |
+| `<Switch onChange={(e) => set(e.target.checked)} />` | `<Switch onCheckedChange={set} />` |
+| `<Select onChange={(e) => set(e.target.value)}>` | `<Select onValueChange={set}>` |
+| `<Select><SelectTrigger/><SelectContent>…` | `<Select label="…" items={items}><SelectItem value="a">A</SelectItem></Select>` |
+| `<Select>` without `items` showing `"us"` instead of "United States" | pass `items={{ us: 'United States' }}` (or `[{ value, label }]`) |
+| `<Combobox><ComboboxItem/>…</Combobox>` | `<Combobox items={list}>{(item) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</Combobox>` |
+| `<Tabs><TabsTrigger/><TabsContent/>` | `<Tabs defaultValue="a"><TabsList><TabsTab value="a">A</TabsTab></TabsList><TabsPanel value="a">…</TabsPanel></Tabs>` |
+| `<Tabs>` with string values and no `defaultValue` (nothing selected) | always pass `defaultValue` / `value` |
+| `<Accordion type="single" collapsible defaultValue="a">` | `<Accordion defaultValue={['a']}>` (array; `multiple` for several) |
+| `<DropdownMenu>`, `<DropdownMenuItem onSelect>` | `<Menu>`, `<MenuItem onClick>` |
+| `<MenuSeparator />` | split items into `<MenuGroup>`s |
+| `toast('Saved')`, `<Toaster />`, `<Snackbar open>` | `const snackbar = useSnackbar(); snackbar.show({ message: 'Saved' })` |
+| `snackbar.show({ message, severity: 'success' })` | no severity; put it in the message |
+| `<Typography variant="h4">` | `<Typography type="h4">` |
+| `<AppBar title="Inbox">` / `<AppBar>Inbox</AppBar>` | `<AppBar label="Inbox" />` |
+| `<ListItem>Text</ListItem>` / `primary=` / `secondary=` | `<ListItem label="Text" description="More" />` |
+| `<ListItem onClick={…} />` expecting a button | `<ListItem label="…" render={<button type="button" onClick={…} />} />` |
+| `<CardHeader>`, `<CardFooter>`, `<CardDescription>` | `<CardTitle>`, `<CardActions>`, `<CardContent>` |
+| `<Badge badgeContent={3}>` | `<Badge count={3}>` |
+| `<Progress value={undefined} />` for loading / `<Spinner />` | `<Progress value={null} aria-label="Loading" />` (`type="circular"` for a ring) |
+| `<DateInput value={new Date()} />` | `value="2026-11-06"` (`"YYYY-MM-DD"` string) |
+| `<TimePicker value="7:30 PM" />` | `value="19:30"` |
+| `<Slider onValueChange={(e) => …e.target.value} />` | `onValueChange={(value) => …}` gets the number |
+| `<Input error helperText="…" />` | `<Field><Input … /><FieldDescription>…</FieldDescription><FieldError /></Field>` |
+| `<Button>` inside `<form>` not submitting | `<Button type="submit">` (default is `type="button"`) |
+| `<ThemeProvider theme={…}>` | `<AnvilRoot lightTheme={…} darkTheme={…}>` |
+| `useSnackbar()` / `useAnvil()` in the component that renders `<AnvilRoot>` | call them in a child component |
+| `import { Button } from 'anvilui/button'` | `import { Button } from 'anvilui'` |
+| Forgetting `import 'anvilui/styles.css'` | import it once in the entry file |
+| `<Stack gap={2}>`, `<Box sx={…}>` | `<div style={{ display: 'flex', gap: 'var(--avl-spacing-x2)' }}>` |
+
+## Errors you may see
+
+In development, AnvilUI logs `[anvilui] …` errors with a fix and a doc path for: a missing stylesheet, components outside `AnvilRoot`, `asChild`, `variant` on Button/IconButton/Typography, `label` on Checkbox/Switch/Radio, missing `aria-label`, non-function Combobox/Search children, a Tooltip without one element child, and parts outside their parent. Base UI's own errors look like `Base UI: MenuRootContext is missing. Menu parts must be placed within <Menu.Root>`. `<Menu.Root>` there means AnvilUI's `<Menu>` (likewise `<Tabs.Root>` → `<Tabs>`, `<Dialog.Root>` → `<Dialog>`).
+
+## More
+
+- Routing index of all pages: [docs/llms-index.md](docs/llms-index.md)
+- Inherited Base UI props for any part: `node_modules/@base-ui/react/docs/react/components/<name>.md`
+- Types with JSDoc on every prop: `node_modules/anvilui/dist/index.d.ts`
+
+---
+
+<!-- file: docs/setup.md -->
+
+# Setup
+
+Install, import the stylesheet, wrap the app in `AnvilRoot`. All three are required.
+
+## Install
+
+```sh
+npm install anvilui
+```
+
+| Requirement | Version | Why |
+| --- | --- | --- |
+| `react`, `react-dom` | **19 or newer** | Uses React 19 features (`ref` as a prop, `<Context value>`). React 18 does not work. |
+| A bundler that handles CSS imports from `node_modules` | Vite, Next.js, webpack, Parcel | `anvilui` imports `material-symbols/rounded.css` (the icon font). |
+| `@base-ui/react`, `material-symbols` | installed automatically | Regular dependencies; don't install them yourself. |
+
+## 1. Import the stylesheet once
+
+```ts
+// main.tsx, app/layout.tsx, or your entry file
+import 'anvilui/styles.css'
+```
+
+Without it every component renders unstyled. In development, AnvilRoot logs `[anvilui] The AnvilUI stylesheet isn't loaded` when it's missing.
+
+## 2. Wrap the app in `AnvilRoot`
+
+```tsx
+import { AnvilRoot, Button } from 'anvilui'
+import 'anvilui/styles.css'
+
+export function App() {
+    return (
+        <AnvilRoot defaultColorMode="system" className="app">
+            <Button>Hello</Button>
+        </AnvilRoot>
+    )
+}
+```
+
+`AnvilRoot` is the only provider. It:
+
+- defines the theme as CSS variables on its own `<div class="avl-root">`. Styles only apply inside it.
+- is the container that menus, dialogs, popovers, selects and tooltips portal into. Outside it they render unthemed.
+- provides `useSnackbar()` (it renders the snackbar viewport) and shares tooltip delays.
+- holds the color mode (`useAnvil()`).
+
+Put it once at the top, around everything (inside `<StrictMode>` is fine). Don't nest it per page, and don't call `useAnvil()` / `useSnackbar()` in the same component that renders it.
+
+To theme the whole page, make the root fill the viewport:
+
+```css
+.app {
+    min-height: 100vh;
+}
+```
+
+## 3. Fonts (optional)
+
+The default theme uses Google Sans and Google Sans Code and falls back to the system font. AnvilUI does not load fonts. To get them, add to `<head>`:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+/>
+```
+
+Other fonts: pass `tokens={{ font: { main: '...', title: '...', mono: '...' } }}` to AnvilRoot (see [theming.md](theming.md)).
+
+## Next.js (App Router)
+
+`AnvilRoot` uses state and effects, so render it from a client component:
+
+```tsx
+'use client'
+import { AnvilRoot } from 'anvilui'
+import 'anvilui/styles.css'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+    return <AnvilRoot storageKey="color-mode">{children}</AnvilRoot>
+}
+```
+
+Then use `<Providers>` in `app/layout.tsx` inside `<body>`. Every AnvilUI component is interactive; use them from client components (`'use client'`). With `storageKey`, the saved color mode is applied before the first paint, with no flash.
+
+## Without a bundler
+
+Not supported. The package imports CSS and relies on the bundler to replace `process.env.NODE_ENV`.
+
+## Styling your own elements
+
+Inside AnvilRoot, theme values are CSS variables you can use in your own CSS:
+
+| Need | Variable |
+| --- | --- |
+| page background / text | `var(--avl-color-background)`, `var(--avl-color-on-background)` |
+| secondary text | `var(--avl-color-on-background-muted)` |
+| any theme color | `var(--avl-color-<role>)`, e.g. `--avl-color-primary`, `--avl-color-on-primary`, `--avl-color-surface` |
+| spacing | `var(--avl-spacing-x1)` … `var(--avl-spacing-x20)` (4px steps by default) |
+| radius | `var(--avl-radius-small \| medium \| large \| full)` |
+| font size | `var(--avl-font-size-body \| caption \| label \| h1 … h6)` |
+
+There is no `Box`, `Stack`, `Grid` or `Container` component, and no `sx` prop. Use plain elements with `style` or your own CSS for layout.
+
+---
+
+<!-- file: docs/theming.md -->
+
+# Theming and color mode
+
+Colors come from a `Theme` (light and dark), everything else from `DesignTokens`. Both are props on `AnvilRoot`.
+
+```ts
+import {
+    AnvilRoot,
+    useAnvil,
+    createTheme,
+    createThemeFromImage,
+    baseLightTheme,
+    baseDarkTheme,
+    monochromeLightTheme,
+    monochromeDarkTheme,
+    baseDesignTokens,
+} from 'anvilui'
+import type {
+    Theme,
+    ThemePair,
+    DesignTokens,
+    ColorModeSetting,
+    ColorType,
+} from 'anvilui'
+```
+
+## AnvilRoot props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | required | The app. |
+| `className` | `string` | | Classes for the root `<div>`, e.g. to fill the viewport. |
+| `colorMode` | `'light' \| 'dark' \| 'system'` | | Controlled color mode. Pair with `onColorModeChange`. |
+| `defaultColorMode` | `'light' \| 'dark' \| 'system'` | `'system'` | Starting mode when uncontrolled. `'system'` follows the OS live. |
+| `onColorModeChange` | `(mode: ColorModeSetting) => void` | | Called when the mode changes. |
+| `storageKey` | `string` | | Saves the mode in `localStorage` under this key and restores it (no flash with SSR). |
+| `lightTheme` | `Theme` | `baseLightTheme` | Colors in light mode. |
+| `darkTheme` | `Theme` | `baseDarkTheme` | Colors in dark mode. |
+| `tokens` | `Partial<DesignTokens>` | `baseDesignTokens` | Spacing, radius, fonts, motion, shadows. Each category you pass **replaces** the whole default category. |
+
+AnvilRoot renders a `<div>` and takes no other props (no `style`, `id`, `theme`).
+
+## Color mode
+
+```tsx
+import { AnvilRoot, IconButton, useAnvil } from 'anvilui'
+
+function ModeToggle() {
+    const { colorMode, setColorMode } = useAnvil()
+    return (
+        <IconButton
+            icon={colorMode === 'dark' ? 'light_mode' : 'dark_mode'}
+            aria-label="Toggle dark mode"
+            fillType="text"
+            color="container"
+            onClick={() =>
+                setColorMode(colorMode === 'dark' ? 'light' : 'dark')
+            }
+        />
+    )
+}
+
+export function App() {
+    return (
+        <AnvilRoot storageKey="color-mode">
+            <ModeToggle />
+        </AnvilRoot>
+    )
+}
+```
+
+`useAnvil()` returns:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `colorMode` | `'light' \| 'dark'` | What's shown now (`'system'` resolved). |
+| `colorModeSetting` | `'light' \| 'dark' \| 'system'` | What was picked. |
+| `setColorMode` | `Dispatch<SetStateAction<ColorModeSetting>>` | Like a `useState` setter. |
+| `lightTheme`, `darkTheme` | `Theme` | The themes in use. |
+| `tokens` | `DesignTokens` | The tokens in use, defaults filled in. |
+| `rootRef` | `RefObject<HTMLDivElement \| null>` | The root element (the portal container). |
+
+`useAnvil()` throws outside `AnvilRoot`.
+
+## Custom colors
+
+```tsx
+import { AnvilRoot, Button, createTheme } from 'anvilui'
+
+// Module scope (or useMemo): it does color math
+const brand = createTheme('#0B6E4F', { tonal: '#6E4F0B' })
+
+export function App() {
+    return (
+        <AnvilRoot lightTheme={brand.light} darkTheme={brand.dark}>
+            <Button>Brand colored</Button>
+        </AnvilRoot>
+    )
+}
+```
+
+- `createTheme(primaryHex, { tonal?: hex })` returns `{ light: Theme, dark: Theme }`. Hex only (`'#0B6E4F'` or `'#0B6'`); other formats throw.
+- `createThemeFromImage(img | File | Blob | url)` returns `Promise<ThemePair>`, browser only. URLs must allow CORS.
+- Error, warning and success colors stay the same.
+- Tweak one role by spreading: `{ ...brand.light, primary: '#…' }`.
+- Ready-made: `baseLightTheme` / `baseDarkTheme` (purple, the default), `monochromeLightTheme` / `monochromeDarkTheme`.
+
+## Theme roles
+
+`Theme` is an object of color strings. Each `x` has an `onX` for text on it.
+
+| Role | Used for |
+| --- | --- |
+| `background` / `onBackground` / `onBackgroundMuted` | Page and body text; muted is secondary text |
+| `container` / `onContainer` | Neutral fills: cards, chips, inputs, "secondary" buttons |
+| `surface` / `onSurface` | Navigation, menus, dialogs, sheets |
+| `primary` / `onPrimary`, `primaryContainer` / `onPrimaryContainer` | Brand color |
+| `tonal` / `onTonal`, `tonalContainer` / `onTonalContainer` | Softer accent: selected states, tonal buttons |
+| `error`, `warning`, `success` (+ `on…`, `…Container`, `on…Container`) | Status colors |
+| `outline` | Borders of inputs and outlined controls |
+| `divider` | Lines between content |
+| `inverseSurface`, `inverseOnSurface`, `inversePrimary` (optional) | Tooltips, snackbars |
+| `shadow`, `scrim` (optional) | Shadow color, dialog backdrop |
+
+Each role is a CSS variable in kebab case: `primaryContainer` → `var(--avl-color-primary-container)`.
+
+## Component colors (`color` prop)
+
+Components take `color` from these roles only:
+
+```ts
+type ComponentColor =
+    | 'primary'
+    | 'tonal'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'container'
+    | 'surface'
+type ComponentFillType = 'filled' | 'outlined' | 'text'
+```
+
+There is no `secondary`, `danger`, `destructive`, `info` or `default`. Use `tonal` or `container` for secondary actions and `error` for destructive ones.
+
+## Tokens
+
+```tsx
+import { AnvilRoot, baseDesignTokens } from 'anvilui'
+
+export function App() {
+    return (
+        <AnvilRoot
+            tokens={{
+                // A category replaces the whole default one, so spread it
+                radius: {
+                    ...baseDesignTokens.radius,
+                    medium: '8px',
+                    large: '12px',
+                },
+                font: {
+                    main: 'Inter, sans-serif',
+                    title: 'Inter, sans-serif',
+                    mono: 'monospace',
+                },
+            }}
+        >
+            <main />
+        </AnvilRoot>
+    )
+}
+```
+
+| Category | Keys | CSS variables |
+| --- | --- | --- |
+| `spacing` | a number (px), default `4` | `--avl-spacing-x1` … `--avl-spacing-x20` |
+| `font` | `main`, `title`, `mono` | `--avl-font-main` … |
+| `fontSize` | `body`, `caption`, `labelSmall`, `label`, `labelLarge`, `h1`–`h6` | `--avl-font-size-label-small` … |
+| `fontWeight` | `regular`, `medium`, `semibold`, `bold` | `--avl-font-weight-bold` … |
+| `radius` | `small`, `medium`, `large`, `button`, `full` | `--avl-radius-medium` … |
+| `shadow` | `small`, `medium`, `large` | `--avl-shadow-small` … |
+| `ease` | `out`, `in`, `smooth`, `bounce` | `--avl-ease-out` … |
+| `easeLength` | `short`, `normal`, `slow` | `--avl-ease-length-short` … |
+| `outlineSize`, `disabledOpacity` | strings | `--avl-outline-size`, `--avl-disabled-opacity` |
+
+---
+
+<!-- file: docs/composition.md -->
+
+# Composition: `render`, refs, className
+
+AnvilUI is built on [Base UI](https://base-ui.com). Base UI patterns apply everywhere.
+
+## `render` instead of `asChild`
+
+There is **no `asChild`** prop. To render a part as another element or component, pass `render`:
+
+```tsx
+import {
+    Button,
+    Dialog,
+    DialogPopup,
+    DialogTitle,
+    DialogTrigger,
+    IconButton,
+    Menu,
+    MenuItem,
+    MenuPopup,
+    MenuTrigger,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <Dialog>
+                <DialogTrigger render={<Button />}>Open</DialogTrigger>
+                <DialogPopup>
+                    <DialogTitle>Hi</DialogTitle>
+                </DialogPopup>
+            </Dialog>
+
+            <Menu>
+                <MenuTrigger
+                    render={<IconButton icon="more_vert" aria-label="More" />}
+                />
+                <MenuPopup>
+                    <MenuItem>Rename</MenuItem>
+                </MenuPopup>
+            </Menu>
+
+            {/* A button that's a link: not a <button>, so nativeButton={false} */}
+            <Button render={<a href="/settings" />} nativeButton={false}>
+                Settings
+            </Button>
+        </>
+    )
+}
+```
+
+- `render` merges props, `className` and `ref` into the element you pass.
+- All Trigger and Close parts (`DialogTrigger`, `DialogClose`, `PopoverTrigger`, `PopoverClose`, `MenuTrigger`, `BottomSheetTrigger`, `BottomSheetClose`, `NavigationDrawerTrigger`) render a **bare, unstyled `<button>`** unless you pass `render`.
+- When `render` swaps a button for a non-button element (`<a>`, `<div>`), add `nativeButton={false}`.
+- Router links: `render={<Link to="/x" />}` (React Router) or `render={<Link href="/x" />}` (Next.js) on nav items, `ListItem`, `PreviewCardTrigger`, `Button` (+ `nativeButton={false}`).
+
+## Refs and props
+
+- Every component takes `ref` (React 19 `ref` prop) and passes unknown props to its main element.
+- `className` is merged with the library's classes, never replaced. On Base UI-based parts it can also be a function of state: `className={(state) => state.open ? 'open' : ''}`.
+- **Field-like components put `className` on the outer wrapper** (so width and margins work) and `ref` on the input: `Input`, `Textarea`, `DateInput`. `Select`, `Combobox`, `Search` put `className` on the field wrapper; their other props go to the Base UI Root, which renders no element.
+- `Tooltip` puts `className` on the bubble. `FABMenu` puts it on the FAB.
+
+## State props
+
+Stateful components work controlled or uncontrolled, with Base UI's names:
+
+| State | Props | Callback signature |
+| --- | --- | --- |
+| value | `value` / `defaultValue` / `onValueChange` | `(value, eventDetails) => void`. The **value**, not an event. |
+| checked | `checked` / `defaultChecked` / `onCheckedChange` | `(checked: boolean, eventDetails) => void` (Checkbox, Switch) |
+| pressed | `pressed` / `defaultPressed` / `onPressedChange` | `(pressed: boolean, eventDetails) => void` (Toggle, FilterChip) |
+| open | `open` / `defaultOpen` / `onOpenChange` | `(open: boolean, eventDetails) => void` (Dialog, Popover, Menu, Select, …) |
+
+Because the value comes first, a `useState` setter can be passed directly: `onValueChange={setTab}`, `onCheckedChange={setEnabled}`.
+
+There is no `onChange` on Checkbox, Switch, Select, Slider, Tabs, RadioGroup or ToggleGroup. `Input` and `Textarea` take both native `onChange` (an event) and `onValueChange` (a string).
+
+## Base UI docs for inherited props
+
+Each page lists AnvilUI's own props. Parts also take every prop of the Base UI part they wrap. Those are documented in the installed Base UI package: `node_modules/@base-ui/react/docs/react/components/<name>.md`.
+
+---
+
+<!-- file: docs/forms.md -->
+
+# Forms
+
+Controls are plain form elements: give them `name` and read them with `FormData`, or control them with state. `Field` adds helper text, error messages and validation to one control.
+
+```tsx
+import {
+    Button,
+    Checkbox,
+    Field,
+    FieldDescription,
+    FieldError,
+    Input,
+    Select,
+    SelectItem,
+    Switch,
+    Textarea,
+} from 'anvilui'
+
+const roles = { viewer: 'Viewer', editor: 'Editor', admin: 'Admin' }
+
+export function SignupForm() {
+    return (
+        <form
+            style={{ display: 'grid', gap: 16, maxWidth: 400 }}
+            onSubmit={(event) => {
+                event.preventDefault()
+                const data = new FormData(event.currentTarget)
+                console.log(Object.fromEntries(data))
+            }}
+        >
+            <Field name="email">
+                <Input label="Email" type="email" required />
+                <FieldDescription>
+                    We'll send a confirmation link.
+                </FieldDescription>
+                <FieldError />
+            </Field>
+
+            <Field name="role">
+                <Select label="Role" items={roles} defaultValue="viewer">
+                    {Object.entries(roles).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                            {label}
+                        </SelectItem>
+                    ))}
+                </Select>
+            </Field>
+
+            <Textarea label="About you" name="bio" rows={3} />
+
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Switch name="newsletter" defaultChecked />
+                Send me the newsletter
+            </label>
+
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Checkbox name="terms" required />I accept the terms
+            </label>
+
+            <Button type="submit">Sign up</Button>
+        </form>
+    )
+}
+```
+
+Rules:
+
+- **`Button` defaults to `type="button"`.** Pass `type="submit"` to submit a form.
+- Text fields (`Input`, `Textarea`, `Select`, `Combobox`, `DateInput`, `TimePicker`) take their own `label`. There is no `FieldLabel` or `Label` component.
+- `Checkbox`, `Switch` and `Radio` have **no `label` prop**. Wrap them in a `<label>` with the text.
+- Put the `name` on `Field` (or on the control when there's no Field).
+- Native rules (`required`, `type="email"`, `minLength`, `pattern`, …) block a plain `<form>`'s submit and show in `FieldError`. This includes `<Checkbox required />` and `<DateInput required />`.
+- Custom rules: `validate={(value) => value ? null : 'Required'}` returns an error string or `null`. A failing `validate` blocks submit once it has run, so on a plain `<form>` use `validationMode="onBlur"` or `"onChange"` with it (the default is `"onSubmit"`). Keep a final check in `onSubmit` for anything that must hold.
+- Controls that work inside `Field`: `Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Checkbox`, `Switch`, `RadioGroup`, `Slider`.
+- `Button loading` disables the button, so it also blocks repeat submits.
+- `Select` with `name` submits the item's `value`, not its label.
+- Server errors: `<Field invalid>` plus `<FieldError match>` with your message (`match` true shows it whenever the field is invalid).
+- Values: `DateInput` and `Calendar` use `"YYYY-MM-DD"`, `TimePicker` `"HH:mm"`, `Slider` a number (or `number[]`).
+- There is no form library integration and no `Form` component. A plain `<form>` works. With react-hook-form, use controlled props (`value` + `onValueChange` / `checked` + `onCheckedChange`) in `Controller`.
+
+See [field.md](field.md), [input.md](input.md), [select.md](select.md), [checkbox.md](checkbox.md).
+
+---
+
+<!-- file: docs/icons.md -->
+
+# Icons
+
+AnvilUI uses **Material Symbols (Rounded)**, an icon font that ships with the package. Icons are **name strings**, not components.
+
+```tsx
+import { Button, Icon, IconButton } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <Button startIcon="add">New</Button>
+            <IconButton icon="delete" aria-label="Delete" />
+            <Icon
+                name="favorite"
+                style={{ fontSize: 32, color: 'var(--avl-color-error)' }}
+            />
+        </>
+    )
+}
+```
+
+- Names are snake_case Material Symbols names: `home`, `settings`, `arrow_back`, `more_vert`, `delete`, `edit`, `search`, `close`, `check`, `add`, `menu`, `person`, `mail`, `notifications`, `favorite`, `share`, `download`, `upload`, `visibility`, `logout`, `dark_mode`, `light_mode`. Browse: https://fonts.google.com/icons
+- The prop type is `MaterialSymbol` (a union of every valid name), so a typo is a type error. To type your own data: `import type { MaterialSymbol } from 'anvilui'`, e.g. `const nav: { icon: MaterialSymbol; label: string }[] = [...]`. A plain `string` won't type-check.
+- To check a name offline, search the list in `node_modules/material-symbols/index.d.ts` (the `MaterialSymbols` tuple).
+- Don't import icon components from `lucide-react`, `@mui/icons-material` or `react-icons` into `startIcon` / `icon` props. Those props take strings.
+- Props that take icons: `startIcon`, `endIcon` (Button, Toggle, Chip, MenuItem, …), `icon` (IconButton, FAB, Tabs tab, nav items, …), `name` (Icon).
+
+## Icon
+
+```ts
+type IconProps = Omit<React.ComponentProps<'span'>, 'children'> & {
+    name: MaterialSymbol // required
+}
+```
+
+- Renders a `<span>`. Size follows `font-size`; color follows `color`.
+- Decorative by default (`aria-hidden`). Give it `aria-label` to make it a labeled image.
+- Takes no children: `<Icon name="home" />`, not `<Icon>home</Icon>`.
+
+---
+
+<!-- file: docs/morph.md -->
+
+# morph and morphBetween
+
+Animate one element growing into another while the view changes (Material's container transform), using View Transitions.
+
+```ts
+import { morph, morphBetween } from 'anvilui'
+import type { MorphOptions } from 'anvilui'
+
+morph(id: string, update: () => void, options?: MorphOptions): Promise<void>
+morphBetween(from: HTMLElement, update: () => void, getTo: () => HTMLElement | null, options?: MorphOptions): Promise<void>
+type MorphOptions = { duration?: number /* ms */; easing?: string }
+```
+
+```tsx
+import { useState } from 'react'
+import { Button, Card, CardTitle, morph } from 'anvilui'
+
+const albums = [
+    { id: 'a1', title: 'Blue' },
+    { id: 'a2', title: 'Red' },
+]
+
+export function Albums() {
+    const [open, setOpen] = useState<string | null>(null)
+
+    if (open) {
+        return (
+            <Card data-morph-id={open} style={{ minHeight: 300 }}>
+                <Button onClick={() => morph(open, () => setOpen(null))}>
+                    Back
+                </Button>
+            </Card>
+        )
+    }
+    return albums.map((a) => (
+        <Card
+            key={a.id}
+            clickable
+            data-morph-id={a.id}
+            onClick={() => morph(a.id, () => setOpen(a.id))}
+        >
+            <CardTitle>{a.title}</CardTitle>
+        </Card>
+    ))
+}
+```
+
+- Give both elements the same `data-morph-id`.
+- `update` must change the view **synchronously** (set state, or `navigate(to, { flushSync: true })` in React Router).
+- Without View Transitions support, or with reduced motion, `update` just runs.
+- `Dialog` and `Popover` take `morph` (boolean) to do this between their trigger and popup.
+
+---
+
+<!-- file: docs/button.md -->
+
+# Button
+
+A button with a text label and optional icons. Renders a `<button type="button">`.
+
+```ts
+import { Button } from 'anvilui'
+import type { ButtonProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | The style (other libraries call this `variant`). |
+| `color` | `ComponentColor` | `'primary'` | `primary`, `tonal`, `success`, `warning`, `error`, `container`, `surface`. |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 48px tall. |
+| `startIcon` | `MaterialSymbol` | | Icon name before the label, e.g. `'add'`. |
+| `endIcon` | `MaterialSymbol` | | Icon name after the label. |
+| `loading` | `boolean` | `false` | Spinner in place of `startIcon`; ignores clicks; keeps focus. |
+| `disabled` | `boolean` | `false` | |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Pass `'submit'` in forms. |
+| `render` | `ReactElement` | | Render as another element, e.g. `<a href>` (+ `nativeButton={false}`). |
+
+Also takes Base UI Button props (`focusableWhenDisabled`, `nativeButton`) and all `<button>` attributes. Base UI docs: `node_modules/@base-ui/react/docs/react/components/button.md`.
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import { Button } from 'anvilui'
+
+export function Example() {
+    const [saving, setSaving] = useState(false)
+    return (
+        <div style={{ display: 'flex', gap: 8 }}>
+            <Button startIcon="add">New</Button>
+            <Button fillType="outlined" color="container">
+                Cancel
+            </Button>
+            <Button fillType="text">Learn more</Button>
+            <Button color="error" startIcon="delete">
+                Delete
+            </Button>
+            <Button loading={saving} onClick={() => setSaving(true)}>
+                {saving ? 'Saving' : 'Save'}
+            </Button>
+            <Button
+                render={<a href="/docs" />}
+                nativeButton={false}
+                endIcon="arrow_forward"
+            >
+                Docs
+            </Button>
+        </div>
+    )
+}
+```
+
+## Notes
+
+- Mapping from other libraries: `variant="outline"` → `fillType="outlined"`, `variant="ghost" | "link"` → `fillType="text"`, `variant="secondary"` → `color="container"` or `color="tonal"`, `variant="destructive"` → `color="error"`.
+- Icon-only? Use [IconButton](icon-button.md). Grouped buttons: [SplitButton](split-button.md). Hold-to-confirm: [HoldButton](hold-button.md). On/off: [Toggle](toggle.md).
+- No `fullWidth` prop: use `style={{ width: '100%' }}`.
+
+---
+
+<!-- file: docs/icon-button.md -->
+
+# IconButton
+
+A round 40px button with only an icon. `aria-label` is required.
+
+```ts
+import { IconButton } from 'anvilui'
+import type { IconButtonProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `MaterialSymbol` | required | Icon name, e.g. `'delete'`. |
+| `aria-label` | `string` | required | What the button does. |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `color` | `ComponentColor` | `'primary'` | |
+| `disabled` | `boolean` | `false` | |
+
+Takes no `children` and has **no `size` prop** (always 40px). Also takes Base UI Button props and `<button>` attributes.
+
+## Example
+
+```tsx
+import { IconButton, Tooltip } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <IconButton icon="add" aria-label="Add" />
+            {/* The usual "toolbar" look: no fill, neutral color */}
+            <IconButton
+                icon="more_vert"
+                aria-label="More options"
+                fillType="text"
+                color="container"
+            />
+            <Tooltip label="Delete">
+                <IconButton
+                    icon="delete"
+                    aria-label="Delete"
+                    fillType="outlined"
+                    color="error"
+                />
+            </Tooltip>
+        </>
+    )
+}
+```
+
+## Notes
+
+- Default is a filled primary circle. For plain icon buttons in bars and lists, use `fillType="text" color="container"`.
+- On/off icon buttons (favorite, bold): `<Toggle icon="favorite" aria-label="Favorite" />` ([toggle.md](toggle.md)).
+
+---
+
+<!-- file: docs/split-button.md -->
+
+# SplitButton
+
+Joins `Button`s and `IconButton`s into one segmented group. Renders a `<div role="group">`.
+
+```ts
+import { SplitButton } from 'anvilui'
+import type { SplitButtonProps } from 'anvilui' // = React.ComponentProps<'div'>
+```
+
+No props of its own. Style each button inside yourself; give them all the same `color`, `fillType` and `size`.
+
+```tsx
+import {
+    Button,
+    IconButton,
+    Menu,
+    MenuItem,
+    MenuPopup,
+    MenuTrigger,
+    SplitButton,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <SplitButton aria-label="Save">
+            <Button startIcon="save">Save</Button>
+            <Menu>
+                <MenuTrigger
+                    render={
+                        <IconButton
+                            icon="arrow_drop_down"
+                            aria-label="More save options"
+                        />
+                    }
+                />
+                <MenuPopup align="end">
+                    <MenuItem>Save as copy</MenuItem>
+                    <MenuItem>Save as template</MenuItem>
+                </MenuPopup>
+            </Menu>
+        </SplitButton>
+    )
+}
+```
+
+---
+
+<!-- file: docs/hold-button.md -->
+
+# HoldButton
+
+A button for destructive actions: press and hold until it fills, instead of a confirm dialog. Releasing early cancels.
+
+```ts
+import { HoldButton } from 'anvilui'
+import type { HoldButtonProps } from 'anvilui'
+```
+
+## Props
+
+All `Button` props except `loading`, plus:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onConfirm` | `() => void` | required | Called after holding for `holdDuration`. |
+| `holdDuration` | `number` (ms) | `1500` | |
+
+```tsx
+import { HoldButton } from 'anvilui'
+
+export function Example({ onDelete }: { onDelete: () => void }) {
+    return (
+        <HoldButton color="error" startIcon="delete" onConfirm={onDelete}>
+            Hold to delete
+        </HoldButton>
+    )
+}
+```
+
+- Use `onConfirm`, not `onClick` (`onClick` also fires on a short press).
+- Works with Space/Enter held. Screen reader clicks, which can't hold, confirm immediately.
+
+---
+
+<!-- file: docs/toggle.md -->
+
+# Toggle
+
+A button that stays on or off (Bold, Favorite). Sets `aria-pressed`. Off it's neutral; on it fills with `color`.
+
+```ts
+import { Toggle } from 'anvilui'
+import type { ToggleProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `pressed` / `defaultPressed` | `boolean` | `false` | On state. |
+| `onPressedChange` | `(pressed: boolean, details) => void` | | |
+| `color` | `ComponentColor` | `'primary'` | Color while on. |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | Look while off. |
+| `children` | `ReactNode` | | Label (text toggle). |
+| `startIcon`, `endIcon` | `MaterialSymbol` | | Text toggle only. |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | Text toggle only. |
+| `icon` | `MaterialSymbol` | | Makes it a round icon toggle. Requires `aria-label`; no children or size. |
+| `value` | `string` | | Identifies it in a Base UI ToggleGroup. |
+
+Either `children` or `icon` + `aria-label`, not both.
+
+```tsx
+import { useState } from 'react'
+import { Toggle } from 'anvilui'
+
+export function Example() {
+    const [favorite, setFavorite] = useState(false)
+    return (
+        <>
+            <Toggle startIcon="format_bold" defaultPressed>
+                Bold
+            </Toggle>
+            <Toggle
+                icon="favorite"
+                aria-label="Favorite"
+                color="error"
+                pressed={favorite}
+                onPressedChange={setFavorite}
+            />
+        </>
+    )
+}
+```
+
+For a row of exclusive options use [ToggleGroup](toggle-group.md). For filter chips use `FilterChip` ([chip.md](chip.md)).
+
+---
+
+<!-- file: docs/toggle-group.md -->
+
+# ToggleGroup
+
+A segmented control: a row of options with a sliding selection pill. One selected by default; `multiple` for several.
+
+```ts
+import { ToggleGroup, ToggleGroupItem } from 'anvilui'
+import type { ToggleGroupProps, ToggleGroupItemProps } from 'anvilui'
+```
+
+## ToggleGroup props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` / `defaultValue` | single: `Value`; multiple: `string[]` | | **Single mode takes one value, not an array.** |
+| `onValueChange` | single: `(value: Value, details) => void`; multiple: `(value: string[], details) => void` | | |
+| `multiple` | `boolean` | `false` | Allow several on at once. |
+| `color` | `ComponentColor` | `'primary'` | |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | |
+| `disabled` | `boolean` | | |
+| `aria-label` / `aria-labelledby` | `string` | | Name the group (both are passed through). |
+
+Single mode is a Base UI RadioGroup; multiple mode is a Base UI ToggleGroup. `Value` is inferred from `value`, so a union-typed `useState<'list' | 'grid'>` setter can be passed straight to `onValueChange`.
+
+## ToggleGroupItem props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `Value` (string in `multiple`) | Required. |
+| `children` | `ReactNode` | Label. |
+| `startIcon`, `endIcon` | `MaterialSymbol` | |
+| `disabled` | `boolean` | |
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import { ToggleGroup, ToggleGroupItem } from 'anvilui'
+
+export function Example() {
+    const [view, setView] = useState('list')
+    const [days, setDays] = useState<string[]>(['mon'])
+    return (
+        <>
+            <ToggleGroup aria-label="View" value={view} onValueChange={setView}>
+                <ToggleGroupItem value="list" startIcon="list">
+                    List
+                </ToggleGroupItem>
+                <ToggleGroupItem value="grid" startIcon="grid_view">
+                    Grid
+                </ToggleGroupItem>
+            </ToggleGroup>
+
+            <ToggleGroup
+                multiple
+                aria-label="Days"
+                value={days}
+                onValueChange={setDays}
+                fillType="outlined"
+            >
+                <ToggleGroupItem value="mon">Mon</ToggleGroupItem>
+                <ToggleGroupItem value="tue">Tue</ToggleGroupItem>
+                <ToggleGroupItem value="wed">Wed</ToggleGroupItem>
+            </ToggleGroup>
+        </>
+    )
+}
+```
+
+Use it for 2–5 short options. For longer lists use [RadioGroup](radio-group.md) or [Select](select.md).
+
+---
+
+<!-- file: docs/fab.md -->
+
+# FAB
+
+The floating action button: the screen's main action. You position it (usually `position: fixed`, bottom-end).
+
+```ts
+import { FAB } from 'anvilui'
+import type { FABProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `MaterialSymbol` | required | |
+| `label` | `string` | | Visible text: makes it an extended FAB. |
+| `aria-label` | `string` | required without `label` | |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 40, 56 or 96px. |
+| `color` | `ComponentColor` | `'primary'` | |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `sticky` | `boolean` | `true` | Drifts toward a nearby mouse cursor. |
+
+Takes no children. Also Base UI Button props.
+
+```tsx
+import { FAB } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <FAB
+                icon="edit"
+                aria-label="Compose"
+                style={{ position: 'fixed', insetInlineEnd: 16, bottom: 16 }}
+            />
+            <FAB icon="add" label="New task" color="tonal" />
+        </>
+    )
+}
+```
+
+`sticky` only adds a small `translate` toward the cursor, so it works with any `position` you set.
+
+For a FAB that opens several actions, use [FABMenu](fab-menu.md).
+
+---
+
+<!-- file: docs/fab-menu.md -->
+
+# FABMenu
+
+A FAB that opens a stack of labeled actions. You position it.
+
+```ts
+import { FABMenu, FABMenuItem } from 'anvilui'
+import type { FABMenuProps, FABMenuItemProps } from 'anvilui'
+```
+
+## FABMenu props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `MaterialSymbol` | required | Icon while closed. |
+| `aria-label` | `string` | required | |
+| `children` | `FABMenuItem`s | required | |
+| `closeIcon` | `MaterialSymbol` | `'close'` | Icon while open. |
+| `color` | `ComponentColor` | `'primary'` | Items use the role's container shade. |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'inline-start' \| 'inline-end'` | `'top'` | |
+| `align` | `'start' \| 'center' \| 'end'` | `'end'` | |
+| `sticky` | `boolean` | `true` | |
+| `className` | `string` | | Goes on the FAB. |
+| `open` / `defaultOpen` / `onOpenChange` | | | Base UI Menu.Root state. |
+
+## FABMenuItem props
+
+`icon: MaterialSymbol` (required), `children` (label, required), `color?: ComponentColor`, `onClick`, `disabled`, plus Base UI Menu.Item props.
+
+```tsx
+import { FABMenu, FABMenuItem } from 'anvilui'
+
+export function Example() {
+    return (
+        <div style={{ position: 'fixed', insetInlineEnd: 16, bottom: 16 }}>
+            <FABMenu icon="add" aria-label="Create">
+                <FABMenuItem
+                    icon="description"
+                    onClick={() => console.log('doc')}
+                >
+                    Document
+                </FABMenuItem>
+                <FABMenuItem
+                    icon="folder"
+                    onClick={() => console.log('folder')}
+                >
+                    Folder
+                </FABMenuItem>
+            </FABMenu>
+        </div>
+    )
+}
+```
+
+Needs `AnvilRoot` (the items portal into it).
+
+---
+
+<!-- file: docs/chip.md -->
+
+# Chip, FilterChip, InputChip
+
+Compact elements for actions, filters and entered values.
+
+```ts
+import { Chip, FilterChip, InputChip } from 'anvilui'
+import type { ChipProps, FilterChipProps, InputChipProps } from 'anvilui'
+```
+
+| Component | Is | Own props |
+| --- | --- | --- |
+| `Chip` | a button (suggestion / quick action) | `startIcon?: MaterialSymbol`; Base UI Button props |
+| `FilterChip` | an on/off toggle with a checkmark | `pressed` / `defaultPressed` / `onPressedChange(pressed, details)`; Base UI Toggle props |
+| `InputChip` | a removable value (`<span>`) | `onRemove: () => void` (required), `removeLabel?: string` (default `'Remove'`), `startIcon?`, `disabled?` |
+
+Chips have no `color`, `fillType` or `size` props.
+
+```tsx
+import { useState } from 'react'
+import { Chip, FilterChip, InputChip } from 'anvilui'
+
+export function Example() {
+    const [vegan, setVegan] = useState(false)
+    const [tags, setTags] = useState(['react', 'design'])
+    return (
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Chip startIcon="event" onClick={() => console.log('added')}>
+                Add to calendar
+            </Chip>
+            <FilterChip pressed={vegan} onPressedChange={setVegan}>
+                Vegan
+            </FilterChip>
+            {tags.map((tag) => (
+                <InputChip
+                    key={tag}
+                    removeLabel={`Remove ${tag}`}
+                    onRemove={() => setTags(tags.filter((t) => t !== tag))}
+                >
+                    {tag}
+                </InputChip>
+            ))}
+        </div>
+    )
+}
+```
+
+- `InputChip` animates out, then calls `onRemove`. Remove the item from your state there; if you keep it, the chip reappears.
+- Lay chips out in a flex row with `gap`.
+
+---
+
+<!-- file: docs/input.md -->
+
+# Input
+
+A text field with a floating label inside its border.
+
+```ts
+import { Input } from 'anvilui'
+import type { InputProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | | Floating label. |
+| `size` | `'small' \| 'normal'` | `'normal'` | Small's label acts as a placeholder. |
+| `value` / `defaultValue` | `string` | | |
+| `onValueChange` | `(value: string, details) => void` | | The string. |
+| `onChange` | `ChangeEventHandler<HTMLInputElement>` | | The native event also works. |
+| `className` | `string` | | On the **wrapper** `<label>` (width, margins). |
+| `ref` | | | On the `<input>`. |
+| everything else | `<input>` attributes | | `type`, `name`, `placeholder`, `required`, `disabled`, `autoComplete`, … go on the `<input>`. |
+
+No `startIcon` / `endIcon` / `error` / `helperText` props. For helper and error text wrap it in a [Field](field.md). For a search bar use [Search](search.md).
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldError, Input } from 'anvilui'
+
+export function Example() {
+    const [email, setEmail] = useState('')
+    return (
+        <div style={{ display: 'grid', gap: 16, width: 320 }}>
+            <Input label="Name" name="name" defaultValue="Ada" />
+            <Field validationMode="onBlur">
+                <Input
+                    label="Email"
+                    type="email"
+                    required
+                    value={email}
+                    onValueChange={setEmail}
+                />
+                <FieldError />
+            </Field>
+            <Input size="small" label="Filter" />
+        </div>
+    )
+}
+```
+
+The field is `width: 100%`-friendly: give the wrapper a width with `className` or put it in a grid.
+
+---
+
+<!-- file: docs/textarea.md -->
+
+# Textarea
+
+A multi-line text field. Same API as [Input](input.md), with `<textarea>` attributes (`rows`, …).
+
+```ts
+import { Textarea } from 'anvilui'
+import type { TextareaProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | | Floating label. |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `onValueChange` | `(value: string, details) => void` | | Or native `onChange`. |
+| `className` | `string` | | On the wrapper. |
+
+```tsx
+import { Textarea } from 'anvilui'
+
+export function Example() {
+    return <Textarea label="Message" name="message" rows={4} />
+}
+```
+
+---
+
+<!-- file: docs/field.md -->
+
+# Field, FieldDescription, FieldError
+
+Wraps one control to add helper text, an error message and validation. The control keeps its own `label`. **There is no `FieldLabel`.**
+
+```ts
+import { Field, FieldDescription, FieldError } from 'anvilui'
+import type {
+    FieldProps,
+    FieldDescriptionProps,
+    FieldErrorProps,
+} from 'anvilui'
+```
+
+## Field props (Base UI Field.Root)
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | | Form field name (overrides the control's). |
+| `validate` | `(value, formValues) => string \| string[] \| null \| Promise<…>` | | Return an error message, or `null` when valid. |
+| `validationMode` | `'onSubmit' \| 'onBlur' \| 'onChange'` | `'onSubmit'` | When to validate. Outside a `<form>`, use `onBlur` or `onChange`. |
+| `invalid` | `boolean` | | Force the invalid state (e.g. a server error). |
+| `disabled` | `boolean` | | Disables the control. |
+
+## FieldError props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `match` | `boolean \| keyof ValidityState` | Show only for one problem (`'valueMissing'`, `'typeMismatch'`, …), or `true` to show whenever invalid. |
+| `children` | `ReactNode` | Message. Without it, shows the browser's or `validate`'s message. |
+
+`FieldDescription` is helper text; hidden while an error shows.
+
+```tsx
+import { Button, Field, FieldDescription, FieldError, Input } from 'anvilui'
+
+export function Example() {
+    return (
+        <form
+            onSubmit={(e) => e.preventDefault()}
+            style={{ display: 'grid', gap: 16, width: 320 }}
+        >
+            <Field
+                name="username"
+                validate={(value) =>
+                    String(value).length < 3 ? 'At least 3 characters' : null
+                }
+            >
+                <Input label="Username" required />
+                <FieldDescription>Shown on your profile.</FieldDescription>
+                <FieldError match="valueMissing">Choose a username.</FieldError>
+                <FieldError match="customError" />
+            </Field>
+            <Button type="submit">Save</Button>
+        </form>
+    )
+}
+```
+
+Works with `Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Checkbox`, `Switch`, `RadioGroup`, `Slider`. A required checkbox: `<Field name="terms"><label><Checkbox required /> I accept</label><FieldError match="valueMissing">Please accept the terms.</FieldError></Field>`. On a plain `<form>`, a custom `validate` only blocks submit after it has run: use `validationMode="onBlur"` or `"onChange"` (see [forms.md](forms.md)). Base UI docs: `node_modules/@base-ui/react/docs/react/components/field.md`.
+
+---
+
+<!-- file: docs/select.md -->
+
+# Select, SelectItem
+
+A dropdown to pick one option (or several with `multiple`). Looks like `Input`.
+
+```ts
+import { Select, SelectItem } from 'anvilui'
+import type { SelectProps, SelectItemProps } from 'anvilui'
+```
+
+## Select props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `SelectItem`s | | |
+| `items` | `Record<string, ReactNode>` or `{ value, label }[]` | | **Pass it** so the field shows the label, not the raw value. |
+| `value` / `defaultValue` | `Value \| null` (array with `multiple`) | | |
+| `onValueChange` | `(value: Value \| null, details) => void` | | The value, not an event. |
+| `label` | `ReactNode` | | Floating label. |
+| `placeholder` | `ReactNode` | | Shown when nothing is selected. |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `multiple` | `boolean` | `false` | |
+| `name`, `required`, `disabled`, `readOnly` | | | |
+| `open` / `defaultOpen` / `onOpenChange` | | | |
+| `itemToStringLabel` | `(value) => string` | | For object values. |
+| `className` | `string` | | On the field wrapper. |
+
+Other props go to Base UI `Select.Root`, which renders no element: `id`, `style` and `ref` are not applied. Base UI docs: `node_modules/@base-ui/react/docs/react/components/select.md`.
+
+## SelectItem props
+
+`value` (required), `children` (the label), `disabled`.
+
+```tsx
+import { useState } from 'react'
+import { Select, SelectItem } from 'anvilui'
+
+const countries = [
+    { value: 'us', label: 'United States' },
+    { value: 'fr', label: 'France' },
+    { value: 'jp', label: 'Japan' },
+]
+
+export function Example() {
+    const [country, setCountry] = useState<string | null>('fr')
+    return (
+        <Select
+            label="Country"
+            items={countries}
+            value={country}
+            onValueChange={setCountry}
+            className="country-field"
+        >
+            {countries.map((c) => (
+                <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                </SelectItem>
+            ))}
+        </Select>
+    )
+}
+```
+
+- No `SelectTrigger`, `SelectContent` or `SelectValue` parts: `Select` renders the field and the popup. Only items go inside.
+- For a searchable list use [Combobox](combobox.md).
+
+---
+
+<!-- file: docs/combobox.md -->
+
+# Combobox, ComboboxItem
+
+A text field that filters a list as you type and picks one item. **Children are a render function**, and `items` is the list to filter.
+
+```ts
+import { Combobox, ComboboxItem } from 'anvilui'
+import type { ComboboxProps, ComboboxItemProps } from 'anvilui'
+```
+
+## Combobox props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `readonly Item[]` | | The options. |
+| `children` | `(item: Item, index: number) => ReactNode` | required | Renders one `ComboboxItem`. |
+| `value` / `defaultValue` | `Item \| null` | | The picked item. |
+| `onValueChange` | `(item: Item \| null, details) => void` | | |
+| `inputValue` / `onInputValueChange` | `string` / `(text, details) => void` | | The typed text. |
+| `itemToStringLabel` | `(item) => string` | | Required for object items. |
+| `label` | `ReactNode` | | Floating label. |
+| `placeholder` | `string` | | |
+| `empty` | `ReactNode` | | Shown when nothing matches; without it the popup hides. |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `className` | `string` | | On the field wrapper. |
+| `name`, `disabled`, `required`, `filter`, `limit` | | | Base UI Combobox.Root props. |
+
+## ComboboxItem props
+
+`value: Item` (required), `children` (label), `disabled`.
+
+```tsx
+import { useState } from 'react'
+import { Combobox, ComboboxItem } from 'anvilui'
+
+type User = { id: number; name: string }
+const users: User[] = [
+    { id: 1, name: 'Ada Lovelace' },
+    { id: 2, name: 'Alan Turing' },
+]
+const fruits = ['Apple', 'Banana', 'Cherry']
+
+export function Example() {
+    const [user, setUser] = useState<User | null>(null)
+    return (
+        <div style={{ display: 'grid', gap: 16, width: 320 }}>
+            <Combobox label="Fruit" items={fruits} empty="No fruit found">
+                {(fruit: string) => (
+                    <ComboboxItem key={fruit} value={fruit}>
+                        {fruit}
+                    </ComboboxItem>
+                )}
+            </Combobox>
+
+            <Combobox
+                label="Assignee"
+                items={users}
+                value={user}
+                onValueChange={setUser}
+                itemToStringLabel={(u: User) => u.name}
+            >
+                {(u: User) => (
+                    <ComboboxItem key={u.id} value={u}>
+                        {u.name}
+                    </ComboboxItem>
+                )}
+            </Combobox>
+        </div>
+    )
+}
+```
+
+Base UI docs: `node_modules/@base-ui/react/docs/react/components/combobox.md`.
+
+---
+
+<!-- file: docs/search.md -->
+
+# Search, SearchItem
+
+A Material 3 search bar with a suggestion list. `aria-label` is required. **Children are a render function** over `items`. The value is the typed text.
+
+```ts
+import { Search, SearchItem } from 'anvilui'
+import type { SearchProps, SearchItemProps } from 'anvilui'
+```
+
+## Search props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` | `string` | required | |
+| `children` | `(item: Item, index: number) => ReactNode` | required | Renders one `SearchItem`. |
+| `items` | `readonly Item[]` | | Suggestions, filtered as you type. Pass `[]` for none. |
+| `value` / `defaultValue` | `string` | | The typed text. |
+| `onValueChange` | `(text: string, details) => void` | | |
+| `placeholder` | `string` | | |
+| `empty` | `ReactNode` | | Shown when nothing matches. |
+| `clearLabel` | `string` | `'Clear'` | Name of the clear button. |
+| `className` | `string` | | On the bar. |
+| `itemToStringValue`, `filter`, `limit`, `openOnInputClick` | | | Base UI Autocomplete.Root props. |
+
+## SearchItem props
+
+`value: Item` (required), `startIcon?: MaterialSymbol`, `children`.
+
+```tsx
+import { useState } from 'react'
+import { Search, SearchItem } from 'anvilui'
+
+const recent = ['invoices', 'travel', 'receipts']
+
+export function Example() {
+    const [query, setQuery] = useState('')
+    return (
+        <Search
+            aria-label="Search mail"
+            placeholder="Search mail"
+            items={recent}
+            value={query}
+            onValueChange={setQuery}
+        >
+            {(item: string) => (
+                <SearchItem key={item} value={item} startIcon="history">
+                    {item}
+                </SearchItem>
+            )}
+        </Search>
+    )
+}
+```
+
+To filter a page's own content with no suggestion list, pass `items={[]}` and a render function that returns `null`, then filter your data with the typed text:
+
+```tsx
+import { useState } from 'react'
+import { List, ListItem, Search } from 'anvilui'
+
+const people = ['Ada Lovelace', 'Alan Turing', 'Grace Hopper']
+
+export function FilterExample() {
+    const [query, setQuery] = useState('')
+    const shown = people.filter((p) => p.toLowerCase().includes(query.toLowerCase()))
+    return (
+        <>
+            <Search aria-label="Filter people" placeholder="Filter people" items={[]} value={query} onValueChange={setQuery}>
+                {() => null}
+            </Search>
+            <List>
+                {shown.map((p) => <ListItem key={p} label={p} />)}
+            </List>
+        </>
+    )
+}
+```
+
+---
+
+<!-- file: docs/checkbox.md -->
+
+# Checkbox
+
+A checkbox. **No `label` prop**: wrap it in a `<label>`.
+
+```ts
+import { Checkbox } from 'anvilui'
+import type { CheckboxProps } from 'anvilui' // = Base UI Checkbox.Root props
+```
+
+## Props (Base UI Checkbox.Root)
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` / `defaultChecked` | `boolean` | `false` | |
+| `onCheckedChange` | `(checked: boolean, details) => void` | | Not `onChange`. |
+| `indeterminate` | `boolean` | `false` | Shows a dash. |
+| `name`, `value` | `string` | | For forms. |
+| `required`, `disabled`, `readOnly` | `boolean` | `false` | |
+
+Base UI docs: `node_modules/@base-ui/react/docs/react/components/checkbox.md`.
+
+```tsx
+import { useState } from 'react'
+import { Checkbox } from 'anvilui'
+
+export function Example() {
+    const [agreed, setAgreed] = useState(false)
+    return (
+        <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <Checkbox checked={agreed} onCheckedChange={setAgreed} />I agree to
+            the terms
+        </label>
+    )
+}
+```
+
+In a list row, put it in `ListItem`'s `start` with `render={<label />}` so the whole row toggles it ([list.md](list.md)).
+
+---
+
+<!-- file: docs/switch.md -->
+
+# Switch
+
+An on/off switch. **No `label` prop**: wrap it in a `<label>`.
+
+```ts
+import { Switch } from 'anvilui'
+import type { SwitchProps } from 'anvilui' // = Base UI Switch.Root props
+```
+
+## Props (Base UI Switch.Root)
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` / `defaultChecked` | `boolean` | `false` | |
+| `onCheckedChange` | `(checked: boolean, details) => void` | | Not `onChange`. |
+| `name`, `value` | `string` | | For forms. |
+| `required`, `disabled`, `readOnly` | `boolean` | `false` | |
+
+```tsx
+import { useState } from 'react'
+import { List, ListItem, Switch } from 'anvilui'
+
+export function Example() {
+    const [wifi, setWifi] = useState(true)
+    return (
+        <>
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Switch checked={wifi} onCheckedChange={setWifi} />
+                Wi-Fi
+            </label>
+
+            {/* Settings row: clicking anywhere on the row toggles it */}
+            <List>
+                <ListItem
+                    label="Notifications"
+                    description="Push and email"
+                    end={<Switch defaultChecked />}
+                    render={<label />}
+                />
+            </List>
+        </>
+    )
+}
+```
+
+---
+
+<!-- file: docs/radio-group.md -->
+
+# RadioGroup, Radio
+
+Pick exactly one option. State lives on the group; each `Radio` has a `value`. **`Radio` has no `label` prop**: wrap it in a `<label>`.
+
+```ts
+import { RadioGroup, Radio } from 'anvilui'
+import type { RadioGroupProps, RadioProps } from 'anvilui'
+```
+
+## RadioGroup props (Base UI RadioGroup)
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` / `defaultValue` | `Value` | The picked radio's value. |
+| `onValueChange` | `(value: Value, details) => void` | |
+| `name`, `required`, `disabled`, `readOnly` | | |
+| `aria-label` / `aria-labelledby` | `string` | Name the group. |
+
+## Radio props (Base UI Radio.Root)
+
+`value: Value` (required), `disabled?: boolean`.
+
+```tsx
+import { useState } from 'react'
+import { Radio, RadioGroup } from 'anvilui'
+
+export function Example() {
+    const [plan, setPlan] = useState('free')
+    return (
+        <RadioGroup
+            aria-label="Plan"
+            value={plan}
+            onValueChange={setPlan}
+            style={{ display: 'grid', gap: 8 }}
+        >
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Radio value="free" /> Free
+            </label>
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Radio value="pro" /> Pro
+            </label>
+        </RadioGroup>
+    )
+}
+```
+
+For a compact row of 2–5 options, [ToggleGroup](toggle-group.md) looks better.
+
+---
+
+<!-- file: docs/slider.md -->
+
+# Slider
+
+Pick a number, or a range with several handles. Needs `label` or `aria-label`.
+
+```ts
+import { Slider } from 'anvilui'
+import type { SliderProps } from 'anvilui'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | | Visible label above. Either this or `aria-label`. |
+| `aria-label` | `string` | | |
+| `value` / `defaultValue` | `number` or `number[]` | | An array makes a range with that many handles. |
+| `onValueChange` | `(value, details) => void` | | While dragging. Gets the value, not an event: `number` when `value` is a number, `number[]` when it's an array, so a `useState` setter can be passed directly. |
+| `onValueCommitted` | `(value, details) => void` | | On release. |
+| `min` / `max` / `step` | `number` | `0` / `100` / `1` | |
+| `showValue` | `boolean` | `true` | Value bubble while dragging or focused. |
+| `squiggly` | `boolean` | `false` | Wavy track (horizontal only). |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical is 160px tall; set height via `className`. |
+| `format` | `Intl.NumberFormatOptions` | | Formats the bubble. |
+| `disabled`, `name` | | | |
+
+Base UI docs: `node_modules/@base-ui/react/docs/react/components/slider.md`.
+
+```tsx
+import { useState } from 'react'
+import { Slider } from 'anvilui'
+
+export function Example() {
+    const [volume, setVolume] = useState(40)
+    const [price, setPrice] = useState([20, 80])
+    return (
+        <div style={{ display: 'grid', gap: 24, width: 300 }}>
+            <Slider label="Volume" value={volume} onValueChange={setVolume} />
+            <Slider
+                aria-label="Price"
+                value={price}
+                onValueChange={setPrice}
+                min={0}
+                max={200}
+                format={{ style: 'currency', currency: 'USD' }}
+            />
+        </div>
+    )
+}
+```
+
+---
+
+<!-- file: docs/date-input.md -->
+
+# DateInput
+
+A text field for a date, typed in the user's locale format or picked from a calendar popup. **The value is a `"YYYY-MM-DD"` string, not a `Date`.**
+
+```ts
+import { DateInput } from 'anvilui'
+import type { DateInputProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` / `defaultValue` | `string \| null` | `null` | `"YYYY-MM-DD"`. |
+| `onValueChange` | `(value: string \| null) => void` | | `null` when cleared. |
+| `label` | `ReactNode` | | Either this or `aria-label`. |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `className` | `string` | | On the wrapper. |
+| `disabled`, `required`, `id`, `onBlur` | | | On the `<input>`. |
+
+No `min` / `max` / disabled dates.
+
+```tsx
+import { useState } from 'react'
+import { DateInput } from 'anvilui'
+
+export function Example() {
+    const [start, setStart] = useState<string | null>('2026-11-06')
+    return (
+        <form>
+            <DateInput
+                label="Start date"
+                value={start}
+                onValueChange={setStart}
+            />
+            {/* `name` on DateInput would submit the locale-formatted text; submit the ISO value like this */}
+            <input type="hidden" name="start" value={start ?? ''} />
+        </form>
+    )
+}
+```
+
+Convert: `new Date(value + 'T00:00')` for a local `Date`; back with `date.toISOString().slice(0, 10)` (UTC) or format it yourself.
+
+---
+
+<!-- file: docs/time-picker.md -->
+
+# TimePicker
+
+A field that opens a Material 3 time picker (clock dial or typed boxes). **The value is a 24-hour `"HH:mm"` string.**
+
+```ts
+import { TimePicker } from 'anvilui'
+import type { TimePickerProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` / `defaultValue` | `string \| null` | `null` | `"HH:mm"`, e.g. `"07:30"`, `"19:05"`. |
+| `onValueChange` | `(value: string) => void` | | On every change. The user can't clear it from the picker; to clear, set `value={null}` yourself (e.g. a Clear button). |
+| `type` | `'dial' \| 'input'` | `'dial'` | |
+| `hourCycle` | `12 \| 24` | user's locale | 12 shows AM/PM. |
+| `label` | `ReactNode` | | Either this or `aria-label`. |
+| `name` | `string` | | Submits `"HH:mm"` with a form. |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `disabled` | `boolean` | `false` | |
+| `open` / `defaultOpen` / `onOpenChange` | | | The popup. |
+| `className`, other `<div>` props | | | On the wrapper. |
+
+```tsx
+import { useState } from 'react'
+import { TimePicker } from 'anvilui'
+
+export function Example() {
+    const [time, setTime] = useState<string | null>('07:30')
+    return (
+        <TimePicker
+            label="Alarm"
+            value={time}
+            onValueChange={setTime}
+            hourCycle={12}
+        />
+    )
+}
+```
+
+---
+
+<!-- file: docs/calendar.md -->
+
+# Calendar
+
+A month grid to pick a date. **Values are `"YYYY-MM-DD"` strings.** Locale-aware (first weekday, names).
+
+```ts
+import { Calendar } from 'anvilui'
+import type { CalendarProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` / `defaultValue` | `string \| null` | `null` | |
+| `onValueChange` | `(value: string) => void` | | |
+| other | `<div>` props | | |
+
+No range selection, `min` / `max` or disabled dates. For a field with a popup calendar, use [DateInput](date-input.md).
+
+```tsx
+import { useState } from 'react'
+import { Calendar } from 'anvilui'
+
+export function Example() {
+    const [date, setDate] = useState<string | null>(null)
+    return <Calendar value={date} onValueChange={setDate} />
+}
+```
+
+---
+
+<!-- file: docs/pin-input.md -->
+
+# PinInput
+
+One box per character, for verification codes and PINs. `length` is required.
+
+```ts
+import { PinInput } from 'anvilui'
+import type { PinInputProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `length` | `number` | required | Number of boxes. |
+| `label` | `ReactNode` | | Either this or `aria-label`. |
+| `value` / `defaultValue` | `string` | | |
+| `onValueChange` | `(value: string, details) => void` | | |
+| `onValueComplete` | `(value: string, details) => void` | | When every box is filled. |
+| `validationType` | `'numeric' \| 'alpha' \| 'alphanumeric' \| 'none'` | `'numeric'` | |
+| `mask` | `boolean` | `false` | Hide characters. |
+| `fillType` | `'filled' \| 'outlined'` | `'outlined'` | |
+| `size` | `'small' \| 'normal'` | `'normal'` | |
+| `name`, `disabled`, `required`, `autoSubmit` | | | |
+| `className` | `string` | | On the wrapper. |
+
+```tsx
+import { PinInput } from 'anvilui'
+
+export function Example() {
+    return (
+        <PinInput
+            label="Verification code"
+            length={6}
+            onValueComplete={(code) => console.log(code)}
+        />
+    )
+}
+```
+
+Base UI docs: `node_modules/@base-ui/react/docs/react/components/otp-field.md`.
+
+---
+
+<!-- file: docs/dialog.md -->
+
+# Dialog
+
+A modal dialog.
+
+```ts
+import {
+    Dialog,
+    DialogTrigger,
+    DialogPopup,
+    DialogTitle,
+    DialogDescription,
+    DialogActions,
+    DialogClose,
+} from 'anvilui'
+import type {
+    DialogProps,
+    DialogTriggerProps,
+    DialogPopupProps,
+    DialogTitleProps,
+    DialogDescriptionProps,
+    DialogActionsProps,
+    DialogCloseProps,
+} from 'anvilui'
+```
+
+## Parts
+
+| Part | Renders | Notes |
+| --- | --- | --- |
+| `Dialog` | nothing (state) | `open` / `defaultOpen` / `onOpenChange(open, details)`, `modal` (default `true`), `disablePointerDismissal`, `morph` |
+| `DialogTrigger` | bare `<button>` | `render={<Button />}` to style it. Optional when controlled. |
+| `DialogPopup` | portal + backdrop + the dialog box | Put everything else inside. |
+| `DialogTitle` | `<h2>` | Required for accessibility. |
+| `DialogDescription` | `<p>` | |
+| `DialogActions` | `<div>` | The button row at the bottom (the "footer"). |
+| `DialogClose` | bare `<button>` | `render={<Button fillType="text" />}`. |
+
+There is **no** `DialogContent`, `DialogOverlay`, `DialogPortal`, `DialogHeader` or `DialogFooter`.
+
+`morph` (boolean, default `false`): the dialog grows out of its trigger, best when the trigger is a surface like a clickable `Card`.
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogClose,
+    DialogDescription,
+    DialogPopup,
+    DialogTitle,
+    DialogTrigger,
+    Input,
+} from 'anvilui'
+
+export function DeleteDialog({ onDelete }: { onDelete: () => void }) {
+    return (
+        <Dialog>
+            <DialogTrigger render={<Button color="error" startIcon="delete" />}>
+                Delete
+            </DialogTrigger>
+            <DialogPopup>
+                <DialogTitle>Delete project?</DialogTitle>
+                <DialogDescription>This can't be undone.</DialogDescription>
+                <DialogActions>
+                    <DialogClose render={<Button fillType="text" />}>
+                        Cancel
+                    </DialogClose>
+                    <DialogClose
+                        render={<Button color="error" />}
+                        onClick={onDelete}
+                    >
+                        Delete
+                    </DialogClose>
+                </DialogActions>
+            </DialogPopup>
+        </Dialog>
+    )
+}
+
+// Controlled: open it from anywhere, close it after an async action
+export function RenameDialog() {
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Rename</Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogPopup>
+                    <DialogTitle>Rename</DialogTitle>
+                    <Input label="Name" autoFocus />
+                    <DialogActions>
+                        <DialogClose render={<Button fillType="text" />}>
+                            Cancel
+                        </DialogClose>
+                        <Button onClick={() => setOpen(false)}>Save</Button>
+                    </DialogActions>
+                </DialogPopup>
+            </Dialog>
+        </>
+    )
+}
+```
+
+Opening from a `MenuItem`: control the dialog (`open` state) and set it in the item's `onClick`; don't nest the Dialog inside the menu popup. Base UI docs: `node_modules/@base-ui/react/docs/react/components/dialog.md`.
+
+---
+
+<!-- file: docs/bottom-sheet.md -->
+
+# BottomSheet
+
+A panel that slides up from the bottom; swipe down or tap outside to close.
+
+```ts
+import {
+    BottomSheet,
+    BottomSheetTrigger,
+    BottomSheetPopup,
+    BottomSheetTitle,
+    BottomSheetDescription,
+    BottomSheetClose,
+} from 'anvilui'
+```
+
+| Part | Renders | Notes |
+| --- | --- | --- |
+| `BottomSheet` | nothing (state) | `open` / `defaultOpen` / `onOpenChange`, `snapPoints` (e.g. `[0.5, 1]`), plus Base UI Drawer.Root props |
+| `BottomSheetTrigger` | bare `<button>` | `render={<Button />}` |
+| `BottomSheetPopup` | portal + backdrop + sheet + drag handle | Already padded; children scroll. |
+| `BottomSheetTitle` | `<h2>` | Names the sheet. |
+| `BottomSheetDescription` | `<p>` | |
+| `BottomSheetClose` | bare `<button>` | |
+
+```tsx
+import {
+    BottomSheet,
+    BottomSheetPopup,
+    BottomSheetTitle,
+    BottomSheetTrigger,
+    Button,
+    List,
+    ListItem,
+    Icon,
+} from 'anvilui'
+
+export function ShareSheet() {
+    return (
+        <BottomSheet>
+            <BottomSheetTrigger render={<Button startIcon="share" />}>
+                Share
+            </BottomSheetTrigger>
+            <BottomSheetPopup>
+                <BottomSheetTitle>Share</BottomSheetTitle>
+                <List>
+                    <ListItem
+                        label="Copy link"
+                        start={<Icon name="link" />}
+                        render={<button type="button" />}
+                    />
+                    <ListItem
+                        label="Email"
+                        start={<Icon name="mail" />}
+                        render={<button type="button" />}
+                    />
+                </List>
+            </BottomSheetPopup>
+        </BottomSheet>
+    )
+}
+```
+
+There is no actions part: for buttons at the bottom use your own row, e.g. `<div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}><BottomSheetClose render={<Button fillType="text" />}>Cancel</BottomSheetClose><Button type="submit">Add</Button></div>`. To close it after a form submit, control it with `open` / `onOpenChange`.
+
+Base UI docs: `node_modules/@base-ui/react/docs/react/components/drawer.md`.
+
+---
+
+<!-- file: docs/popover.md -->
+
+# Popover
+
+A floating panel anchored to its trigger, for content users interact with.
+
+```ts
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverPopup,
+    PopoverTitle,
+    PopoverDescription,
+    PopoverClose,
+} from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `Popover` | nothing (state) | `open` / `defaultOpen` / `onOpenChange`, `modal`, `morph` |
+| `PopoverTrigger` | bare `<button>` | `render={<Button />}`; `openOnHover`, `delay` |
+| `PopoverPopup` | portal + positioner + panel | `side` (`'top' \| 'bottom' \| 'left' \| 'right' \| 'inline-start' \| 'inline-end'`, default `'bottom'`), `align` (`'start' \| 'center' \| 'end'`), `sideOffset` (4), `alignOffset`, `anchor` |
+| `PopoverTitle` | `<h2>` | `render={<h3 />}` to change level |
+| `PopoverDescription` | `<p>` | |
+| `PopoverClose` | bare `<button>` | `render={<IconButton icon="close" aria-label="Close" />}` |
+
+There is no `PopoverContent`; `side` / `align` go on `PopoverPopup`.
+
+```tsx
+import {
+    Button,
+    IconButton,
+    Input,
+    Popover,
+    PopoverClose,
+    PopoverPopup,
+    PopoverTitle,
+    PopoverTrigger,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <Popover>
+            <PopoverTrigger
+                render={<Button fillType="outlined" startIcon="filter_list" />}
+            >
+                Filters
+            </PopoverTrigger>
+            <PopoverPopup
+                side="bottom"
+                align="start"
+                style={{ display: 'grid', gap: 12, width: 280 }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <PopoverTitle>Filters</PopoverTitle>
+                    <PopoverClose
+                        render={
+                            <IconButton
+                                icon="close"
+                                aria-label="Close"
+                                fillType="text"
+                                color="container"
+                            />
+                        }
+                    />
+                </div>
+                <Input label="Min price" type="number" />
+            </PopoverPopup>
+        </Popover>
+    )
+}
+```
+
+For a hint on hover use [Tooltip](tooltip.md); for a hover preview of a link, [PreviewCard](preview-card.md).
+
+---
+
+<!-- file: docs/preview-card.md -->
+
+# PreviewCard
+
+A card shown while hovering or focusing a link. Hover-only: nothing inside should need clicking (use [Popover](popover.md) for that).
+
+```ts
+import { PreviewCard, PreviewCardTrigger, PreviewCardPopup } from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `PreviewCard` | nothing (state) | `open` / `defaultOpen` / `onOpenChange` |
+| `PreviewCardTrigger` | `<a>` | `href`, `delay`, `closeDelay`; `render={<Link to="..." />}` for routers |
+| `PreviewCardPopup` | portal + positioner + card | `side`, `align`, `sideOffset` (8), `alignOffset` |
+
+```tsx
+import {
+    Avatar,
+    PreviewCard,
+    PreviewCardPopup,
+    PreviewCardTrigger,
+    Typography,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <Typography>
+            Written by{' '}
+            <PreviewCard>
+                <PreviewCardTrigger href="/users/ada">@ada</PreviewCardTrigger>
+                <PreviewCardPopup
+                    style={{ display: 'flex', gap: 12, alignItems: 'center' }}
+                >
+                    <Avatar name="Ada Lovelace" />
+                    <span>Ada Lovelace · 12 posts</span>
+                </PreviewCardPopup>
+            </PreviewCard>
+        </Typography>
+    )
+}
+```
+
+---
+
+<!-- file: docs/tooltip.md -->
+
+# Tooltip
+
+A short hint on hover or keyboard focus. **One component, no parts.** The text is `label`; the single child element is the trigger.
+
+```ts
+import { Tooltip } from 'anvilui'
+import type { TooltipProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | required | The hint text (not `content` or `title`). |
+| `children` | `ReactElement` | required | Exactly one element that takes a ref and passes props through (all AnvilUI components do). |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'inline-start' \| 'inline-end'` | `'top'` | |
+| `align` | `'start' \| 'center' \| 'end'` | `'center'` | |
+| `sideOffset`, `alignOffset` | `number` | `4`, `0` | |
+| `delay`, `closeDelay` | `number` (ms) | | Hover timing. |
+| `open` / `defaultOpen` / `onOpenChange` | | | |
+| `className` | `string` | | On the bubble. |
+
+There is no `TooltipTrigger`, `TooltipContent` or `TooltipProvider` (AnvilRoot provides it).
+
+```tsx
+import { IconButton, Tooltip } from 'anvilui'
+
+export function Example() {
+    return (
+        <Tooltip label="Delete" side="bottom">
+            <IconButton
+                icon="delete"
+                aria-label="Delete"
+                fillType="text"
+                color="container"
+            />
+        </Tooltip>
+    )
+}
+```
+
+- A tooltip is not an accessible name: still give icon buttons `aria-label`.
+- On plain text, wrap it in a focusable element: `<Tooltip label="…"><span tabIndex={0}>text</span></Tooltip>`.
+- Disabled buttons don't get hover events; wrap them in a `<span>`.
+
+---
+
+<!-- file: docs/menu.md -->
+
+# Menu
+
+A dropdown menu of actions.
+
+```ts
+import {
+    Menu,
+    MenuTrigger,
+    MenuPopup,
+    MenuItem,
+    MenuGroup,
+    MenuSubmenu,
+    MenuSubmenuTrigger,
+} from 'anvilui'
+```
+
+## Parts
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `Menu` | nothing (state) | `open` / `defaultOpen` / `onOpenChange`, `modal`, `openOnHover` |
+| `MenuTrigger` | bare `<button>` | `render={<Button />}` or `render={<IconButton icon="more_vert" aria-label="More" />}` |
+| `MenuPopup` | portal + positioner + panel | `side` (default `'bottom'`), `align` (`'start' \| 'center' \| 'end'`), `sideOffset`, `alignOffset` |
+| `MenuItem` | menu item | `onClick`, `startIcon`, `endIcon`, `disabled`, `closeOnClick` (default `true`), `render` |
+| `MenuGroup` | group | Separates items into blocks (use it instead of a separator). |
+| `MenuSubmenu` | nothing (state) | Contains a `MenuSubmenuTrigger` and a `MenuPopup`. |
+| `MenuSubmenuTrigger` | item with an arrow | `startIcon`, children |
+
+There is **no** `MenuContent`, `MenuSeparator`, `MenuLabel`, `MenuCheckboxItem` or `DropdownMenu`. Use `onClick` on `MenuItem` (there is no `onSelect`).
+
+## Example
+
+```tsx
+import {
+    IconButton,
+    Menu,
+    MenuGroup,
+    MenuItem,
+    MenuPopup,
+    MenuSubmenu,
+    MenuSubmenuTrigger,
+    MenuTrigger,
+} from 'anvilui'
+
+export function FileMenu({ onDelete }: { onDelete: () => void }) {
+    return (
+        <Menu>
+            <MenuTrigger
+                render={
+                    <IconButton
+                        icon="more_vert"
+                        aria-label="More actions"
+                        fillType="text"
+                        color="container"
+                    />
+                }
+            />
+            <MenuPopup align="end">
+                <MenuGroup>
+                    <MenuItem
+                        startIcon="edit"
+                        onClick={() => console.log('rename')}
+                    >
+                        Rename
+                    </MenuItem>
+                    <MenuItem startIcon="content_copy">Duplicate</MenuItem>
+                    <MenuSubmenu>
+                        <MenuSubmenuTrigger startIcon="drive_file_move">
+                            Move to
+                        </MenuSubmenuTrigger>
+                        <MenuPopup>
+                            <MenuItem>Archive</MenuItem>
+                            <MenuItem>Trash</MenuItem>
+                        </MenuPopup>
+                    </MenuSubmenu>
+                </MenuGroup>
+                <MenuGroup>
+                    <MenuItem startIcon="delete" onClick={onDelete}>
+                        Delete
+                    </MenuItem>
+                </MenuGroup>
+            </MenuPopup>
+        </Menu>
+    )
+}
+```
+
+Links in a menu: `<MenuItem render={<a href="/settings" />}>Settings</MenuItem>`. Right-click menus: [context-menu.md](context-menu.md). A row of menus: [menubar.md](menubar.md). Base UI docs: `node_modules/@base-ui/react/docs/react/components/menu.md`.
+
+---
+
+<!-- file: docs/context-menu.md -->
+
+# ContextMenu
+
+A menu that opens at the pointer on right-click (long-press on touch). Content uses `Menu`'s parts.
+
+```ts
+import { ContextMenu, ContextMenuTrigger, MenuPopup, MenuItem } from 'anvilui'
+```
+
+| Part | Renders | Notes |
+| --- | --- | --- |
+| `ContextMenu` | nothing (state) | `open` / `defaultOpen` / `onOpenChange` |
+| `ContextMenuTrigger` | `<div>` | The area that responds to right-click; `render` to change the element. |
+| `MenuPopup`, `MenuItem`, `MenuGroup`, `MenuSubmenu` | | Same as [Menu](menu.md). |
+
+Right-click and long-press only: it can't be opened from the keyboard. Give keyboard users the same actions another way, e.g. a ⋮ [Menu](menu.md) button on each item.
+
+Any content works inside the trigger, including `CardTitle` / `CardContent` when it renders a `Card`.
+
+```tsx
+import {
+    Card,
+    CardContent,
+    ContextMenu,
+    ContextMenuTrigger,
+    MenuItem,
+    MenuPopup,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <ContextMenu>
+            <ContextMenuTrigger render={<Card />}>
+                <CardContent>Right-click this card</CardContent>
+            </ContextMenuTrigger>
+            <MenuPopup>
+                <MenuItem startIcon="content_copy">Copy</MenuItem>
+                <MenuItem startIcon="delete">Delete</MenuItem>
+            </MenuPopup>
+        </ContextMenu>
+    )
+}
+```
+
+---
+
+<!-- file: docs/menubar.md -->
+
+# Menubar
+
+A row of menus, like File / Edit / View. Put one `Menu` per entry inside.
+
+```ts
+import { Menubar, Menu, MenuTrigger, MenuPopup, MenuItem } from 'anvilui'
+import type { MenubarProps } from 'anvilui' // Base UI Menubar props
+```
+
+```tsx
+import { Menu, Menubar, MenuItem, MenuPopup, MenuTrigger } from 'anvilui'
+
+export function Example() {
+    return (
+        <Menubar>
+            <Menu>
+                <MenuTrigger>File</MenuTrigger>
+                <MenuPopup>
+                    <MenuItem>New</MenuItem>
+                    <MenuItem>Save</MenuItem>
+                </MenuPopup>
+            </Menu>
+            <Menu>
+                <MenuTrigger>Edit</MenuTrigger>
+                <MenuPopup>
+                    <MenuItem>Undo</MenuItem>
+                </MenuPopup>
+            </Menu>
+        </Menubar>
+    )
+}
+```
+
+Inside a Menubar, plain `MenuTrigger`s are styled as menubar entries; don't pass `render={<Button />}`.
+
+---
+
+<!-- file: docs/snackbar.md -->
+
+# useSnackbar
+
+Snackbars (toasts) at the bottom of the screen. **A hook, not a component.** AnvilRoot already renders the viewport: don't add a `<Snackbar>`, `<Toaster>` or provider.
+
+```ts
+import { useSnackbar } from 'anvilui'
+import type { SnackbarOptions } from 'anvilui'
+
+const snackbar = useSnackbar()
+snackbar.show(options: SnackbarOptions): string // returns the id
+snackbar.close(id?: string): void               // no id closes all
+```
+
+## SnackbarOptions
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `message` | `ReactNode` | required | One or two lines. |
+| `action` | `{ label: ReactNode; onClick: () => void }` | | One text button, e.g. Undo. Closes the snackbar. |
+| `closeButton` | `boolean` | `false` | Show ×. |
+| `timeout` | `number` (ms) | `5000` | `0` stays open. |
+| `priority` | `'low' \| 'high'` | `'low'` | `high` is announced immediately. |
+| `onClose` | `() => void` | | |
+
+There is no `type` / `variant` / `severity` (success, error). Put the meaning in the message.
+
+```tsx
+import { Button, useSnackbar } from 'anvilui'
+
+export function SaveButton() {
+    const snackbar = useSnackbar()
+    return (
+        <Button
+            onClick={() =>
+                snackbar.show({
+                    message: 'Draft saved',
+                    action: {
+                        label: 'Undo',
+                        onClick: () => console.log('undo'),
+                    },
+                })
+            }
+        >
+            Save
+        </Button>
+    )
+}
+```
+
+Call `useSnackbar()` in a component **inside** `<AnvilRoot>`, not in the component that renders it. Up to 3 stack; a 4th pushes out the oldest.
+
+---
+
+<!-- file: docs/confetti.md -->
+
+# useConfetti
+
+A hook that returns a function firing a burst of confetti in the theme's colors. Does nothing with reduced motion on.
+
+```ts
+import { useConfetti } from 'anvilui'
+import type { ConfettiOptions, ConfettiOrigin } from 'anvilui'
+
+const fire = useConfetti()
+fire(origin?: Element | { x: number; y: number }, options?: ConfettiOptions): void
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `count` | `number` | `80` |
+| `angle` | `number` (degrees, 0 = up) | `0` |
+| `spread` | `number` (degrees) | `70` |
+| `power` | `number` | `1` |
+| `colors` | `ComponentColor[]` | `['primary', 'tonal', 'success', 'warning', 'error']` |
+
+```tsx
+import { Button, useConfetti } from 'anvilui'
+
+export function Celebrate() {
+    const fire = useConfetti()
+    return <Button onClick={(e) => fire(e.currentTarget)}>Celebrate</Button>
+}
+```
+
+Without an origin it bursts from the bottom middle of the screen. Must be inside `AnvilRoot`.
+
+---
+
+<!-- file: docs/app-bar.md -->
+
+# AppBar
+
+The bar across the top of a screen: title, navigation button, actions. Renders a `<header>`. The title is the **`label` prop**, not children.
+
+```ts
+import { AppBar } from 'anvilui'
+import type { AppBarProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | required | The title. |
+| `labelAs` | `'p' \| 'span' \| 'div' \| 'h1' … 'h6'` | `'div'` | Tag for the title; `'h1'` when it's the page heading. |
+| `start` | `ReactNode` | | Before the title (menu or back `IconButton`). |
+| `end` | `ReactNode` | | After the title (action `IconButton`s, `Avatar`). |
+| `size` | `'normal' \| 'big'` | `'normal'` | `big` puts a larger title on its own row. |
+| `centered` | `boolean` | `false` | Center the title (normal size only). |
+| `color` | `ComponentColor` | `'container'` | Matches navigation surfaces. |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | `text` makes it the page color. |
+
+Minimum height: 64px (`size="normal"`), 152px (`size="big"`). Not sticky by default: add `style={{ position: 'sticky', top: 0, zIndex: 1 }}`.
+
+```tsx
+import { AppBar, Avatar, IconButton } from 'anvilui'
+
+export function Example() {
+    return (
+        <AppBar
+            label="Inbox"
+            labelAs="h1"
+            start={
+                <IconButton
+                    icon="menu"
+                    aria-label="Open navigation"
+                    fillType="text"
+                    color="container"
+                />
+            }
+            end={
+                <>
+                    <IconButton
+                        icon="search"
+                        aria-label="Search"
+                        fillType="text"
+                        color="container"
+                    />
+                    <Avatar name="Ada Lovelace" size="small" />
+                </>
+            }
+        />
+    )
+}
+```
+
+---
+
+<!-- file: docs/navigation-bar.md -->
+
+# NavigationBar
+
+Bottom navigation for small screens: 3–5 top-level destinations. You position it (e.g. `position: sticky; bottom: 0`).
+
+```ts
+import { NavigationBar, NavigationBarItem } from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `NavigationBar` | `<nav>` | Give it `aria-label`. |
+| `NavigationBarItem` | `<a>` | `icon: MaterialSymbol` (required), `label: string` (required), `active?: boolean` (sets `aria-current="page"`), `href`, `render` (router link) |
+
+Items are links, not tabs: there's no `value` / `onValueChange`. Mark the current one with `active`.
+
+```tsx
+import { NavigationBar, NavigationBarItem } from 'anvilui'
+
+export function Example({ path }: { path: string }) {
+    return (
+        <NavigationBar
+            aria-label="Main"
+            style={{ position: 'sticky', bottom: 0 }}
+        >
+            <NavigationBarItem
+                icon="home"
+                label="Home"
+                href="/"
+                active={path === '/'}
+            />
+            <NavigationBarItem
+                icon="search"
+                label="Search"
+                href="/search"
+                active={path === '/search'}
+            />
+            <NavigationBarItem
+                icon="person"
+                label="Profile"
+                href="/profile"
+                active={path === '/profile'}
+            />
+        </NavigationBar>
+    )
+}
+```
+
+With React Router: `<NavigationBarItem icon="home" label="Home" render={<Link to="/" />} active={...} />`. For client-side state instead of URLs, use `render={<button type="button" onClick={...} />}`.
+
+---
+
+<!-- file: docs/navigation-rail.md -->
+
+# NavigationRail
+
+Side navigation for medium and large screens. Collapsed: icons with small labels; expanded: labels beside icons.
+
+```ts
+import {
+    NavigationRail,
+    NavigationRailToggle,
+    NavigationRailItem,
+} from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `NavigationRail` | `<nav>` (96px wide, `height: 100%`) | `aria-label`; `expanded` / `defaultExpanded` (false) / `onExpandedChange(expanded)` |
+| `NavigationRailToggle` | `IconButton` (menu icon) | `aria-label` required. Must be inside the rail. |
+| `NavigationRailItem` | `<a>` | `icon` (required), `label: string` (required), `active`, `end` (short badge text, e.g. a count), `href`, `render` |
+
+```tsx
+import {
+    NavigationRail,
+    NavigationRailItem,
+    NavigationRailToggle,
+} from 'anvilui'
+
+export function Layout({ children }: { children: React.ReactNode }) {
+    return (
+        <div style={{ display: 'flex', height: '100vh' }}>
+            <NavigationRail aria-label="Main">
+                <NavigationRailToggle aria-label="Toggle navigation" />
+                <NavigationRailItem
+                    icon="inbox"
+                    label="Inbox"
+                    href="/inbox"
+                    active
+                    end="12"
+                />
+                <NavigationRailItem icon="send" label="Sent" href="/sent" />
+                <NavigationRailItem
+                    icon="settings"
+                    label="Settings"
+                    href="/settings"
+                />
+            </NavigationRail>
+            <main style={{ flex: 1, overflow: 'auto' }}>{children}</main>
+        </div>
+    )
+}
+```
+
+In-page switching without URLs: `render={<button type="button" onClick={() => setView('inbox')} />}` with `active={view === 'inbox'}`. No `nativeButton` needed.
+
+On small screens use [NavigationDrawer](navigation-drawer.md) or [NavigationBar](navigation-bar.md) instead.
+
+---
+
+<!-- file: docs/navigation-list.md -->
+
+# NavigationList
+
+A column of text-only navigation links, like a docs or settings sidebar.
+
+```ts
+import { NavigationList, NavigationListItem } from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `NavigationList` | `<nav>` | `aria-label` |
+| `NavigationListItem` | `<a>` | `label: string` (required; not children), `active`, `href`, `render` |
+
+```tsx
+import { NavigationList, NavigationListItem } from 'anvilui'
+
+export function SettingsNav({ section }: { section: string }) {
+    return (
+        <NavigationList aria-label="Settings">
+            <NavigationListItem
+                label="Profile"
+                href="#profile"
+                active={section === 'profile'}
+            />
+            <NavigationListItem
+                label="Notifications"
+                href="#notifications"
+                active={section === 'notifications'}
+            />
+            <NavigationListItem
+                label="Billing"
+                href="#billing"
+                active={section === 'billing'}
+            />
+        </NavigationList>
+    )
+}
+```
+
+For in-page switching without URLs: `render={<button type="button" onClick={() => setSection('billing')} />}`.
+
+---
+
+<!-- file: docs/navigation-drawer.md -->
+
+# NavigationDrawer
+
+Side navigation that slides in over the page, for small screens.
+
+```ts
+import {
+    NavigationDrawer,
+    NavigationDrawerTrigger,
+    NavigationDrawerPopup,
+    NavigationDrawerTitle,
+    NavigationDrawerItem,
+} from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `NavigationDrawer` | nothing (state) | `open` / `defaultOpen` / `onOpenChange` |
+| `NavigationDrawerTrigger` | bare `<button>` | `render={<IconButton icon="menu" aria-label="Open navigation" />}` |
+| `NavigationDrawerPopup` | portal + backdrop + panel | Put the title first, then items. |
+| `NavigationDrawerTitle` | `<h2>` | Names the drawer. |
+| `NavigationDrawerItem` | `<a>` that closes the drawer | `icon` (required), `label: string` (required), `active`, `end: ReactNode` (e.g. a count), `href`, `render` |
+
+For in-page switching: `render={<button type="button" onClick={() => setView('trash')} />}`; it still closes the drawer.
+
+```tsx
+import {
+    AppBar,
+    IconButton,
+    NavigationDrawer,
+    NavigationDrawerItem,
+    NavigationDrawerPopup,
+    NavigationDrawerTitle,
+    NavigationDrawerTrigger,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <AppBar
+            label="Mail"
+            start={
+                <NavigationDrawer>
+                    <NavigationDrawerTrigger
+                        render={
+                            <IconButton
+                                icon="menu"
+                                aria-label="Open navigation"
+                                fillType="text"
+                                color="container"
+                            />
+                        }
+                    />
+                    <NavigationDrawerPopup>
+                        <NavigationDrawerTitle>Mail</NavigationDrawerTitle>
+                        <NavigationDrawerItem
+                            icon="inbox"
+                            label="Inbox"
+                            href="/inbox"
+                            active
+                            end="12"
+                        />
+                        <NavigationDrawerItem
+                            icon="send"
+                            label="Sent"
+                            href="/sent"
+                        />
+                    </NavigationDrawerPopup>
+                </NavigationDrawer>
+            }
+        />
+    )
+}
+```
+
+---
+
+<!-- file: docs/tabs.md -->
+
+# Tabs
+
+Horizontal tabs with a sliding underline.
+
+```ts
+import { Tabs, TabsList, TabsTab, TabsPanel } from 'anvilui'
+import type {
+    TabsProps,
+    TabsListProps,
+    TabsTabProps,
+    TabsPanelProps,
+} from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `Tabs` | `<div>` | `value` / `defaultValue` / `onValueChange(value, details)` |
+| `TabsList` | row of tabs | |
+| `TabsTab` | `<button>` | `value` (required), `icon?: MaterialSymbol`, `disabled` |
+| `TabsPanel` | `<div>` | `value` (matches its tab), `keepMounted` |
+
+There is **no** `TabsTrigger` or `TabsContent`. Horizontal only (no `orientation`).
+
+**Always pass `defaultValue` (or `value`).** Base UI's default is `0`, so with string tab values and no default, no tab is selected.
+
+```tsx
+import { useState } from 'react'
+import { Tabs, TabsList, TabsPanel, TabsTab } from 'anvilui'
+
+export function Example() {
+    const [tab, setTab] = useState<string>('account')
+    return (
+        <Tabs value={tab} onValueChange={setTab}>
+            <TabsList>
+                <TabsTab value="account" icon="person">
+                    Account
+                </TabsTab>
+                <TabsTab value="security" icon="lock">
+                    Security
+                </TabsTab>
+            </TabsList>
+            <TabsPanel value="account" style={{ padding: 16 }}>
+                Account settings
+            </TabsPanel>
+            <TabsPanel value="security" style={{ padding: 16 }}>
+                Security settings
+            </TabsPanel>
+        </Tabs>
+    )
+}
+```
+
+---
+
+<!-- file: docs/floating-toolbar.md -->
+
+# FloatingToolbar
+
+A floating pill of icon buttons with arrow-key navigation. You position it.
+
+```ts
+import {
+    FloatingToolbar,
+    FloatingToolbarButton,
+    FloatingToolbarSeparator,
+} from 'anvilui'
+```
+
+| Part | Props |
+| --- | --- |
+| `FloatingToolbar` | `aria-label`; `inverseColor?: boolean` (default `false`); Base UI Toolbar.Root props (`orientation`) |
+| `FloatingToolbarButton` | `IconButton` props (`icon`, `aria-label` required). Default `fillType="text"`; `fillType="filled"` makes the highlighted one. |
+| `FloatingToolbarSeparator` | |
+
+```tsx
+import {
+    FloatingToolbar,
+    FloatingToolbarButton,
+    FloatingToolbarSeparator,
+} from 'anvilui'
+
+export function Example() {
+    return (
+        <FloatingToolbar
+            aria-label="Formatting"
+            style={{
+                position: 'fixed',
+                bottom: 24,
+                left: '50%',
+                translate: '-50%',
+            }}
+        >
+            <FloatingToolbarButton icon="format_bold" aria-label="Bold" />
+            <FloatingToolbarButton icon="format_italic" aria-label="Italic" />
+            <FloatingToolbarSeparator />
+            <FloatingToolbarButton
+                icon="send"
+                aria-label="Send"
+                fillType="filled"
+            />
+        </FloatingToolbar>
+    )
+}
+```
+
+---
+
+<!-- file: docs/card.md -->
+
+# Card
+
+A rounded surface that groups content. Neutral `container` color by default.
+
+```ts
+import { Card, CardTitle, CardContent, CardActions } from 'anvilui'
+import type {
+    CardProps,
+    CardTitleProps,
+    CardContentProps,
+    CardActionsProps,
+} from 'anvilui'
+```
+
+## Card props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `color` | `ComponentColor` | `'container'` | |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `clickable` | `boolean` | `false` | The whole card becomes one button (Base UI Button props: `onClick`, `disabled`, `render`). Buttons and links inside still work on their own. |
+
+A plain card takes `<div>` props.
+
+## Parts
+
+| Part | Renders | Notes |
+| --- | --- | --- |
+| `CardTitle` | `<div>` styled as h6 | Pass `as="h2"` (etc.) for a real heading; `type` changes the look. [Typography](typography.md) props. |
+| `CardContent` | `<div>` | Padded body. |
+| `CardActions` | `<div>` | Button row aligned to the end. |
+
+There is **no** `CardHeader`, `CardFooter`, `CardDescription` or `CardMedia`. Put an `<img>` directly inside the card.
+
+```tsx
+import { Button, Card, CardActions, CardContent, CardTitle } from 'anvilui'
+
+export function Example() {
+    return (
+        <div
+            style={{
+                display: 'grid',
+                gap: 16,
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            }}
+        >
+            <Card>
+                <CardTitle as="h2">Storage</CardTitle>
+                <CardContent>You've used 80% of your space.</CardContent>
+                <CardActions>
+                    <Button fillType="text">Dismiss</Button>
+                    <Button>Upgrade</Button>
+                </CardActions>
+            </Card>
+
+            <Card
+                clickable
+                onClick={() => console.log('open')}
+                fillType="outlined"
+            >
+                <CardTitle>Open project</CardTitle>
+                <CardContent>Last edited today</CardContent>
+            </Card>
+
+            <Card clickable render={<a href="/billing" />}>
+                <CardTitle>Billing</CardTitle>
+            </Card>
+        </div>
+    )
+}
+```
+
+---
+
+<!-- file: docs/list.md -->
+
+# List, ListItem
+
+A column of rows with a label, description and start/end slots. `ListItem` takes **no children**.
+
+```ts
+import { List, ListItem } from 'anvilui'
+import type { ListProps, ListItemProps } from 'anvilui'
+```
+
+## List props
+
+`<ul>` props, plus `divided?: boolean` (lines between items, default `false`).
+
+## ListItem props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `label` | `ReactNode` | Required. Main text. |
+| `description` | `ReactNode` | Second line(s). |
+| `start` | `ReactNode` | Before: `Icon`, `Avatar`, `Checkbox`. |
+| `end` | `ReactNode` | After: `Switch`, `Badge`, text, `Icon`. |
+| `render` | `ReactElement` | Make the row interactive: `<a href>`, `<button type="button" />`, `<label />` (toggles a control in start/end), a router `Link`. |
+
+`end` can hold any control, including a `Toggle` (`<Toggle icon="star" aria-label="Favorite" />`) or `IconButton`; don't combine those with a row `render`, since a button inside a button or label is invalid.
+
+Static by default (a `<div>` inside an `<li>`), with no `onClick` behavior of its own: pass `render={<button type="button" />}` for a clickable row.
+
+```tsx
+import { Avatar, Checkbox, Icon, List, ListItem, Switch } from 'anvilui'
+
+export function Example() {
+    return (
+        <List divided>
+            <ListItem
+                label="Ada Lovelace"
+                description="ada@example.com"
+                start={<Avatar name="Ada Lovelace" />}
+            />
+            <ListItem
+                label="Dark theme"
+                start={<Icon name="dark_mode" />}
+                end={<Switch />}
+                render={<label />}
+            />
+            <ListItem
+                label="Remember me"
+                start={<Checkbox defaultChecked />}
+                render={<label />}
+            />
+            <ListItem
+                label="Account"
+                end={<Icon name="chevron_right" />}
+                render={<a href="/account" />}
+            />
+            <ListItem
+                label="Sign out"
+                start={<Icon name="logout" />}
+                render={
+                    <button type="button" onClick={() => console.log('bye')} />
+                }
+            />
+        </List>
+    )
+}
+```
+
+---
+
+<!-- file: docs/table.md -->
+
+# Table
+
+A styled HTML table, `width: 100%` by default. Each part is its native element. No sorting, paging or selection built in. The caption can hold any content, including dynamic text ("3 of 6 users"). There's no visually-hidden helper class: for an actions column, use `<TableHeaderCell><span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>Actions</span></TableHeaderCell>`.
+
+```ts
+import {
+    Table,
+    TableCaption,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableHeaderCell,
+    TableCell,
+} from 'anvilui'
+```
+
+| Part | Element | Notes |
+| --- | --- | --- |
+| `Table` | `<table>` | Needs a `TableCaption` or `aria-label`. |
+| `TableCaption` | `<caption>` | |
+| `TableHead` | `<thead>` | (not `TableHeader`) |
+| `TableBody` | `<tbody>` | |
+| `TableRow` | `<tr>` | |
+| `TableHeaderCell` | `<th scope="col">` | (not `TableHead`); `scope="row"` for row headers |
+| `TableCell` | `<td>` | |
+
+```tsx
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeaderCell,
+    TableRow,
+} from 'anvilui'
+
+const invoices = [
+    { id: 'INV-1', customer: 'Acme', total: '$1,200' },
+    { id: 'INV-2', customer: 'Globex', total: '$860' },
+]
+
+export function Example() {
+    return (
+        <Table>
+            <TableCaption>Recent invoices</TableCaption>
+            <TableHead>
+                <TableRow>
+                    <TableHeaderCell>Invoice</TableHeaderCell>
+                    <TableHeaderCell>Customer</TableHeaderCell>
+                    <TableHeaderCell>Total</TableHeaderCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {invoices.map((inv) => (
+                    <TableRow key={inv.id}>
+                        <TableCell>{inv.id}</TableCell>
+                        <TableCell>{inv.customer}</TableCell>
+                        <TableCell>{inv.total}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+}
+```
+
+---
+
+<!-- file: docs/accordion.md -->
+
+# Accordion
+
+Expandable sections.
+
+```ts
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionPanel,
+} from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `Accordion` | `<div>` | `value` / `defaultValue` (**always an array** of open item values), `onValueChange(value[], details)`, `multiple` (default `false`) |
+| `AccordionItem` | `<div>` | `value` (any; auto-generated if omitted), `disabled` |
+| `AccordionTrigger` | `<button>` inside a heading | `as`: `'h2' … 'h6'`, default `'h3'` |
+| `AccordionPanel` | `<div>` | `keepMounted` |
+
+Without `defaultValue`, every item starts closed. There is no `type="single" \| "multiple"` or `collapsible`: use `multiple`. Items can always be closed.
+
+```tsx
+import {
+    Accordion,
+    AccordionItem,
+    AccordionPanel,
+    AccordionTrigger,
+} from 'anvilui'
+
+export function Faq() {
+    return (
+        <Accordion defaultValue={['shipping']}>
+            <AccordionItem value="shipping">
+                <AccordionTrigger>
+                    How long does shipping take?
+                </AccordionTrigger>
+                <AccordionPanel>2–4 business days.</AccordionPanel>
+            </AccordionItem>
+            <AccordionItem value="returns">
+                <AccordionTrigger>Can I return an item?</AccordionTrigger>
+                <AccordionPanel>Yes, within 30 days.</AccordionPanel>
+            </AccordionItem>
+        </Accordion>
+    )
+}
+```
+
+---
+
+<!-- file: docs/carousel.md -->
+
+# Carousel
+
+A horizontally scrolling row of items, draggable with a mouse. `aria-label` required.
+
+```ts
+import { Carousel, CarouselItem } from 'anvilui'
+```
+
+| Part | Renders | Props |
+| --- | --- | --- |
+| `Carousel` | `<div role="region">` | `aria-label` (required), `<div>` props |
+| `CarouselItem` | `<div>` | `<div>` props. 240px wide by default; set `style={{ width }}`. |
+
+No arrows, dots, autoplay or `index` state.
+
+```tsx
+import { Carousel, CarouselItem } from 'anvilui'
+
+const albums = [
+    { id: 1, title: 'Blue', cover: '/blue.jpg' },
+    { id: 2, title: 'Red', cover: '/red.jpg' },
+]
+
+export function Example() {
+    return (
+        <Carousel aria-label="Featured albums">
+            {albums.map((a) => (
+                <CarouselItem key={a.id}>
+                    <img
+                        src={a.cover}
+                        alt={a.title}
+                        style={{
+                            width: '100%',
+                            height: 180,
+                            objectFit: 'cover',
+                        }}
+                    />
+                </CarouselItem>
+            ))}
+        </Carousel>
+    )
+}
+```
+
+---
+
+<!-- file: docs/divider.md -->
+
+# Divider
+
+A thin line between groups of content. Renders a separator `<div>`.
+
+```ts
+import { Divider } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical stretches to its flex row's height. |
+| `label` | `ReactNode` | | Text in the middle ("or"). |
+| `squiggly` | `boolean` | `false` | Wavy line. |
+
+```tsx
+import { Divider } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <Divider />
+            <Divider label="or" />
+            <div style={{ display: 'flex', gap: 8, height: 24 }}>
+                <span>Left</span>
+                <Divider orientation="vertical" />
+                <span>Right</span>
+            </div>
+        </>
+    )
+}
+```
+
+---
+
+<!-- file: docs/typography.md -->
+
+# Typography
+
+Text in the theme's type scale.
+
+```ts
+import { Typography } from 'anvilui'
+import type { TypographyProps, TypographyType, TypographyTag } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `'body' \| 'caption' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` | `'body'` | The look (not `variant`). |
+| `as` | `'p' \| 'span' \| 'div' \| 'h1' … 'h6'` | from `type` | The tag. `body` → `<p>`, `caption` → `<span>`, `hN` → `<hN>`. |
+
+Plus `<p>` props (`id`, `className`, `aria-*`, … all pass through to the rendered tag). No `color`, `weight`, `align` or `gutterBottom`: use `style` or CSS (`color: 'var(--avl-color-on-background-muted)'` for secondary text).
+
+```tsx
+import { Typography } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <Typography type="h3" as="h1">
+                Settings
+            </Typography>
+            <Typography type="h6" as="h2">
+                Notifications
+            </Typography>
+            <Typography>Choose what you hear about.</Typography>
+            <Typography
+                type="caption"
+                style={{ color: 'var(--avl-color-on-background-muted)' }}
+            >
+                Updated 2 minutes ago
+            </Typography>
+        </>
+    )
+}
+```
+
+Sizes (default tokens): h1 57px, h2 45px, h3 36px, h4 32px, h5 28px, h6 24px, body 16px, caption 12px. h1–h3 are display sizes; page titles usually use `h4`–`h6`.
+
+---
+
+<!-- file: docs/avatar.md -->
+
+# Avatar
+
+A picture, initials or icon for a person or thing.
+
+```ts
+import { Avatar } from 'anvilui'
+import type { AvatarProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | `string` | | Image URL; the fallback shows while it loads or if it fails. |
+| `name` | `string` | | Read by screen readers; its initials are the fallback ("Ada Lovelace" → "AL"). |
+| `icon` | `MaterialSymbol` | `'person'` | Fallback without a `name`. |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 56px. |
+| `color` | `ComponentColor` | `'primary'` | Fallback background. |
+| `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
+| `children` | `ReactNode` | | Replaces the fallback. |
+
+No `alt` prop: use `name`. Leave `name` out when the name is shown next to it.
+
+```tsx
+import { Avatar } from 'anvilui'
+
+export function Example() {
+    return (
+        <div style={{ display: 'flex', gap: 8 }}>
+            <Avatar name="Ada Lovelace" src="https://example.com/ada.jpg" />
+            <Avatar name="Alan Turing" color="tonal" />
+            <Avatar icon="group" size="big" color="container" />
+        </div>
+    )
+}
+```
+
+---
+
+<!-- file: docs/avatar-group.md -->
+
+# AvatarGroup
+
+A row of overlapping `Avatar`s that fans out on hover. Renders a `<div role="group">` and takes `<div>` props; give it an `aria-label`. Set `size` on the group, not on each Avatar.
+
+```ts
+import { AvatarGroup, Avatar } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `max` | `number` | no limit | Past it, the last spot becomes "+N". |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | Applies to every avatar inside. |
+| `fan` | `boolean` | `true` | Spread on hover/focus. |
+
+```tsx
+import { Avatar, AvatarGroup } from 'anvilui'
+
+const people = [
+    'Ada Lovelace',
+    'Alan Turing',
+    'Grace Hopper',
+    'Linus Torvalds',
+    'Margaret Hamilton',
+]
+
+export function Example() {
+    return (
+        <AvatarGroup max={4} aria-label="Project members">
+            {people.map((name) => (
+                <Avatar key={name} name={name} />
+            ))}
+        </AvatarGroup>
+    )
+}
+```
+
+---
+
+<!-- file: docs/badge.md -->
+
+# Badge
+
+A dot or count on the corner of what it wraps, or inline on its own. Error-colored by default. Hidden from screen readers.
+
+```ts
+import { Badge } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `count` | `number` | | Omit for a dot; `0` hides it. |
+| `max` | `number` | `999` | Above shows "999+". |
+| `color` | `ComponentColor` | `'error'` | |
+| `children` | `ReactNode` | | What it sits on. |
+
+No `content` / `badgeContent` / `variant`.
+
+```tsx
+import { Badge, Icon, IconButton } from 'anvilui'
+
+export function Example() {
+    return (
+        <>
+            <Badge count={3}>
+                <IconButton
+                    icon="mail"
+                    aria-label="Inbox, 3 unread"
+                    fillType="text"
+                    color="container"
+                />
+            </Badge>
+            <Badge>
+                <Icon name="notifications" />
+            </Badge>
+            <Badge count={12} color="primary" />
+        </>
+    )
+}
+```
+
+Put the count in the wrapped element's `aria-label` too. On a non-interactive icon, label the icon: `<Badge count={4}><Icon name="chat_bubble" aria-label="4 comments" /></Badge>`.
+
+---
+
+<!-- file: docs/progress.md -->
+
+# Progress
+
+A bar or ring showing progress. Needs `label` or `aria-label`.
+
+```ts
+import { Progress } from 'anvilui'
+import type { ProgressProps } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number \| null` | | `null` = indeterminate (spinning / sweeping). Required by Base UI: pass `null` explicitly for loading. |
+| `min` / `max` | `number` | `0` / `100` | |
+| `type` | `'linear' \| 'circular' \| 'inline'` | `'linear'` | `inline` is a ring the size of the text. |
+| `squiggly` | `boolean` | `false` | Wavy bar (linear only). |
+| `label` | `ReactNode` | | Visible label. Either this or `aria-label`. |
+| `aria-label` | `string` | | |
+
+There is no `Spinner` / `CircularProgress` / `LinearProgress`: use `<Progress type="circular" value={null} aria-label="Loading" />`. For a loading button, use `<Button loading>`.
+
+```tsx
+import { Progress } from 'anvilui'
+
+export function Example({ uploaded }: { uploaded: number }) {
+    return (
+        <div style={{ display: 'grid', gap: 16, width: 300 }}>
+            <Progress label="Uploading" value={uploaded} />
+            <Progress aria-label="Loading" value={null} squiggly />
+            <Progress type="circular" aria-label="Loading" value={null} />
+            <span>
+                Syncing{' '}
+                <Progress type="inline" aria-label="Syncing" value={null} />
+            </span>
+        </div>
+    )
+}
+```
+
+---
+
+<!-- file: docs/skeleton.md -->
+
+# Skeleton
+
+A pulsing placeholder while content loads. Hidden from screen readers; put `aria-busy` on the loading region.
+
+```ts
+import { Skeleton } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'text' \| 'circular' \| 'rectangular'` | `'text'` | |
+| `animation` | `'pulse' \| 'none'` | `'pulse'` | |
+
+Size it with `style` (`width`, `height`). No `width` / `height` props. Renders a `<span>`.
+
+```tsx
+import { Skeleton } from 'anvilui'
+
+export function Example() {
+    return (
+        <div
+            aria-busy="true"
+            style={{ display: 'flex', gap: 12, alignItems: 'center' }}
+        >
+            <Skeleton variant="circular" style={{ width: 40, height: 40 }} />
+            <div style={{ display: 'grid', gap: 4, flex: 1 }}>
+                <Skeleton style={{ width: '40%' }} />
+                <Skeleton style={{ width: '70%' }} />
+            </div>
+        </div>
+    )
+}
+```
+
+---
+
+<!-- file: docs/sticker.md -->
+
+# Sticker
+
+A small tilted label like a die-cut sticker ("NEW", "BETA"). Straightens on hover. Renders a `<span>`.
+
+```ts
+import { Sticker } from 'anvilui'
+```
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `color` | `ComponentColor` | `'primary'` |
+| `startIcon` | `MaterialSymbol` | |
+| `tilt` | `number` (degrees) | `-4` |
+
+```tsx
+import { Sticker } from 'anvilui'
+
+export function Example() {
+    return (
+        <Sticker color="warning" startIcon="bolt">
+            NEW
+        </Sticker>
+    )
+}
+```
+
+For status labels in tables or lists, a `Chip` or plain text fits better; Sticker is decorative.
+
+---
+
+<!-- file: docs/animated-number.md -->
+
+# AnimatedNumber
+
+A number whose digits roll like an odometer when `value` changes. Renders a `<span>`.
+
+```ts
+import { AnimatedNumber } from 'anvilui'
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Required. |
+| `format` | `Intl.NumberFormatOptions` | Currency, percent, compact, decimals. |
+| `locales` | `Intl.LocalesArgument` | Default: the browser's. |
+
+```tsx
+import { useState } from 'react'
+import { AnimatedNumber, Button } from 'anvilui'
+
+export function Example() {
+    const [count, setCount] = useState(1200)
+    return (
+        <>
+            <AnimatedNumber
+                value={count}
+                format={{ style: 'currency', currency: 'USD' }}
+            />
+            <Button onClick={() => setCount(count + 99)}>Add</Button>
+        </>
+    )
+}
+```
+
+---
+
+<!-- file: docs/kbd.md -->
+
+# Kbd
+
+A keyboard key for shortcuts. It presses down while the user holds that key. One `Kbd` per key.
+
+```ts
+import { Kbd } from 'anvilui'
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | | Key text: `'K'`, `'⌘'`, `'Ctrl'`, `'Esc'`, `'↵'`, … |
+| `listen` | `boolean` | `true` | Press down while held. |
+| `listenFor` | `string` | from the text | A `KeyboardEvent.key` value. |
+
+```tsx
+import { Kbd } from 'anvilui'
+
+export function Example() {
+    return (
+        <span>
+            Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to search
+        </span>
+    )
+}
+```

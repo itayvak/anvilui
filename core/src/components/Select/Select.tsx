@@ -3,6 +3,7 @@ import { Select as BaseSelect } from '@base-ui/react/select'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
 import { cx, withClass } from '../../utils'
+import { checkRoot } from '../../dev'
 import '../Input/input.css'
 import '../Menu/menu.css'
 import './select.css'
@@ -25,8 +26,20 @@ export type SelectProps<
 }
 
 /**
- * Put `SelectItem`s inside. Pass `items` (value → label) so the field shows
- * the selected item's label rather than its raw value.
+ * A dropdown to pick one option (or several, with `multiple`). Put
+ * `SelectItem`s inside. Pass `items` (value → label) so the field shows the
+ * selected item's label rather than its raw value. `onValueChange` gets the
+ * value, not an event. Other props go to Base UI's `Select.Root`, which
+ * renders no element: use `className` for styling the field.
+ *
+ * @example
+ * const fruits = { apple: 'Apple', banana: 'Banana' }
+ *
+ * <Select label="Fruit" items={fruits} value={fruit} onValueChange={setFruit}>
+ *     {Object.entries(fruits).map(([value, label]) => (
+ *         <SelectItem key={value} value={value}>{label}</SelectItem>
+ *     ))}
+ * </Select>
  */
 export function Select<Value, Multiple extends boolean | undefined = false>({
     label,
@@ -37,6 +50,9 @@ export function Select<Value, Multiple extends boolean | undefined = false>({
     ...props
 }: SelectProps<Value, Multiple>) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'Select')
+    }
 
     return (
         <BaseSelect.Root {...props}>
@@ -91,6 +107,7 @@ export function Select<Value, Multiple extends boolean | undefined = false>({
 
 export type SelectItemProps = BaseSelect.Item.Props
 
+/** One option in a `Select`. Needs a `value`; children are its label. */
 export function SelectItem({ className, children, ...props }: SelectItemProps) {
     return (
         <BaseSelect.Item

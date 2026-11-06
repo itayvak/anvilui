@@ -10,6 +10,7 @@ import {
     type ComponentFillType,
 } from '../../colors/colors'
 import { cx, withClass } from '../../utils'
+import { checkRoot } from '../../dev'
 import '../FAB/fab.css'
 import './fab-menu.css'
 
@@ -49,6 +50,12 @@ export type FABMenuProps = Omit<
  * A FAB that splits into a stack of labeled actions. The FAB turns into
  * a close button while open. Place it yourself, like a FAB, usually
  * `position: fixed` in the bottom-end corner.
+ *
+ * @example
+ * <FABMenu icon="add" aria-label="Create">
+ *     <FABMenuItem icon="description" onClick={newDoc}>Document</FABMenuItem>
+ *     <FABMenuItem icon="folder" onClick={newFolder}>Folder</FABMenuItem>
+ * </FABMenu>
  */
 export function FABMenu({
     icon,
@@ -64,6 +71,9 @@ export function FABMenu({
     ...props
 }: FABMenuProps) {
     const avl = useContext(AnvilContext)
+    if (process.env.NODE_ENV !== 'production') {
+        checkRoot(avl !== null, 'FABMenu')
+    }
     // Mirrors the open state, controlled or not, to turn the magnet off
     // while open: a FAB sliding around would drag the items along with it
     const [localOpen, setLocalOpen] = useState(props.defaultOpen ?? false)
@@ -125,6 +135,7 @@ export type FABMenuItemProps = Omit<BaseMenu.Item.Props, 'children'> & {
     color?: ComponentColor
 }
 
+/** One labeled action in a `FABMenu`. Use `onClick` to act on it. */
 export function FABMenuItem({
     icon,
     color,

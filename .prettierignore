@@ -1,0 +1,5 @@
+# Agent docs stay compact: Prettier pads markdown tables, which wastes
+# agent context. Code blocks inside are already formatted.
+core/AGENTS.md
+core/docs/
+public/

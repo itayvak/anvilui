@@ -9,7 +9,15 @@ export type ListProps = ComponentProps<'ul'> & {
     divided?: boolean
 }
 
-/** A column of `ListItem`s. */
+/**
+ * A column of `ListItem`s. Renders a `<ul>`.
+ *
+ * @example
+ * <List divided>
+ *     <ListItem label="Wi-Fi" description="Connected" start={<Icon name="wifi" />} end={<Switch defaultChecked />} render={<label />} />
+ *     <ListItem label="Account" end={<Icon name="chevron_right" />} render={<a href="/account" />} />
+ * </List>
+ */
 export function List({ divided = false, className, ...props }: ListProps) {
     return (
         <ul
@@ -39,6 +47,7 @@ export type ListItemProps = Omit<
     end?: ReactNode
 }
 
+/** One row: `label`, optional `description`, and `start` / `end` slots. Takes no children. */
 export function ListItem({
     label,
     description,

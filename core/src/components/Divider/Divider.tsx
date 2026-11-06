@@ -17,6 +17,14 @@ export type DividerProps = Separator.Props & {
     squiggly?: boolean
 }
 
+/**
+ * A thin line between groups of content. Renders a separator `<div>`.
+ *
+ * @example
+ * <Divider />
+ * <Divider label="or" />
+ * <div style={{ display: 'flex' }}>A<Divider orientation="vertical" />B</div>
+ */
 export function Divider({
     label,
     squiggly = false,

@@ -61,7 +61,11 @@ const numericFormat = () =>
 /**
  * A text field for a date, typed in the locale's format (10/29/2026,
  * 29.10.2026, ...) or picked from a calendar. The value is `"YYYY-MM-DD"`,
- * the same format as `<input type="date">`.
+ * the same format as `<input type="date">`, not a `Date`.
+ *
+ * @example
+ * const [date, setDate] = useState<string | null>(null)
+ * <DateInput label="Start date" value={date} onValueChange={setDate} />
  */
 export function DateInput({
     value: valueProp,

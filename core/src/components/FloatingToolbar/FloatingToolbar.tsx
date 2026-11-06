@@ -14,6 +14,16 @@ export type FloatingToolbarProps = BaseToolbar.Root.Props & {
     inverseColor?: boolean
 }
 
+/**
+ * A floating pill of icon buttons.
+ *
+ * @example
+ * <FloatingToolbar aria-label="Formatting" style={{ position: 'fixed', bottom: 16, left: '50%', translate: '-50%' }}>
+ *     <FloatingToolbarButton icon="format_bold" aria-label="Bold" />
+ *     <FloatingToolbarSeparator />
+ *     <FloatingToolbarButton icon="send" aria-label="Send" fillType="filled" />
+ * </FloatingToolbar>
+ */
 export function FloatingToolbar({
     inverseColor = false,
     className,
@@ -39,6 +49,10 @@ export function FloatingToolbar({
  */
 export type FloatingToolbarButtonProps = IconButtonProps
 
+/**
+ * An `IconButton` that joins the toolbar's arrow-key navigation. Text style
+ * by default; `fillType="filled"` makes it the wider, highlighted one.
+ */
 export function FloatingToolbarButton({
     fillType = 'text',
     // Filled means highlighted: primary stands out on the toolbar's surface
@@ -54,9 +68,9 @@ export function FloatingToolbarButton({
     )
 }
 
-// A thin line between groups of buttons.
 export type FloatingToolbarSeparatorProps = BaseToolbar.Separator.Props
 
+/** A thin line between groups of buttons. */
 export function FloatingToolbarSeparator({
     className,
     ...props
