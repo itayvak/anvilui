@@ -23,7 +23,7 @@ React components that bounce, stretch, roll and react. Accessible by default and
 
 Most interfaces are polite. They do what you ask, quietly and correctly, and you forget them the moment you look away.
 
-AnvilUI is for apps that want to be remembered. It brings **Material 3 Expressive**, the boldest chapter of Google's Material You, to React on the web, then keeps going where the spec stops. Buttons have weight when you press them. A selection stretches toward what you picked before it settles in. Numbers roll instead of blinking. Progress doesn't just fill, it ripples. A floating button leans toward your cursor as if it's curious, and a delete button asks you to hold on and mean it.
+AnvilUI is for apps that want to be playful. It brings [Material 3 Expressive](https://m3.material.io/), the boldest chapter of Google's Material You, to React on the web, then keeps going where the spec stops. Buttons have weight when you press them. A selection stretches toward what you picked before it settles in. Numbers roll instead of blinking. Progress doesn't just fill, it ripples. A floating button leans toward your cursor as if it's curious, and a delete button asks you to hold on and mean it.
 
 None of it is decoration for its own sake. Every bit of motion tells you something: that your tap landed, where things went, what's about to happen. And when someone prefers less motion, it all steps aside without a fuss.
 
