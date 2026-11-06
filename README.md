@@ -2,9 +2,9 @@
 
 # AnvilUI
 
-**Material 3 components for React that feel alive.**
+**Material 3 Expressive for the web, pushed further.**
 
-Accessible by default, themeable from a single color, and full of small moments of delight.
+React components that bounce, stretch, roll and react. Accessible by default and themeable from a single color.
 
 [![npm](https://img.shields.io/npm/v/anvilui?color=654F9E)](https://www.npmjs.com/package/anvilui)
 [![license](https://img.shields.io/npm/l/anvilui?color=654F9E)](core/LICENSE)
@@ -21,19 +21,20 @@ Accessible by default, themeable from a single color, and full of small moments 
 
 ---
 
-AnvilUI is a React component library inspired by Google's Material 3. Buttons, dialogs, menus, date pickers, navigation and around 50 other components, ready to drop into your app.
+Most interfaces are polite. They do what you ask, quietly and correctly, and you forget them the moment you look away.
 
-Under the hood every interactive component is built on [Base UI](https://base-ui.com), so keyboard navigation, focus management and screen reader support are handled for you. On top of that, AnvilUI adds the part you'd otherwise spend weeks on: a cohesive look, springy motion, and a theme system that turns one brand color into a full light and dark palette.
+AnvilUI is for apps that want to be remembered. It brings **Material 3 Expressive**, the boldest chapter of Google's Material You, to React on the web, then keeps going where the spec stops. Buttons have weight when you press them. A selection stretches toward what you picked before it settles in. Numbers roll instead of blinking. Progress doesn't just fill, it ripples. A floating button leans toward your cursor as if it's curious, and a delete button asks you to hold on and mean it.
+
+None of it is decoration for its own sake. Every bit of motion tells you something: that your tap landed, where things went, what's about to happen. And when someone prefers less motion, it all steps aside without a fuss.
+
+Underneath the personality is a library you can rely on. Around 50 components cover buttons, forms, dialogs, menus, pickers and navigation, all built on [Base UI](https://base-ui.com), so keyboard, focus and screen reader support come built in. Pick one brand color and the whole palette follows, in light and in dark.
 
 ## Highlights
 
 - 🎨 **One color, whole theme.** `createTheme('#0B6E4F')` generates matching light and dark themes. Or pull the colors from an image with `createThemeFromImage`.
 - 🌗 **Dark mode done right.** Follows the OS by default, remembers the user's choice, and applies it before first paint, so there's no flash with server rendering.
 - ♿ **Accessible from the start.** Keyboard support, focus rings and ARIA come from Base UI. Icon-only controls require a label in their types, so you can't forget one.
-- ✨ **Details that delight.** Numbers that roll like an odometer, squiggly progress bars, a hold-to-confirm button, a FAB that leans toward your cursor, and confetti when it's earned.
-- 🪄 **Morphing transitions.** Grow a card into a dialog or a list row into a page with `morph()`, powered by View Transitions.
 - 🔤 **Typed icons.** 3,900+ Material Symbols, referenced by name with autocomplete: `startIcon="rocket_launch"`.
-- 🎚️ **Respects reduced motion.** Every animation shuts off when the user asks for less motion.
 - 🤖 **Ready for AI coding agents.** Version-matched docs ship inside the package, so Claude Code, Cursor and Copilot can read the real API instead of guessing it.
 
 ## Get started
