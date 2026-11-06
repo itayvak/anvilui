@@ -8,7 +8,7 @@
         "vite": "^8.3.0"
     },
     "dependencies": {
-        "anvilui": "^1.0.0"
+        "anvilui": "*"
     },
     "scripts": {
         "dev": "vite"
