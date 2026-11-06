@@ -1,6 +1,6 @@
 # AnvilUI: reference for AI coding agents
 
-`anvilui` is a React 19 component library with Material 3 styling, built on [Base UI](https://base-ui.com) (`@base-ui/react`). It has ~50 accessible components (buttons, inputs, selects, dialogs, menus, navigation, …), a theme system driven by CSS variables, and Material Symbols icons referenced by name. It is **not** shadcn/ui, Radix or MUI: names and props differ. This file matches the installed version. Read it before writing code; per-component pages are in [`docs/`](docs/llms-index.md) (`node_modules/anvilui/docs/<name>.md`).
+`anvilui` is a React 19 component library implementing Material 3 Expressive (with extra motion beyond the spec), built on [Base UI](https://base-ui.com) (`@base-ui/react`). It has ~50 accessible components (buttons, inputs, selects, dialogs, menus, navigation, …), a theme system driven by CSS variables, and Material Symbols icons referenced by name. It is **not** shadcn/ui, Radix or MUI: names and props differ. This file matches the installed version. Read it before writing code; per-component pages are in [`docs/`](docs/llms-index.md) (`node_modules/anvilui/docs/<name>.md`).
 
 ## Rules that prevent most errors
 

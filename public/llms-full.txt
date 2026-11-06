@@ -6,7 +6,7 @@ Generated from core/AGENTS.md and core/docs/*.md. Relative links point into the 
 
 # AnvilUI: reference for AI coding agents
 
-`anvilui` is a React 19 component library with Material 3 styling, built on [Base UI](https://base-ui.com) (`@base-ui/react`). It has ~50 accessible components (buttons, inputs, selects, dialogs, menus, navigation, …), a theme system driven by CSS variables, and Material Symbols icons referenced by name. It is **not** shadcn/ui, Radix or MUI: names and props differ. This file matches the installed version. Read it before writing code; per-component pages are in [`docs/`](docs/llms-index.md) (`node_modules/anvilui/docs/<name>.md`).
+`anvilui` is a React 19 component library implementing Material 3 Expressive (with extra motion beyond the spec), built on [Base UI](https://base-ui.com) (`@base-ui/react`). It has ~50 accessible components (buttons, inputs, selects, dialogs, menus, navigation, …), a theme system driven by CSS variables, and Material Symbols icons referenced by name. It is **not** shadcn/ui, Radix or MUI: names and props differ. This file matches the installed version. Read it before writing code; per-component pages are in [`docs/`](docs/llms-index.md) (`node_modules/anvilui/docs/<name>.md`).
 
 ## Rules that prevent most errors
 
@@ -705,8 +705,9 @@ export function App() {
 
 - `createTheme(primaryHex, { tonal?: hex })` returns `{ light: Theme, dark: Theme }`. Hex only (`'#0B6E4F'` or `'#0B6'`); other formats throw.
 - `createThemeFromImage(img | File | Blob | url)` returns `Promise<ThemePair>`, browser only. URLs must allow CORS.
-- Error, warning and success colors stay the same.
+- Each role keeps the lightness of the base theme, so text stays readable; only hue and colorfulness change. Error, warning and success colors stay the same.
 - Tweak one role by spreading: `{ ...brand.light, primary: '#…' }`.
+- To switch themes at runtime, keep them in state and pass them as `lightTheme` / `darkTheme`.
 - Ready-made: `baseLightTheme` / `baseDarkTheme` (purple, the default), `monochromeLightTheme` / `monochromeDarkTheme`.
 
 ## Theme roles
@@ -1052,7 +1053,10 @@ export function Albums() {
 ```
 
 - Give both elements the same `data-morph-id`.
-- `update` must change the view **synchronously** (set state, or `navigate(to, { flushSync: true })` in React Router).
+- `update` must change the view **synchronously** (set state, or `navigate(to, { flushSync: true })` in React Router). A view that waits on data or a lazy route has nothing to morph into yet.
+- The box's size, position, background, corners and shadow animate; the content crossfades.
+- It returns a promise that resolves when the morph ends, e.g. to move focus: `await morph(id, close); row.focus()`.
+- `duration` and `easing` default to the theme's `easeLength.slow` and `ease.smooth`.
 - Without View Transitions support, or with reduced motion, `update` just runs.
 - `Dialog` and `Popover` take `morph` (boolean) to do this between their trigger and popup.
 

@@ -8,7 +8,8 @@
     ],
     "scripts": {
         "format": "npx prettier . --write",
-        "docs:llms": "node scripts/build-llms.mjs"
+        "docs:llms": "node scripts/build-llms.mjs",
+        "docs:check": "node scripts/check-docs.mjs"
     },
     "devDependencies": {
         "prettier": "^3.9.8"

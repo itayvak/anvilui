@@ -9,7 +9,7 @@
         "core/bin",
         "core/node_modules"
     ],
-    "excludeFiles": ["CONTRIBUTING.md", "CLAUDE.md"],
+    "excludeFiles": ["CONTRIBUTING.md", "COMPONENT_GUIDE.md", "CLAUDE.md"],
     "rules": [
         "Import everything from 'anvilui', import 'anvilui/styles.css' once, and wrap the app in <AnvilRoot>.",
         "Use fillType ('filled' | 'outlined' | 'text') and color ('primary' | 'tonal' | 'success' | 'warning' | 'error' | 'container' | 'surface'), never variant.",

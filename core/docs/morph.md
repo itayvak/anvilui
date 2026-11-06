@@ -46,6 +46,9 @@ export function Albums() {
 ```
 
 - Give both elements the same `data-morph-id`.
-- `update` must change the view **synchronously** (set state, or `navigate(to, { flushSync: true })` in React Router).
+- `update` must change the view **synchronously** (set state, or `navigate(to, { flushSync: true })` in React Router). A view that waits on data or a lazy route has nothing to morph into yet.
+- The box's size, position, background, corners and shadow animate; the content crossfades.
+- It returns a promise that resolves when the morph ends, e.g. to move focus: `await morph(id, close); row.focus()`.
+- `duration` and `easing` default to the theme's `easeLength.slow` and `ease.smooth`.
 - Without View Transitions support, or with reduced motion, `update` just runs.
 - `Dialog` and `Popover` take `morph` (boolean) to do this between their trigger and popup.

@@ -100,8 +100,9 @@ export function App() {
 
 - `createTheme(primaryHex, { tonal?: hex })` returns `{ light: Theme, dark: Theme }`. Hex only (`'#0B6E4F'` or `'#0B6'`); other formats throw.
 - `createThemeFromImage(img | File | Blob | url)` returns `Promise<ThemePair>`, browser only. URLs must allow CORS.
-- Error, warning and success colors stay the same.
+- Each role keeps the lightness of the base theme, so text stays readable; only hue and colorfulness change. Error, warning and success colors stay the same.
 - Tweak one role by spreading: `{ ...brand.light, primary: '#…' }`.
+- To switch themes at runtime, keep them in state and pass them as `lightTheme` / `darkTheme`.
 - Ready-made: `baseLightTheme` / `baseDarkTheme` (purple, the default), `monochromeLightTheme` / `monochromeDarkTheme`.
 
 ## Theme roles

@@ -1,5 +1,5 @@
 // Date and time helpers for Calendar, DateInput and TimePicker. Kept free of
-// React and CSS imports so `npm test` can run them in plain Node.
+// React and CSS imports, so they can be run and checked in plain Node.
 
 const pad = (n: number, length = 2) => String(n).padStart(length, '0')
 

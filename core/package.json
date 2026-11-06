@@ -1,7 +1,7 @@
 {
     "name": "anvilui",
     "version": "0.2.0",
-    "description": "Material 3 style React components built on Base UI. Ships agent docs in AGENTS.md and docs/.",
+    "description": "Material 3 Expressive for React, pushed further: playful, accessible components built on Base UI. Ships agent docs in AGENTS.md and docs/.",
     "author": "itayvak",
     "license": "MIT",
     "type": "module",

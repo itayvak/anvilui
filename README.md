@@ -144,7 +144,7 @@ Contributions are welcome! The repo is an npm workspace:
 - `core/` is the `anvilui` package
 - `playground/` has an interactive page for every component (`npm run dev` inside it)
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) for how components are built, styled and tested before opening a pull request.
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) for setup and pull requests, and the [component guide](COMPONENT_GUIDE.md) for how components are built, styled and documented.
 
 ## License
 

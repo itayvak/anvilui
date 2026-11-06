@@ -1,3 +1,4 @@
 node_modules
 .claude
 core/dist
+.docs-check
