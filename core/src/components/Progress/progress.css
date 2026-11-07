@@ -1,6 +1,9 @@
 /* Material 3 progress indicators: the filled part, a gap, then the rest */
 .avl-progress {
     --avl-progress-gap: var(--avl-spacing-x1);
+    /* For the squiggly wave, and for it to flatten into the plain bar */
+    --avl-wave-gap: var(--avl-progress-gap);
+    --avl-wave-flat-stroke: var(--avl-spacing-x1);
     display: flex;
     flex-direction: column;
     gap: var(--avl-spacing-x2);
@@ -19,6 +22,8 @@
 .avl-progress-track {
     position: relative;
     height: var(--avl-spacing-x1);
+    /* Resizes as squiggly turns on or off, while the wave flattens */
+    transition: height var(--avl-ease-length-slow) var(--avl-ease-smooth);
 }
 
 .avl-progress-indicator {
@@ -42,19 +47,10 @@
     );
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-color-tonal-container);
-    transition: left var(--avl-ease-length-slow) var(--avl-ease-out);
-}
-
-/* Stop dot marking where the bar ends */
-.avl-progress-rest::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: var(--avl-spacing-x1);
-    height: 100%;
-    border-radius: var(--avl-radius-full);
-    background-color: var(--avl-color-primary);
+    transition:
+        left var(--avl-ease-length-slow) var(--avl-ease-out),
+        top var(--avl-ease-length-slow) var(--avl-ease-smooth),
+        bottom var(--avl-ease-length-slow) var(--avl-ease-smooth);
 }
 
 .avl-progress[data-complete] .avl-progress-rest {
@@ -88,17 +84,13 @@
 }
 
 /* Squiggly: the filled part is a SquigglyWave, drawn in the 12px track */
-.avl-progress-squiggly {
-    --avl-wave-gap: var(--avl-progress-gap);
-}
-
 .avl-progress-squiggly .avl-progress-track {
     height: var(--avl-spacing-x3);
 }
 
 /* While loading, the wave draws the track too, with gaps around itself,
    so drop the plain bar's loading track */
-.avl-progress-squiggly[data-indeterminate] .avl-progress-track {
+.avl-progress-wave[data-indeterminate] .avl-progress-track {
     overflow: visible;
     background: none;
 }

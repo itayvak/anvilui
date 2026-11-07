@@ -1,5 +1,9 @@
-/* Fills its (12px-tall) track; the wave is drawn in px by SquigglyWave.tsx.
-   The parent sets --avl-wave-gap, the space between the wave and the track. */
+/* Fills its track, centered in it; the wave is drawn in px by
+   SquigglyWave.tsx. The parent sets --avl-wave-gap, the space between the
+   wave and the track. To flatten into a plain track it also sets
+   --avl-wave-flat-stroke (that track's thickness). If that track's inside
+   corners (next to a handle) aren't round, --avl-wave-flat-radius and
+   --avl-wave-flat-rest-radius give them for the wave and the rest. */
 .avl-squiggly-wave {
     position: absolute;
     inset: 0;
@@ -11,11 +15,22 @@
 .avl-squiggly-wave path {
     fill: none;
     stroke: var(--avl-color-primary);
-    stroke-width: 4;
+    /* Set every frame by SquigglyWave.tsx: it thickens as it flattens */
+    stroke-width: var(--avl-wave-stroke, 4px);
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .avl-squiggly-wave .avl-squiggly-wave-rest {
     stroke: var(--avl-color-tonal-container);
+}
+
+/* Ends drawn as shapes, for corners that ease from round to square */
+.avl-squiggly-wave .avl-squiggly-wave-cap {
+    fill: var(--avl-color-primary);
+    stroke: none;
+}
+
+.avl-squiggly-wave .avl-squiggly-wave-cap.avl-squiggly-wave-rest {
+    fill: var(--avl-color-tonal-container);
 }

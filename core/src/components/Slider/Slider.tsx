@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react'
 import { Slider as BaseSlider } from '@base-ui/react/slider'
-import { SquigglyWave, type WaveSpan } from '../SquigglyWave/SquigglyWave'
+import {
+    SquigglyWave,
+    useWaveMorph,
+    type WaveSpan,
+} from '../SquigglyWave/SquigglyWave'
 import { cx, withClass } from '../../utils'
 import { checkName } from '../../dev'
 import '../Tooltip/tooltip.css'
@@ -13,7 +17,8 @@ export type SliderProps<
     showValue?: boolean
     /**
      * Thin track with the selected part drawn as a moving wave, like a
-     * squiggly `Progress`. Horizontal only. @default false
+     * squiggly `Progress`. Horizontal only. Changing it animates between the
+     * wave and the plain track, e.g. `squiggly={playing}`. @default false
      */
     squiggly?: boolean
 } &
@@ -59,6 +64,7 @@ export function Slider<Value extends number | readonly number[]>({
     const initial = props.value ?? props.defaultValue
     const thumbCount = Array.isArray(initial) ? initial.length : 1
     const wavy = squiggly && props.orientation !== 'vertical'
+    const morph = useWaveMorph(wavy)
 
     return (
         <BaseSlider.Root
@@ -79,8 +85,8 @@ export function Slider<Value extends number | readonly number[]>({
             )}
             <BaseSlider.Control className="avl-slider-control">
                 <BaseSlider.Track className="avl-slider-track">
-                    {wavy ? (
-                        <SquigglyWave span={handleSpan} />
+                    {morph.show ? (
+                        <SquigglyWave span={handleSpan} {...morph.wave} />
                     ) : (
                         // Clips the track pieces to the rounded track, without
                         // also clipping the handles, which are taller
@@ -152,7 +158,6 @@ function handleSpan(width: number, gap: number, svg: SVGSVGElement): WaveSpan {
                   [last + gap, width],
               ]
             : [[last + gap, width]],
-        dot: last + gap < width - gap,
         snap: true,
     }
 }

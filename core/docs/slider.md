@@ -18,7 +18,7 @@ import type { SliderProps } from 'anvilui'
 | `onValueCommitted` | `(value, details) => void` | | On release. |
 | `min` / `max` / `step` | `number` | `0` / `100` / `1` | |
 | `showValue` | `boolean` | `true` | Value bubble while dragging or focused. |
-| `squiggly` | `boolean` | `false` | Wavy track (horizontal only). |
+| `squiggly` | `boolean` | `false` | Wavy track (horizontal only). Changing it animates: the wave flattens into the plain track and back, e.g. `squiggly={playing}` on a media seek bar. |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical is 160px tall; set height via `className`. |
 | `format` | `Intl.NumberFormatOptions` | | Formats the bubble. |
 | `disabled`, `name` | | | |

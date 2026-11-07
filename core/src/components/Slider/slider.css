@@ -2,6 +2,12 @@
 .avl-slider {
     /* Distance from the handle's center to each track piece */
     --avl-slider-gap: calc(var(--avl-spacing-x1) * 1.5);
+    /* For the squiggly wave, and for it to flatten into the plain track */
+    --avl-wave-gap: var(--avl-slider-gap);
+    --avl-wave-flat-stroke: var(--avl-spacing-x4);
+    /* The plain track's inside corners: see .avl-slider-indicator */
+    --avl-wave-flat-radius: 2px;
+    --avl-wave-flat-rest-radius: 0px;
     display: flex;
     flex-direction: column;
     gap: var(--avl-spacing-x1);
@@ -25,6 +31,8 @@
     position: relative;
     flex: 1;
     height: var(--avl-spacing-x4);
+    /* Resizes as squiggly turns on or off, while the wave flattens */
+    transition: height var(--avl-ease-length-slow) var(--avl-ease-smooth);
 }
 
 /* An explicit size, not inset: 0. Base UI gives the indicator
@@ -63,7 +71,9 @@
     height: var(--avl-spacing-x10);
     border-radius: var(--avl-radius-full);
     background-color: var(--avl-color-primary);
-    transition: width var(--avl-ease-length-short) var(--avl-ease-out);
+    transition:
+        width var(--avl-ease-length-short) var(--avl-ease-out),
+        height var(--avl-ease-length-slow) var(--avl-ease-smooth);
 }
 
 /* Press feedback: the handle narrows while dragged */
@@ -110,10 +120,6 @@
 
 /* Squiggly: Progress's proportions. The track is the 12px wave area, the
    unselected part a 4px line, and the handle shorter to suit it. */
-.avl-slider-squiggly {
-    --avl-wave-gap: var(--avl-slider-gap);
-}
-
 .avl-slider-squiggly .avl-slider-track {
     height: var(--avl-spacing-x3);
 }

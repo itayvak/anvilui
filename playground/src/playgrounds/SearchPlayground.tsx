@@ -74,6 +74,34 @@ export function SearchPlayground() {
                     )}
                 </Search>
             </Section>
+            <Section title="Colors, on a surface panel">
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 'var(--avl-spacing-x3)',
+                        padding: 'var(--avl-spacing-x4)',
+                        borderRadius: 'var(--avl-radius-large)',
+                        backgroundColor: 'var(--avl-color-surface)',
+                    }}
+                >
+                    {(['surface', 'container'] as const).map((color) => (
+                        <Search
+                            key={color}
+                            color={color}
+                            items={fruits}
+                            aria-label={`Search fruits, ${color}`}
+                            placeholder={`color="${color}"`}
+                        >
+                            {(fruit) => (
+                                <SearchItem key={fruit} value={fruit}>
+                                    {fruit}
+                                </SearchItem>
+                            )}
+                        </Search>
+                    ))}
+                </div>
+            </Section>
             <Section title="Disabled">
                 <Search
                     items={fruits}

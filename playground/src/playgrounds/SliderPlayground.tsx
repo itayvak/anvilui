@@ -4,6 +4,8 @@ import { Row, Section, Labeled } from '../ui'
 
 export function SliderPlayground() {
     const [disabled, setDisabled] = useState(false)
+    // Toggling shows the wave easing into the plain track and back
+    const [wavy, setWavy] = useState(true)
     const [value, setValue] = useState(30)
     const [range, setRange] = useState<readonly number[]>([20, 80])
 
@@ -12,6 +14,9 @@ export function SliderPlayground() {
             <Row>
                 <Labeled label="disabled">
                     <Switch checked={disabled} onCheckedChange={setDisabled} />
+                </Labeled>
+                <Labeled label="squiggly">
+                    <Switch checked={wavy} onCheckedChange={setWavy} />
                 </Labeled>
             </Row>
             <Row>
@@ -54,19 +59,19 @@ export function SliderPlayground() {
             </Row>
             <Row>
                 <Slider
-                    squiggly
+                    squiggly={wavy}
                     disabled={disabled}
                     label="Squiggly"
                     defaultValue={40}
                 />
                 <Slider
-                    squiggly
+                    squiggly={wavy}
                     disabled={disabled}
                     label="Squiggly range"
                     defaultValue={[25, 70]}
                 />
                 <Slider
-                    squiggly
+                    squiggly={wavy}
                     disabled={disabled}
                     label="Squiggly, steps of 10"
                     step={10}

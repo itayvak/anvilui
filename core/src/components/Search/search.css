@@ -9,8 +9,8 @@
     height: var(--avl-spacing-x14);
     padding: 0 var(--avl-spacing-x2) 0 var(--avl-spacing-x4);
     border-radius: var(--avl-radius-full);
-    background-color: var(--avl-color-surface);
-    color: var(--avl-color-on-surface);
+    background-color: var(--avl-nested-color-main);
+    color: var(--avl-nested-color-on-main);
     cursor: text;
     transition: background-color var(--avl-ease-length-short) linear;
 }
@@ -18,8 +18,8 @@
 .avl-search:hover:not(:has(:disabled)) {
     background-color: color-mix(
         in srgb,
-        var(--avl-color-surface) 92%,
-        var(--avl-color-on-surface) 8%
+        var(--avl-nested-color-main) 92%,
+        var(--avl-nested-color-on-main) 8%
     );
 }
 
@@ -41,13 +41,13 @@
     border: none;
     outline: none;
     background: transparent;
-    color: var(--avl-color-on-background);
+    color: inherit;
     font-family: var(--avl-font-main);
     font-size: var(--avl-font-size-body);
 }
 
 .avl-search-input::placeholder {
-    color: color-mix(in srgb, var(--avl-color-on-surface) 70%, transparent);
+    color: color-mix(in srgb, var(--avl-nested-color-on-main) 70%, transparent);
 }
 
 /* Native search inputs add their own clear button in some browsers */

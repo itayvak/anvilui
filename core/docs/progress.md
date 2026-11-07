@@ -12,7 +12,7 @@ import type { ProgressProps } from 'anvilui'
 | `value` | `number \| null` | | `null` = indeterminate (spinning / sweeping). Required by Base UI: pass `null` explicitly for loading. |
 | `min` / `max` | `number` | `0` / `100` | |
 | `type` | `'linear' \| 'circular' \| 'inline'` | `'linear'` | `inline` is a ring the size of the text. |
-| `squiggly` | `boolean` | `false` | Wavy bar (linear only). |
+| `squiggly` | `boolean` | `false` | Wavy bar (linear only). Changing it animates: the wave flattens into the plain bar and back. |
 | `label` | `ReactNode` | | Visible label. Either this or `aria-label`. |
 | `aria-label` | `string` | | |
 

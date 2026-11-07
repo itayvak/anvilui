@@ -619,6 +619,9 @@
     width: calc(var(--avl-spacing-x1) * 110);
     max-width: calc(100vw - var(--avl-spacing-x8));
     max-height: calc(100dvh - var(--avl-spacing-x8));
+    /* The spinning record's box grows past the edge as it turns, which
+       flickered a horizontal scrollbar */
+    overflow-x: hidden;
     overflow-y: auto;
 }
 

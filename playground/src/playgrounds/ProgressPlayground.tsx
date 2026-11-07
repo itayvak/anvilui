@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Progress, Typography } from 'anvilui'
-import { RangeControl, Row, Section } from '../ui'
+import { Progress, Switch, Typography } from 'anvilui'
+import { Labeled, RangeControl, Row, Section } from '../ui'
 
 export function ProgressPlayground() {
     const [value, setValue] = useState(40)
     const [running, setRunning] = useState(0)
+    // Toggling shows the wave easing into the plain bar and back
+    const [wavy, setWavy] = useState(true)
 
     // A fake upload that loops, to see the value animate
     useEffect(() => {
@@ -42,13 +44,22 @@ export function ProgressPlayground() {
             </Section>
             <Section title="Squiggly">
                 <Row>
-                    <Progress squiggly label="Downloading" value={value} />
+                    <Labeled label="squiggly">
+                        <Switch checked={wavy} onCheckedChange={setWavy} />
+                    </Labeled>
                 </Row>
                 <Row>
-                    <Progress squiggly label="Running" value={running} />
+                    <Progress
+                        squiggly={wavy}
+                        label="Downloading"
+                        value={value}
+                    />
                 </Row>
                 <Row>
-                    <Progress squiggly label="Loading" value={null} />
+                    <Progress squiggly={wavy} label="Running" value={running} />
+                </Row>
+                <Row>
+                    <Progress squiggly={wavy} label="Loading" value={null} />
                 </Row>
             </Section>
             <Section title="Circular">

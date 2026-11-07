@@ -25,14 +25,40 @@ body {
     align-items: flex-start;
 }
 
-/* The NavigationList: sticks under the 64px header and scrolls on its own */
+/* Sticks under the 64px header */
 .pg-sidebar {
     position: sticky;
     top: var(--avl-spacing-x16);
     flex-shrink: 0;
+    box-sizing: border-box;
     width: 240px;
     height: calc(100vh - var(--avl-spacing-x16));
+    display: flex;
+    flex-direction: column;
+    gap: var(--avl-spacing-x2);
+    padding-top: var(--avl-spacing-x3);
+    /* One panel: the search and the list share the list's surface */
+    background-color: var(--avl-color-surface);
+}
+
+/* Fills the sidebar instead of the bar's default fixed width */
+.pg-sidebar-search {
+    flex-shrink: 0;
+    width: auto;
+    margin: 0 var(--avl-spacing-x3);
+}
+
+/* Only the list scrolls, so the search stays in view */
+.pg-sidebar-list {
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    padding-top: 0;
+}
+
+.pg-sidebar-empty {
+    padding: 0 var(--avl-spacing-x7);
+    color: var(--avl-color-on-background-muted);
 }
 
 .pg-main {

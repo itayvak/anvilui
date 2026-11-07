@@ -1,6 +1,10 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { Progress as BaseProgress } from '@base-ui/react/progress'
-import { SquigglyWave, type WaveSpan } from '../SquigglyWave/SquigglyWave'
+import {
+    SquigglyWave,
+    useWaveMorph,
+    type WaveSpan,
+} from '../SquigglyWave/SquigglyWave'
 import { cx, withClass } from '../../utils'
 import { checkName } from '../../dev'
 import './progress.css'
@@ -11,7 +15,10 @@ export type ProgressProps = BaseProgress.Root.Props & {
      * place inside a line of text. @default 'linear'
      */
     type?: 'linear' | 'circular' | 'inline'
-    /** Draw the filled part of a linear bar as a moving wave. @default false */
+    /**
+     * Draw the filled part of a linear bar as a moving wave. Changing it
+     * animates between the wave and the plain bar. @default false
+     */
     squiggly?: boolean
 } & (
         | {
@@ -59,6 +66,8 @@ export function Progress({
         )
     }
     const { value, min = 0, max = 100 } = props
+    const wavy = squiggly && type === 'linear'
+    const morph = useWaveMorph(wavy)
     const fraction =
         value == null
             ? 0
@@ -77,7 +86,9 @@ export function Progress({
                     `avl-progress-${type}`,
                     // Inline is a smaller ring, so it shares the circular styles
                     type === 'inline' && 'avl-progress-circular',
-                    squiggly && type === 'linear' && 'avl-progress-squiggly'
+                    wavy && 'avl-progress-squiggly',
+                    // Also while flattening into the plain bar
+                    morph.show && 'avl-progress-wave'
                 ),
                 className
             )}
@@ -96,8 +107,9 @@ export function Progress({
             )}
             {type === 'linear' ? (
                 <BaseProgress.Track className="avl-progress-track">
-                    {squiggly ? (
+                    {morph.show ? (
                         <SquigglyWave
+                            {...morph.wave}
                             span={(width, gap, _svg, now) =>
                                 value == null
                                     ? loadingSpan(width, gap, now)

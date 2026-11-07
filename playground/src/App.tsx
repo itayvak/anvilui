@@ -6,6 +6,7 @@ import {
     IconButton,
     NavigationList,
     NavigationListItem,
+    Search,
     Select,
     SelectItem,
     Typography,
@@ -46,6 +47,10 @@ export default function App() {
     const [tokens, setTokens] = useState(getStoredTokens)
     const [tokensOpen, setTokensOpen] = useState(false)
     const [palette, setPalette] = useState(getStoredPalette)
+    const [query, setQuery] = useState('')
+    const shownNames = names.filter((n) =>
+        n.toLowerCase().includes(query.trim().toLowerCase())
+    )
 
     const changePalette = (next: PaletteName) => {
         setPalette(next)
@@ -136,20 +141,38 @@ export default function App() {
                 </main>
             ) : (
                 <div className="pg-layout">
-                    <NavigationList
-                        aria-label="Components"
-                        className="pg-sidebar"
-                    >
-                        {names.map((n) => (
-                            <NavigationListItem
-                                key={n}
-                                label={n}
-                                href={`#${n}`}
-                                active={n === name}
-                                onClick={() => setName(n)}
-                            />
-                        ))}
-                    </NavigationList>
+                    <div className="pg-sidebar">
+                        <Search
+                            aria-label="Search components"
+                            placeholder="Search components"
+                            color="container"
+                            className="pg-sidebar-search"
+                            items={[]}
+                            value={query}
+                            onValueChange={setQuery}
+                        >
+                            {() => null}
+                        </Search>
+                        <NavigationList
+                            aria-label="Components"
+                            className="pg-sidebar-list"
+                        >
+                            {shownNames.map((n) => (
+                                <NavigationListItem
+                                    key={n}
+                                    label={n}
+                                    href={`#${n}`}
+                                    active={n === name}
+                                    onClick={() => setName(n)}
+                                />
+                            ))}
+                        </NavigationList>
+                        {shownNames.length === 0 && (
+                            <Typography className="pg-sidebar-empty">
+                                No components match "{query.trim()}".
+                            </Typography>
+                        )}
+                    </div>
                     <main className="pg-main">
                         <Playground />
                     </main>
