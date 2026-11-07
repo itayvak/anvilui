@@ -20,7 +20,7 @@ import type { ToggleGroupProps, ToggleGroupItemProps } from 'anvilui'
 | `disabled` | `boolean` | | |
 | `aria-label` / `aria-labelledby` | `string` | | Name the group (both are passed through). |
 
-Single mode is a Base UI RadioGroup; multiple mode is a Base UI ToggleGroup. `Value` is inferred from `value`, so a union-typed `useState<'list' | 'grid'>` setter can be passed straight to `onValueChange`.
+Single mode is a Base UI RadioGroup; multiple mode is a Base UI ToggleGroup. `Value` is inferred from `value`, so a union-typed `useState<'list' | 'grid'>` setter can be passed straight to `onValueChange`. With no `value` / `defaultValue`, or in a wrapper typed with `ToggleGroupProps`, it's `unknown`: write `ToggleGroupProps<'list' | 'grid'>`.
 
 ## ToggleGroupItem props
 

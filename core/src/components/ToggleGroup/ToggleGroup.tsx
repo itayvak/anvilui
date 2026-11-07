@@ -15,7 +15,7 @@ type ToggleGroupCommonProps = ColorProps & {
     size?: 'small' | 'normal' | 'big'
 }
 
-export type ToggleGroupProps<Value = any> = ToggleGroupCommonProps &
+export type ToggleGroupProps<Value = unknown> = ToggleGroupCommonProps &
     (
         | (BaseRadioGroup.Props<Value> & {
               /**
@@ -148,12 +148,13 @@ export function ToggleGroup<Value>({
     )
 }
 
-export type ToggleGroupItemProps<Value = any> = BaseRadio.Root.Props<Value> & {
-    /** Material Symbol shown before the label. */
-    startIcon?: MaterialSymbol
-    /** Material Symbol shown after the label. */
-    endIcon?: MaterialSymbol
-}
+export type ToggleGroupItemProps<Value = unknown> =
+    BaseRadio.Root.Props<Value> & {
+        /** Material Symbol shown before the label. */
+        startIcon?: MaterialSymbol
+        /** Material Symbol shown after the label. */
+        endIcon?: MaterialSymbol
+    }
 
 /**
  * One option in a `ToggleGroup`. Requires a `value` (a string when the

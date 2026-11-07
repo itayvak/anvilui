@@ -44,4 +44,21 @@ export function Example() {
 }
 ```
 
+The value type is inferred from `value` / `defaultValue`. With neither, or when you type the props yourself in a wrapper, it's `unknown`: pass the type as `RadioGroupProps<YourValue>`.
+
+```tsx
+import { Radio, RadioGroup, type RadioGroupProps } from 'anvilui'
+
+type Plan = 'free' | 'pro'
+
+export function PlanPicker(props: RadioGroupProps<Plan>) {
+    return (
+        <RadioGroup aria-label="Plan" {...props}>
+            <label><Radio value="free" /> Free</label>
+            <label><Radio value="pro" /> Pro</label>
+        </RadioGroup>
+    )
+}
+```
+
 For a compact row of 2–5 options, [ToggleGroup](toggle-group.md) looks better.

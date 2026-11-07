@@ -77,15 +77,22 @@ export function TogglePlayground() {
             </Section>
             <Section title="Icon toggles">
                 <Row>
-                    <Toggle {...shared} icon="star" aria-label="Star" />
                     <Toggle
                         {...shared}
+                        size={size}
+                        icon="star"
+                        aria-label="Star"
+                    />
+                    <Toggle
+                        {...shared}
+                        size={size}
                         icon="bookmark"
                         aria-label="Bookmark"
                         defaultPressed
                     />
                     <Toggle
                         {...shared}
+                        size={size}
                         icon="format_bold"
                         aria-label="Bold"
                         pressed={bold}

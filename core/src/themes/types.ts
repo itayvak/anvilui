@@ -14,10 +14,7 @@ export type Theme = {
     surface: string
     /** Text and icons on `surface`. */
     onSurface: string
-    /** @deprecated Renamed to `surface`. Still read if that's missing. */
-    surfaceVariant?: string
-    /** @deprecated Renamed to `onSurface`. Still read if that's missing. */
-    onSurfaceVariant?: string
+
     /** Borders of inputs and outlined controls. */
     outline: string
     /** Thin lines between content: dividers, table lines, tab underlines. */

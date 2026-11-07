@@ -42,3 +42,23 @@
 .avl-icon-button.avl-fill-outlined {
     border: var(--avl-outline-size) solid var(--avl-color-outline);
 }
+
+/* The same heights as Button's sizes; the icon grows with the button */
+.avl-icon-button-size-small {
+    --avl-button-height: var(--avl-spacing-x8);
+    font-size: var(--avl-spacing-x5);
+}
+
+.avl-icon-button-size-normal {
+    --avl-button-height: var(--avl-spacing-x10);
+    font-size: var(--avl-spacing-x6);
+}
+
+.avl-icon-button-size-big {
+    --avl-button-height: var(--avl-spacing-x12);
+    font-size: var(--avl-spacing-x7);
+}
+
+.avl-icon-button .avl-icon {
+    font-size: inherit;
+}

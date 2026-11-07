@@ -21,7 +21,8 @@ import type { ComboboxProps, ComboboxItemProps } from 'anvilui'
 | `placeholder` | `string` | | |
 | `empty` | `ReactNode` | | Shown when nothing matches; without it the popup hides. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
-| `className` | `string` | | On the field wrapper. |
+| `className`, `style` | | | On the field wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the text `<input>`. |
 | `name`, `disabled`, `required`, `filter`, `limit` | | | Base UI Combobox.Root props. |
 
 ## ComboboxItem props

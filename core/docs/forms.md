@@ -73,7 +73,7 @@ Rules:
 - Custom rules: `validate={(value) => value ? null : 'Required'}` returns an error string or `null`. A failing `validate` blocks submit once it has run, so on a plain `<form>` use `validationMode="onBlur"` or `"onChange"` with it (the default is `"onSubmit"`). Keep a final check in `onSubmit` for anything that must hold.
 - Controls that work inside `Field`: `Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Checkbox`, `Switch`, `RadioGroup`, `Slider`.
 - `Button loading` disables the button, so it also blocks repeat submits.
-- `Select` with `name` submits the item's `value`, not its label.
+- `Select` with `name` submits the item's `value`, not its label. `DateInput` submits `"YYYY-MM-DD"` and `TimePicker` `"HH:mm"`, not the text they show.
 - Server errors: `<Field invalid>` plus `<FieldError match>` with your message (`match` true shows it whenever the field is invalid).
 - Values: `DateInput` and `Calendar` use `"YYYY-MM-DD"`, `TimePicker` `"HH:mm"`, `Slider` a number (or `number[]`).
 - There is no form library integration and no `Form` component. A plain `<form>` works. With react-hook-form, use controlled props (`value` + `onValueChange` / `checked` + `onCheckedChange`) in `Controller`.

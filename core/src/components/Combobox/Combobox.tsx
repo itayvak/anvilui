@@ -1,8 +1,14 @@
-import { useContext, useId, type ReactNode } from 'react'
+import {
+    useContext,
+    useId,
+    type CSSProperties,
+    type ReactNode,
+    type Ref,
+} from 'react'
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
-import { cx, withClass } from '../../utils'
+import { cx, splitControlProps, withClass } from '../../utils'
 import { checkRoot, devError } from '../../dev'
 import '../Input/input.css'
 import '../Menu/menu.css'
@@ -30,6 +36,12 @@ export type ComboboxProps<Item> = Omit<
     size?: 'small' | 'normal'
     /** Applied to the outer wrapper, so width and margins work as expected. */
     className?: string
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
+    /** The text `<input>`. */
+    ref?: Ref<HTMLInputElement>
+    /** The text `<input>`'s id. */
+    id?: string
 }
 
 /**
@@ -52,8 +64,13 @@ export function Combobox<Item>({
     empty,
     size = 'normal',
     className,
-    ...props
+    style,
+    ref,
+    id,
+    ...allProps
 }: ComboboxProps<Item>) {
+    // ARIA and data attributes describe the input; the Root renders no element
+    const { control, rest: props } = splitControlProps(allProps)
     const avl = useContext(AnvilContext)
     if (process.env.NODE_ENV !== 'production') {
         checkRoot(avl !== null, 'Combobox')
@@ -64,13 +81,15 @@ export function Combobox<Item>({
                 'combobox.md'
             )
     }
-    const inputId = useId()
+    const generatedId = useId()
+    const inputId = id ?? generatedId
     const labelId = useId()
 
     return (
         <BaseCombobox.Root {...props}>
             {/* Same structure and classes as Input, so it looks the same */}
             <BaseCombobox.InputGroup
+                style={style}
                 className={cx(
                     'avl-input',
                     'avl-combobox',
@@ -81,6 +100,8 @@ export function Combobox<Item>({
             >
                 {/* A placeholder is needed for :placeholder-shown, which floats the label. */}
                 <BaseCombobox.Input
+                    {...control}
+                    ref={ref}
                     id={inputId}
                     className="avl-input-field"
                     placeholder={placeholder ?? ' '}

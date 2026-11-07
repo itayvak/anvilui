@@ -4,7 +4,7 @@ import { withClass } from '../../utils'
 import { checkProp } from '../../dev'
 import './radio-group.css'
 
-export type RadioGroupProps<Value = any> = BaseRadioGroup.Props<Value>
+export type RadioGroupProps<Value = unknown> = BaseRadioGroup.Props<Value>
 
 /**
  * A group of `Radio`s where exactly one is picked. State: `value` /
@@ -29,7 +29,7 @@ export function RadioGroup<Value>({
     )
 }
 
-export type RadioProps<Value = any> = BaseRadio.Root.Props<Value>
+export type RadioProps<Value = unknown> = BaseRadio.Root.Props<Value>
 
 /** One option in a `RadioGroup`. Needs a `value`. Wrap it in a `<label>` with its text. */
 export function Radio<Value>({ className, ...props }: RadioProps<Value>) {

@@ -28,21 +28,24 @@ export type IconButtonProps = Omit<BaseButtonProps, 'children'> & {
     fillType?: ComponentFillType
     /** Color role from the theme. @default 'primary' */
     color?: ComponentColor
+    /** 32px, 40px or 48px, the same heights as `Button`. @default 'normal' */
+    size?: 'small' | 'normal' | 'big'
     /** Required: there is no visible text, so screen readers read this. */
     'aria-label': string
 }
 
 /**
- * A round, 40px button that shows only an icon. Always 40px: it has no
- * `size` prop.
+ * A round button that shows only an icon.
  *
  * @example
  * <IconButton icon="delete" aria-label="Delete" fillType="text" color="container" />
+ * <IconButton icon="add" aria-label="Add" size="big" />
  */
 export function IconButton({
     icon,
     color,
     fillType,
+    size = 'normal',
     className,
     ...props
 }: IconButtonProps) {
@@ -74,7 +77,7 @@ export function IconButton({
         <BaseButton
             {...props}
             className={withClass(
-                `avl-icon-button ${colorClass(color, fillType)}`,
+                `avl-icon-button ${colorClass(color, fillType)} avl-icon-button-size-${size}`,
                 className
             )}
         >

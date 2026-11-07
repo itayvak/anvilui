@@ -1,8 +1,8 @@
-import { useContext, type ReactNode } from 'react'
+import { useContext, type CSSProperties, type ReactNode, type Ref } from 'react'
 import { Select as BaseSelect } from '@base-ui/react/select'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { Icon } from '../Icon/Icon'
-import { cx, withClass } from '../../utils'
+import { cx, splitControlProps, withClass } from '../../utils'
 import { checkRoot } from '../../dev'
 import '../Input/input.css'
 import '../Menu/menu.css'
@@ -23,6 +23,10 @@ export type SelectProps<
     size?: 'small' | 'normal'
     /** Applied to the outer wrapper, so width and margins work as expected. */
     className?: string
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
+    /** The field's button (the part that opens the list). */
+    ref?: Ref<HTMLButtonElement>
 }
 
 /**
@@ -46,9 +50,13 @@ export function Select<Value, Multiple extends boolean | undefined = false>({
     placeholder,
     size = 'normal',
     className,
+    style,
+    ref,
     children,
-    ...props
+    ...allProps
 }: SelectProps<Value, Multiple>) {
+    // ARIA and data attributes describe the button; the Root renders no element
+    const { control, rest: props } = splitControlProps(allProps)
     const avl = useContext(AnvilContext)
     if (process.env.NODE_ENV !== 'production') {
         checkRoot(avl !== null, 'Select')
@@ -58,6 +66,7 @@ export function Select<Value, Multiple extends boolean | undefined = false>({
         <BaseSelect.Root {...props}>
             {/* Same structure and classes as Input, so it looks the same */}
             <div
+                style={style}
                 className={cx(
                     'avl-input',
                     'avl-select',
@@ -66,7 +75,11 @@ export function Select<Value, Multiple extends boolean | undefined = false>({
                     className
                 )}
             >
-                <BaseSelect.Trigger className="avl-input-field avl-select-trigger">
+                <BaseSelect.Trigger
+                    {...control}
+                    ref={ref}
+                    className="avl-input-field avl-select-trigger"
+                >
                     <BaseSelect.Value
                         className="avl-select-value"
                         placeholder={placeholder}

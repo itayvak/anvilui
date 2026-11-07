@@ -12,7 +12,7 @@ import type { TextareaProps } from 'anvilui'
 | `label` | `ReactNode` | | Floating label. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `onValueChange` | `(value: string, details) => void` | | Or native `onChange`. |
-| `className` | `string` | | On the wrapper. |
+| `className`, `style` | | | On the wrapper; `ref` and other props go on the `<textarea>`. |
 
 ```tsx
 import { Textarea } from 'anvilui'

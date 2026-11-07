@@ -66,22 +66,22 @@ Nothing else is exported. Not in the library: `Box`, `Stack`, `Grid`, `Container
 
 ## Component reference
 
-Props marked * are required. All components also take `className`, `style`, `ref` and the props of their underlying element / Base UI part. Full tables: `docs/<name>.md`.
+Props marked \* are required. All components also take `className`, `style`, `ref` and the props of their underlying element / Base UI part. Full tables: `docs/<name>.md`.
 
 ### Buttons
 
 | Component | Key props | Usage |
 | --- | --- | --- |
 | `Button` | `fillType`, `color`, `size: 'small'\|'normal'\|'big'`, `startIcon`, `endIcon`, `loading`, `disabled`, `type`, `render` | `<Button startIcon="add" onClick={create}>New</Button>` |
-| `IconButton` | `icon`_, `aria-label`_, `fillType`, `color`. No size, no children | `<IconButton icon="close" aria-label="Close" fillType="text" color="container" />` |
+| `IconButton` | `icon`\*, `aria-label`\*, `fillType`, `color`, `size`. No children | `<IconButton icon="close" aria-label="Close" fillType="text" color="container" />` |
 | `SplitButton` | `<div>` props | `<SplitButton><Button>Save</Button><IconButton icon="arrow_drop_down" aria-label="More" /></SplitButton>` |
-| `HoldButton` | `onConfirm`*, `holdDuration` (1500), Button props | `<HoldButton color="error" onConfirm={del}>Hold to delete</HoldButton>` |
+| `HoldButton` | `onConfirm`\*, `holdDuration` (1500), Button props | `<HoldButton color="error" onConfirm={del}>Hold to delete</HoldButton>` |
 | `Toggle` | `pressed`/`defaultPressed`/`onPressedChange`, `color`, `fillType`; text: `children`, `startIcon`, `size`; icon: `icon` + `aria-label` | `<Toggle icon="favorite" aria-label="Favorite" />` |
 | `ToggleGroup` | `value`/`defaultValue`/`onValueChange` (single value; array with `multiple`), `multiple`, `color`, `fillType`, `size` | `<ToggleGroup aria-label="View" defaultValue="list">…</ToggleGroup>` |
-| `ToggleGroupItem` | `value`*, `startIcon`, `endIcon`, `children` | `<ToggleGroupItem value="list">List</ToggleGroupItem>` |
-| `FAB` | `icon`_, `label` or `aria-label`_, `size`, `color`, `fillType`, `sticky` | `<FAB icon="add" aria-label="New" style={{ position: 'fixed', right: 16, bottom: 16 }} />` |
-| `FABMenu` | `icon`_, `aria-label`_, `children`* (`FABMenuItem`s), `side`, `align`, `color` | `<FABMenu icon="add" aria-label="Create"><FABMenuItem icon="folder">Folder</FABMenuItem></FABMenu>` |
-| `Chip` / `FilterChip` / `InputChip` | `startIcon`; FilterChip `pressed`/`onPressedChange`; InputChip `onRemove`*, `removeLabel` | `<FilterChip pressed={on} onPressedChange={setOn}>Vegan</FilterChip>` |
+| `ToggleGroupItem` | `value`\*, `startIcon`, `endIcon`, `children` | `<ToggleGroupItem value="list">List</ToggleGroupItem>` |
+| `FAB` | `icon`\*, `label` or `aria-label`\*, `size`, `color`, `fillType`, `sticky` | `<FAB icon="add" aria-label="New" style={{ position: 'fixed', right: 16, bottom: 16 }} />` |
+| `FABMenu` | `icon`\*, `aria-label`\*, `children`\* (`FABMenuItem`s), `side`, `align`, `color` | `<FABMenu icon="add" aria-label="Create"><FABMenuItem icon="folder">Folder</FABMenuItem></FABMenu>` |
+| `Chip` / `FilterChip` / `InputChip` | `startIcon`; FilterChip `pressed`/`onPressedChange`; InputChip `onRemove`\*, `removeLabel` | `<FilterChip pressed={on} onPressedChange={setOn}>Vegan</FilterChip>` |
 
 ### Form controls
 
@@ -90,17 +90,17 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `Input` | `label`, `size: 'small'\|'normal'`, `value`/`defaultValue`, `onValueChange(string)` or `onChange(event)`, input attrs | `<Input label="Email" type="email" value={v} onValueChange={setV} />` |
 | `Textarea` | same as Input + `rows` | `<Textarea label="Bio" rows={4} />` |
 | `Select` | `items` (map or `{value,label}[]`), `value`/`defaultValue`/`onValueChange(value)`, `label`, `placeholder`, `multiple`, `name` | `<Select label="Fruit" items={fruits} defaultValue="apple">{…SelectItem}</Select>` |
-| `SelectItem` | `value`*, children = label | `<SelectItem value="apple">Apple</SelectItem>` |
-| `Combobox` | `items`, `children`* = `(item) => <ComboboxItem/>`, `value`/`onValueChange(item)`, `itemToStringLabel`, `label`, `empty` | `<Combobox label="Fruit" items={list}>{(f: string) => <ComboboxItem key={f} value={f}>{f}</ComboboxItem>}</Combobox>` |
-| `Search` | `aria-label`_, `items`, `children`_ = `(item) => <SearchItem/>`, `value`/`onValueChange(text)`, `placeholder`, `empty` | `<Search aria-label="Search" items={[]} onValueChange={setQ}>{(i: string) => <SearchItem key={i} value={i}>{i}</SearchItem>}</Search>` |
+| `SelectItem` | `value`\*, children = label | `<SelectItem value="apple">Apple</SelectItem>` |
+| `Combobox` | `items`, `children`\* = `(item) => <ComboboxItem/>`, `value`/`onValueChange(item)`, `itemToStringLabel`, `label`, `empty` | `<Combobox label="Fruit" items={list}>{(f: string) => <ComboboxItem key={f} value={f}>{f}</ComboboxItem>}</Combobox>` |
+| `Search` | `aria-label`\*, `value`/`onValueChange(text)`, `placeholder`, `color` (`surface`/`container`); suggestions: `items` + `children` = `(item) => <SearchItem/>`, `empty` | `<Search aria-label="Filter" value={q} onValueChange={setQ} />` |
 | `Checkbox` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `indeterminate`, `name` | `<label><Checkbox checked={c} onCheckedChange={setC} /> Remember me</label>` |
 | `Switch` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `name` | `<label><Switch defaultChecked /> Wi-Fi</label>` |
-| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
-| `Slider` | `label` or `aria-label`*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
-| `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
-| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
+| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`\* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
+| `Slider` | `label` or `aria-label`\*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
+| `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`\* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
+| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`\*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
 | `Calendar` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange` | `<Calendar value={d} onValueChange={setD} />` |
-| `PinInput` | `length`_, `label` or `aria-label`_, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
+| `PinInput` | `length`\*, `label` or `aria-label`\*, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
 | `Field` | `name`, `validate`, `validationMode: 'onSubmit'\|'onBlur'\|'onChange'`, `invalid`, `disabled` | `<Field name="email"><Input label="Email" required /><FieldError /></Field>` |
 | `FieldDescription` / `FieldError` | FieldError `match` | `<FieldError match="valueMissing">Required</FieldError>` |
 
@@ -112,7 +112,7 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `BottomSheet` | same shape: `BottomSheetTrigger`, `BottomSheetPopup`, `BottomSheetTitle`, `BottomSheetDescription`, `BottomSheetClose`; `snapPoints` | |
 | `Popover` | `PopoverTrigger`, `PopoverPopup` (`side`, `align`, `sideOffset`), `PopoverTitle`, `PopoverDescription`, `PopoverClose` | |
 | `PreviewCard` | `PreviewCardTrigger` (an `<a href>`), `PreviewCardPopup` | |
-| `Tooltip` | `label`_, one element child_, `side`, `align`, `delay` | `<Tooltip label="Delete"><IconButton icon="delete" aria-label="Delete" /></Tooltip>` |
+| `Tooltip` | `label`\*, one element child_, `side`, `align`, `delay` | `<Tooltip label="Delete"><IconButton icon="delete" aria-label="Delete" /></Tooltip>` |
 | `Menu` | `MenuTrigger`, `MenuPopup` (`side`, `align`), `MenuItem` (`onClick`, `startIcon`, `endIcon`, `disabled`), `MenuGroup`, `MenuSubmenu` + `MenuSubmenuTrigger` | see Patterns |
 | `ContextMenu` | `ContextMenuTrigger` (area) + `MenuPopup` / `MenuItem` | |
 | `Menubar` | contains `Menu`s | |
@@ -122,18 +122,18 @@ Props marked * are required. All components also take `className`, `style`, `ref
 
 | Component | Key props | Usage |
 | --- | --- | --- |
-| `AppBar` | `label`*, `labelAs`, `start`, `end`, `size: 'normal'\|'big'`, `centered`, `color` ('container') | `<AppBar label="Inbox" start={…} end={…} />` |
-| `NavigationBar` / `NavigationBarItem` | item: `icon`_, `label`_, `active`, `href` or `render={<Link/>}` | `<NavigationBarItem icon="home" label="Home" href="/" active />` |
-| `NavigationRail` / `NavigationRailToggle` / `NavigationRailItem` | rail: `expanded`/`defaultExpanded`/`onExpandedChange`; toggle: `aria-label`_; item: `icon`_, `label`*, `active`, `end`, `href` | |
-| `NavigationList` / `NavigationListItem` | item: `label`*, `active`, `href`, `render` | |
-| `NavigationDrawer` | `NavigationDrawerTrigger`, `NavigationDrawerPopup`, `NavigationDrawerTitle`, `NavigationDrawerItem` (`icon`_, `label`_, `active`, `href`) | |
-| `Tabs` | `value`/`defaultValue`/`onValueChange`; `TabsList`, `TabsTab` (`value`_, `icon`), `TabsPanel` (`value`_). Always set `defaultValue` | see Patterns |
+| `AppBar` | `label`\*, `labelAs`, `start`, `end`, `size: 'normal'\|'big'`, `centered`, `color` ('container') | `<AppBar label="Inbox" start={…} end={…} />` |
+| `NavigationBar` / `NavigationBarItem` | item: `icon`\*, `label`\*, `active`, `href` or `render={<Link/>}` | `<NavigationBarItem icon="home" label="Home" href="/" active />` |
+| `NavigationRail` / `NavigationRailToggle` / `NavigationRailItem` | rail: `expanded`/`defaultExpanded`/`onExpandedChange`; toggle: `aria-label`\*; item: `icon`\*, `label`\*, `active`, `end`, `href` | |
+| `NavigationList` / `NavigationListItem` | item: `label`\*, `active`, `href`, `render` | |
+| `NavigationDrawer` | `NavigationDrawerTrigger`, `NavigationDrawerPopup`, `NavigationDrawerTitle`, `NavigationDrawerItem` (`icon`\*, `label`\*, `active`, `href`) | |
+| `Tabs` | `value`/`defaultValue`/`onValueChange`; `TabsList`, `TabsTab` (`value`\*, `icon`), `TabsPanel` (`value`\*). Always set `defaultValue` | see Patterns |
 | `FloatingToolbar` | `inverseColor`; `FloatingToolbarButton` (IconButton props), `FloatingToolbarSeparator` | |
 | `Card` | `color` ('container'), `fillType`, `clickable`; `CardTitle` (`as`), `CardContent`, `CardActions` | |
-| `List` / `ListItem` | list: `divided`; item: `label`*, `description`, `start`, `end`, `render`. No children | `<ListItem label="Wi-Fi" end={<Switch />} render={<label />} />` |
+| `List` / `ListItem` | list: `divided`; item: `label`\*, `description`, `start`, `end`, `render`. No children | `<ListItem label="Wi-Fi" end={<Switch />} render={<label />} />` |
 | `Table` | `TableCaption`, `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`, `TableCell` (native elements) | |
 | `Accordion` | `value`/`defaultValue` (array), `multiple`; `AccordionItem` (`value`), `AccordionTrigger` (`as`), `AccordionPanel` | |
-| `Carousel` / `CarouselItem` | `aria-label`* | |
+| `Carousel` / `CarouselItem` | `aria-label`\* | |
 | `Divider` | `orientation`, `label`, `squiggly` | `<Divider label="or" />` |
 | `Typography` | `type: 'body'\|'caption'\|'h1'…'h6'` (not `variant`), `as` | `<Typography type="h5" as="h1">Settings</Typography>` |
 
@@ -144,11 +144,11 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `Avatar` | `name`, `src`, `icon`, `size` (32/40/56px), `color` | `<Avatar name="Ada Lovelace" src={url} />` |
 | `AvatarGroup` | `max`, `size`, `fan`, `aria-label` | `<AvatarGroup max={3} aria-label="Team">{avatars}</AvatarGroup>` |
 | `Badge` | `count` (omit for dot, 0 hides), `max`, `color` ('error'), wraps children | `<Badge count={3}><IconButton icon="mail" aria-label="Mail, 3 new" /></Badge>` |
-| `Icon` | `name`* | `<Icon name="star" />` |
-| `Progress` | `value`* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
+| `Icon` | `name`\* | `<Icon name="star" />` |
+| `Progress` | `value`\* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`\*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
 | `Skeleton` | `variant: 'text'\|'circular'\|'rectangular'`, `animation`; size via `style` | `<Skeleton style={{ width: 120 }} />` |
 | `Sticker` | `color`, `startIcon`, `tilt` | `<Sticker>NEW</Sticker>` |
-| `AnimatedNumber` | `value`*, `format`, `locales` | `<AnimatedNumber value={n} />` |
+| `AnimatedNumber` | `value`\*, `format`, `locales` | `<AnimatedNumber value={n} />` |
 | `Kbd` | `children`, `listen`, `listenFor` | `<Kbd>⌘</Kbd><Kbd>K</Kbd>` |
 
 ## Patterns
@@ -434,7 +434,7 @@ Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)
 | `<Button size="lg">` / `size="sm"` | `size="big"` / `size="small"` |
 | `<Button><Plus /> Add</Button>` | `<Button startIcon="add">Add</Button>` |
 | `<IconButton><DeleteIcon /></IconButton>` | `<IconButton icon="delete" aria-label="Delete" />` |
-| `<IconButton icon="x" size="small" />` | IconButton has no `size`; it's always 40px |
+| `<IconButton icon="close" size="sm" />` | `size="small"` (`'small' \| 'normal' \| 'big'`) |
 | `<DialogTrigger asChild><Button>Open</Button></DialogTrigger>` | `<DialogTrigger render={<Button />}>Open</DialogTrigger>` |
 | `<DialogTrigger>Open</DialogTrigger>` expecting a styled button | It's a bare `<button>`; add `render={<Button />}` |
 | `<DialogContent>`, `<DialogHeader>`, `<DialogFooter>` | `<DialogPopup>`, (nothing), `<DialogActions>` |

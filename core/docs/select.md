@@ -22,9 +22,10 @@ import type { SelectProps, SelectItemProps } from 'anvilui'
 | `name`, `required`, `disabled`, `readOnly` | | | |
 | `open` / `defaultOpen` / `onOpenChange` | | | |
 | `itemToStringLabel` | `(value) => string` | | For object values. |
-| `className` | `string` | | On the field wrapper. |
+| `className`, `style` | | | On the field wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the field's button. |
 
-Other props go to Base UI `Select.Root`, which renders no element: `id`, `style` and `ref` are not applied. Base UI docs: `node_modules/@base-ui/react/docs/react/components/select.md`.
+Everything else goes to Base UI `Select.Root`. Base UI docs: `node_modules/@base-ui/react/docs/react/components/select.md`.
 
 ## SelectItem props
 

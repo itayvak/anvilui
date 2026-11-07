@@ -1,6 +1,6 @@
 # IconButton
 
-A round 40px button with only an icon. `aria-label` is required.
+A round button with only an icon. `aria-label` is required.
 
 ```ts
 import { IconButton } from 'anvilui'
@@ -15,9 +15,10 @@ import type { IconButtonProps } from 'anvilui'
 | `aria-label` | `string` | required | What the button does. |
 | `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
 | `color` | `ComponentColor` | `'primary'` | |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 48px, like `Button`. |
 | `disabled` | `boolean` | `false` | |
 
-Takes no `children` and has **no `size` prop** (always 40px). Also takes Base UI Button props and `<button>` attributes.
+Takes no `children`. Also takes Base UI Button props and `<button>` attributes.
 
 ## Example
 

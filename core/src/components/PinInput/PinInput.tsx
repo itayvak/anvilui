@@ -1,12 +1,14 @@
-import { useId, type ReactNode } from 'react'
+import { useId, type CSSProperties, type ReactNode } from 'react'
 import { OTPField as BaseOTPField } from '@base-ui/react/otp-field'
 import { cx } from '../../utils'
 import './pin-input.css'
 
 export type PinInputProps = Omit<
     BaseOTPField.Root.Props,
-    'className' | 'children' | 'size'
+    'className' | 'style' | 'children' | 'size'
 > & {
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
     /** `filled` gives each box a tinted background and a bottom line instead of a full border. @default 'outlined' */
     fillType?: 'filled' | 'outlined'
     /** Boxes are 40px tall instead of 56px. @default 'normal' */
@@ -47,6 +49,7 @@ export function PinInput({
     size = 'normal',
     slotLabel = defaultSlotLabel,
     className,
+    style,
     id,
     length,
     ...props
@@ -57,6 +60,7 @@ export function PinInput({
 
     return (
         <div
+            style={style}
             className={cx(
                 'avl-pin-input',
                 `avl-pin-input-size-${size}`,

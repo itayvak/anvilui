@@ -19,7 +19,7 @@ import type { PinInputProps } from 'anvilui'
 | `fillType` | `'filled' \| 'outlined'` | `'outlined'` | |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `name`, `disabled`, `required`, `autoSubmit` | | | |
-| `className` | `string` | | On the wrapper. |
+| `className`, `style` | | | On the wrapper; `ref` goes on the group of boxes. |
 
 ```tsx
 import { PinInput } from 'anvilui'

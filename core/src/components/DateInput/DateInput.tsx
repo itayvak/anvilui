@@ -1,9 +1,16 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import {
+    useEffect,
+    useId,
+    useRef,
+    useState,
+    type CSSProperties,
+    type ReactNode,
+} from 'react'
 import { Input as BaseInput } from '@base-ui/react/input'
 import { IconButton } from '../IconButton/IconButton'
 import { Calendar } from '../Calendar/Calendar'
 import { Popover, PopoverPopup, PopoverTrigger } from '../Popover/Popover'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
 import {
     fieldOrder,
     fromIso,
@@ -22,8 +29,11 @@ export type DateInputProps = Omit<
     | 'type'
     | 'size'
     | 'className'
+    | 'style'
     | 'placeholder'
 > & {
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
     /** The date as `"YYYY-MM-DD"` (like `<input type="date">`), or `null` for none. */
     value?: string | null
     /** Starting date when `value` isn't controlled. @default null */
@@ -77,6 +87,8 @@ export function DateInput({
     id,
     onBlur,
     className,
+    style,
+    ref,
     ...props
 }: DateInputProps) {
     const [internal, setInternal] = useState(defaultValue)
@@ -89,6 +101,24 @@ export function DateInput({
     const popupRef = useRef<HTMLDivElement>(null)
     const generatedId = useId()
     const inputId = id ?? generatedId
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    // The input shows the locale's text ("11/06/2026"). Forms get the
+    // "YYYY-MM-DD" value instead, under whatever name the input has (its own,
+    // or a Field's), including `new FormData(form)` and server actions.
+    const iso = useRef('')
+    iso.current = date ? toIso(date) : ''
+    useEffect(() => {
+        const form = inputRef.current?.form
+        if (!form) return
+        const onFormData = (event: FormDataEvent) => {
+            const input = inputRef.current
+            if (input?.name && !input.disabled)
+                event.formData.set(input.name, iso.current)
+        }
+        form.addEventListener('formdata', onFormData)
+        return () => form.removeEventListener('formdata', onFormData)
+    }, [])
 
     const fmt = numericFormat()
     const order = fieldOrder(fmt)
@@ -105,6 +135,7 @@ export function DateInput({
         <Popover open={open} onOpenChange={setOpen}>
             <div
                 ref={fieldRef}
+                style={style}
                 className={cx(
                     'avl-input',
                     'avl-date-input',
@@ -115,6 +146,7 @@ export function DateInput({
             >
                 <BaseInput
                     {...props}
+                    ref={mergeRefs(inputRef, ref)}
                     id={inputId}
                     disabled={disabled}
                     className="avl-input-field"

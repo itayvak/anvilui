@@ -29,6 +29,14 @@
     gap: var(--avl-spacing-x6);
 }
 
+/* Clear sits at the end, closer to the content above than the panel's gap */
+.avl-time-picker-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-self: stretch;
+    margin-top: calc(var(--avl-spacing-x2) * -1);
+}
+
 .avl-time-picker-header {
     display: flex;
     align-items: center;

@@ -10,7 +10,7 @@ import type { TimePickerProps } from 'anvilui'
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` / `defaultValue` | `string \| null` | `null` | `"HH:mm"`, e.g. `"07:30"`, `"19:05"`. |
-| `onValueChange` | `(value: string) => void` | | On every change. The user can't clear it from the picker; to clear, set `value={null}` yourself (e.g. a Clear button). |
+| `onValueChange` | `(value: string \| null) => void` | | On every change. `null` when the user clears it with the picker's Clear button. |
 | `type` | `'dial' \| 'input'` | `'dial'` | |
 | `hourCycle` | `12 \| 24` | user's locale | 12 shows AM/PM. |
 | `label` | `ReactNode` | | Either this or `aria-label`. |
@@ -18,7 +18,8 @@ import type { TimePickerProps } from 'anvilui'
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `disabled` | `boolean` | `false` | |
 | `open` / `defaultOpen` / `onOpenChange` | | | The popup. |
-| `className`, other `<div>` props | | | On the wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the field's button. |
+| `className`, `style`, other `<div>` props | | | On the wrapper. |
 
 ```tsx
 import { useState } from 'react'

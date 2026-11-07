@@ -13,7 +13,8 @@ import type { DateInputProps } from 'anvilui'
 | `onValueChange` | `(value: string \| null) => void` | | `null` when cleared. |
 | `label` | `ReactNode` | | Either this or `aria-label`. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
-| `className` | `string` | | On the wrapper. |
+| `name` | `string` | | Submits `"YYYY-MM-DD"` with the form (also when the name comes from a `Field`). |
+| `className`, `style` | | | On the wrapper; `ref` and other props go on the `<input>`. |
 | `disabled`, `required`, `id`, `onBlur` | | | On the `<input>`. |
 
 No `min` / `max` / disabled dates.
@@ -30,9 +31,9 @@ export function Example() {
                 label="Start date"
                 value={start}
                 onValueChange={setStart}
+                name="start"
             />
-            {/* `name` on DateInput would submit the locale-formatted text; submit the ISO value like this */}
-            <input type="hidden" name="start" value={start ?? ''} />
+            {/* Submits start=2026-11-06, not the text shown in the field */}
         </form>
     )
 }

@@ -72,22 +72,22 @@ Nothing else is exported. Not in the library: `Box`, `Stack`, `Grid`, `Container
 
 ## Component reference
 
-Props marked * are required. All components also take `className`, `style`, `ref` and the props of their underlying element / Base UI part. Full tables: `docs/<name>.md`.
+Props marked \* are required. All components also take `className`, `style`, `ref` and the props of their underlying element / Base UI part. Full tables: `docs/<name>.md`.
 
 ### Buttons
 
 | Component | Key props | Usage |
 | --- | --- | --- |
 | `Button` | `fillType`, `color`, `size: 'small'\|'normal'\|'big'`, `startIcon`, `endIcon`, `loading`, `disabled`, `type`, `render` | `<Button startIcon="add" onClick={create}>New</Button>` |
-| `IconButton` | `icon`_, `aria-label`_, `fillType`, `color`. No size, no children | `<IconButton icon="close" aria-label="Close" fillType="text" color="container" />` |
+| `IconButton` | `icon`\*, `aria-label`\*, `fillType`, `color`, `size`. No children | `<IconButton icon="close" aria-label="Close" fillType="text" color="container" />` |
 | `SplitButton` | `<div>` props | `<SplitButton><Button>Save</Button><IconButton icon="arrow_drop_down" aria-label="More" /></SplitButton>` |
-| `HoldButton` | `onConfirm`*, `holdDuration` (1500), Button props | `<HoldButton color="error" onConfirm={del}>Hold to delete</HoldButton>` |
+| `HoldButton` | `onConfirm`\*, `holdDuration` (1500), Button props | `<HoldButton color="error" onConfirm={del}>Hold to delete</HoldButton>` |
 | `Toggle` | `pressed`/`defaultPressed`/`onPressedChange`, `color`, `fillType`; text: `children`, `startIcon`, `size`; icon: `icon` + `aria-label` | `<Toggle icon="favorite" aria-label="Favorite" />` |
 | `ToggleGroup` | `value`/`defaultValue`/`onValueChange` (single value; array with `multiple`), `multiple`, `color`, `fillType`, `size` | `<ToggleGroup aria-label="View" defaultValue="list">…</ToggleGroup>` |
-| `ToggleGroupItem` | `value`*, `startIcon`, `endIcon`, `children` | `<ToggleGroupItem value="list">List</ToggleGroupItem>` |
-| `FAB` | `icon`_, `label` or `aria-label`_, `size`, `color`, `fillType`, `sticky` | `<FAB icon="add" aria-label="New" style={{ position: 'fixed', right: 16, bottom: 16 }} />` |
-| `FABMenu` | `icon`_, `aria-label`_, `children`* (`FABMenuItem`s), `side`, `align`, `color` | `<FABMenu icon="add" aria-label="Create"><FABMenuItem icon="folder">Folder</FABMenuItem></FABMenu>` |
-| `Chip` / `FilterChip` / `InputChip` | `startIcon`; FilterChip `pressed`/`onPressedChange`; InputChip `onRemove`*, `removeLabel` | `<FilterChip pressed={on} onPressedChange={setOn}>Vegan</FilterChip>` |
+| `ToggleGroupItem` | `value`\*, `startIcon`, `endIcon`, `children` | `<ToggleGroupItem value="list">List</ToggleGroupItem>` |
+| `FAB` | `icon`\*, `label` or `aria-label`\*, `size`, `color`, `fillType`, `sticky` | `<FAB icon="add" aria-label="New" style={{ position: 'fixed', right: 16, bottom: 16 }} />` |
+| `FABMenu` | `icon`\*, `aria-label`\*, `children`\* (`FABMenuItem`s), `side`, `align`, `color` | `<FABMenu icon="add" aria-label="Create"><FABMenuItem icon="folder">Folder</FABMenuItem></FABMenu>` |
+| `Chip` / `FilterChip` / `InputChip` | `startIcon`; FilterChip `pressed`/`onPressedChange`; InputChip `onRemove`\*, `removeLabel` | `<FilterChip pressed={on} onPressedChange={setOn}>Vegan</FilterChip>` |
 
 ### Form controls
 
@@ -96,17 +96,17 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `Input` | `label`, `size: 'small'\|'normal'`, `value`/`defaultValue`, `onValueChange(string)` or `onChange(event)`, input attrs | `<Input label="Email" type="email" value={v} onValueChange={setV} />` |
 | `Textarea` | same as Input + `rows` | `<Textarea label="Bio" rows={4} />` |
 | `Select` | `items` (map or `{value,label}[]`), `value`/`defaultValue`/`onValueChange(value)`, `label`, `placeholder`, `multiple`, `name` | `<Select label="Fruit" items={fruits} defaultValue="apple">{…SelectItem}</Select>` |
-| `SelectItem` | `value`*, children = label | `<SelectItem value="apple">Apple</SelectItem>` |
-| `Combobox` | `items`, `children`* = `(item) => <ComboboxItem/>`, `value`/`onValueChange(item)`, `itemToStringLabel`, `label`, `empty` | `<Combobox label="Fruit" items={list}>{(f: string) => <ComboboxItem key={f} value={f}>{f}</ComboboxItem>}</Combobox>` |
-| `Search` | `aria-label`_, `items`, `children`_ = `(item) => <SearchItem/>`, `value`/`onValueChange(text)`, `placeholder`, `empty` | `<Search aria-label="Search" items={[]} onValueChange={setQ}>{(i: string) => <SearchItem key={i} value={i}>{i}</SearchItem>}</Search>` |
+| `SelectItem` | `value`\*, children = label | `<SelectItem value="apple">Apple</SelectItem>` |
+| `Combobox` | `items`, `children`\* = `(item) => <ComboboxItem/>`, `value`/`onValueChange(item)`, `itemToStringLabel`, `label`, `empty` | `<Combobox label="Fruit" items={list}>{(f: string) => <ComboboxItem key={f} value={f}>{f}</ComboboxItem>}</Combobox>` |
+| `Search` | `aria-label`\*, `value`/`onValueChange(text)`, `placeholder`, `color` (`surface`/`container`); suggestions: `items` + `children` = `(item) => <SearchItem/>`, `empty` | `<Search aria-label="Filter" value={q} onValueChange={setQ} />` |
 | `Checkbox` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `indeterminate`, `name` | `<label><Checkbox checked={c} onCheckedChange={setC} /> Remember me</label>` |
 | `Switch` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `name` | `<label><Switch defaultChecked /> Wi-Fi</label>` |
-| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
-| `Slider` | `label` or `aria-label`*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
-| `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
-| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
+| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`\* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
+| `Slider` | `label` or `aria-label`\*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
+| `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`\* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
+| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`\*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
 | `Calendar` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange` | `<Calendar value={d} onValueChange={setD} />` |
-| `PinInput` | `length`_, `label` or `aria-label`_, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
+| `PinInput` | `length`\*, `label` or `aria-label`\*, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
 | `Field` | `name`, `validate`, `validationMode: 'onSubmit'\|'onBlur'\|'onChange'`, `invalid`, `disabled` | `<Field name="email"><Input label="Email" required /><FieldError /></Field>` |
 | `FieldDescription` / `FieldError` | FieldError `match` | `<FieldError match="valueMissing">Required</FieldError>` |
 
@@ -118,7 +118,7 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `BottomSheet` | same shape: `BottomSheetTrigger`, `BottomSheetPopup`, `BottomSheetTitle`, `BottomSheetDescription`, `BottomSheetClose`; `snapPoints` | |
 | `Popover` | `PopoverTrigger`, `PopoverPopup` (`side`, `align`, `sideOffset`), `PopoverTitle`, `PopoverDescription`, `PopoverClose` | |
 | `PreviewCard` | `PreviewCardTrigger` (an `<a href>`), `PreviewCardPopup` | |
-| `Tooltip` | `label`_, one element child_, `side`, `align`, `delay` | `<Tooltip label="Delete"><IconButton icon="delete" aria-label="Delete" /></Tooltip>` |
+| `Tooltip` | `label`\*, one element child_, `side`, `align`, `delay` | `<Tooltip label="Delete"><IconButton icon="delete" aria-label="Delete" /></Tooltip>` |
 | `Menu` | `MenuTrigger`, `MenuPopup` (`side`, `align`), `MenuItem` (`onClick`, `startIcon`, `endIcon`, `disabled`), `MenuGroup`, `MenuSubmenu` + `MenuSubmenuTrigger` | see Patterns |
 | `ContextMenu` | `ContextMenuTrigger` (area) + `MenuPopup` / `MenuItem` | |
 | `Menubar` | contains `Menu`s | |
@@ -128,18 +128,18 @@ Props marked * are required. All components also take `className`, `style`, `ref
 
 | Component | Key props | Usage |
 | --- | --- | --- |
-| `AppBar` | `label`*, `labelAs`, `start`, `end`, `size: 'normal'\|'big'`, `centered`, `color` ('container') | `<AppBar label="Inbox" start={…} end={…} />` |
-| `NavigationBar` / `NavigationBarItem` | item: `icon`_, `label`_, `active`, `href` or `render={<Link/>}` | `<NavigationBarItem icon="home" label="Home" href="/" active />` |
-| `NavigationRail` / `NavigationRailToggle` / `NavigationRailItem` | rail: `expanded`/`defaultExpanded`/`onExpandedChange`; toggle: `aria-label`_; item: `icon`_, `label`*, `active`, `end`, `href` | |
-| `NavigationList` / `NavigationListItem` | item: `label`*, `active`, `href`, `render` | |
-| `NavigationDrawer` | `NavigationDrawerTrigger`, `NavigationDrawerPopup`, `NavigationDrawerTitle`, `NavigationDrawerItem` (`icon`_, `label`_, `active`, `href`) | |
-| `Tabs` | `value`/`defaultValue`/`onValueChange`; `TabsList`, `TabsTab` (`value`_, `icon`), `TabsPanel` (`value`_). Always set `defaultValue` | see Patterns |
+| `AppBar` | `label`\*, `labelAs`, `start`, `end`, `size: 'normal'\|'big'`, `centered`, `color` ('container') | `<AppBar label="Inbox" start={…} end={…} />` |
+| `NavigationBar` / `NavigationBarItem` | item: `icon`\*, `label`\*, `active`, `href` or `render={<Link/>}` | `<NavigationBarItem icon="home" label="Home" href="/" active />` |
+| `NavigationRail` / `NavigationRailToggle` / `NavigationRailItem` | rail: `expanded`/`defaultExpanded`/`onExpandedChange`; toggle: `aria-label`\*; item: `icon`\*, `label`\*, `active`, `end`, `href` | |
+| `NavigationList` / `NavigationListItem` | item: `label`\*, `active`, `href`, `render` | |
+| `NavigationDrawer` | `NavigationDrawerTrigger`, `NavigationDrawerPopup`, `NavigationDrawerTitle`, `NavigationDrawerItem` (`icon`\*, `label`\*, `active`, `href`) | |
+| `Tabs` | `value`/`defaultValue`/`onValueChange`; `TabsList`, `TabsTab` (`value`\*, `icon`), `TabsPanel` (`value`\*). Always set `defaultValue` | see Patterns |
 | `FloatingToolbar` | `inverseColor`; `FloatingToolbarButton` (IconButton props), `FloatingToolbarSeparator` | |
 | `Card` | `color` ('container'), `fillType`, `clickable`; `CardTitle` (`as`), `CardContent`, `CardActions` | |
-| `List` / `ListItem` | list: `divided`; item: `label`*, `description`, `start`, `end`, `render`. No children | `<ListItem label="Wi-Fi" end={<Switch />} render={<label />} />` |
+| `List` / `ListItem` | list: `divided`; item: `label`\*, `description`, `start`, `end`, `render`. No children | `<ListItem label="Wi-Fi" end={<Switch />} render={<label />} />` |
 | `Table` | `TableCaption`, `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`, `TableCell` (native elements) | |
 | `Accordion` | `value`/`defaultValue` (array), `multiple`; `AccordionItem` (`value`), `AccordionTrigger` (`as`), `AccordionPanel` | |
-| `Carousel` / `CarouselItem` | `aria-label`* | |
+| `Carousel` / `CarouselItem` | `aria-label`\* | |
 | `Divider` | `orientation`, `label`, `squiggly` | `<Divider label="or" />` |
 | `Typography` | `type: 'body'\|'caption'\|'h1'…'h6'` (not `variant`), `as` | `<Typography type="h5" as="h1">Settings</Typography>` |
 
@@ -150,11 +150,11 @@ Props marked * are required. All components also take `className`, `style`, `ref
 | `Avatar` | `name`, `src`, `icon`, `size` (32/40/56px), `color` | `<Avatar name="Ada Lovelace" src={url} />` |
 | `AvatarGroup` | `max`, `size`, `fan`, `aria-label` | `<AvatarGroup max={3} aria-label="Team">{avatars}</AvatarGroup>` |
 | `Badge` | `count` (omit for dot, 0 hides), `max`, `color` ('error'), wraps children | `<Badge count={3}><IconButton icon="mail" aria-label="Mail, 3 new" /></Badge>` |
-| `Icon` | `name`* | `<Icon name="star" />` |
-| `Progress` | `value`* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
+| `Icon` | `name`\* | `<Icon name="star" />` |
+| `Progress` | `value`\* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`\*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
 | `Skeleton` | `variant: 'text'\|'circular'\|'rectangular'`, `animation`; size via `style` | `<Skeleton style={{ width: 120 }} />` |
 | `Sticker` | `color`, `startIcon`, `tilt` | `<Sticker>NEW</Sticker>` |
-| `AnimatedNumber` | `value`*, `format`, `locales` | `<AnimatedNumber value={n} />` |
+| `AnimatedNumber` | `value`\*, `format`, `locales` | `<AnimatedNumber value={n} />` |
 | `Kbd` | `children`, `listen`, `listenFor` | `<Kbd>⌘</Kbd><Kbd>K</Kbd>` |
 
 ## Patterns
@@ -440,7 +440,7 @@ Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)
 | `<Button size="lg">` / `size="sm"` | `size="big"` / `size="small"` |
 | `<Button><Plus /> Add</Button>` | `<Button startIcon="add">Add</Button>` |
 | `<IconButton><DeleteIcon /></IconButton>` | `<IconButton icon="delete" aria-label="Delete" />` |
-| `<IconButton icon="x" size="small" />` | IconButton has no `size`; it's always 40px |
+| `<IconButton icon="close" size="sm" />` | `size="small"` (`'small' \| 'normal' \| 'big'`) |
 | `<DialogTrigger asChild><Button>Open</Button></DialogTrigger>` | `<DialogTrigger render={<Button />}>Open</DialogTrigger>` |
 | `<DialogTrigger>Open</DialogTrigger>` expecting a styled button | It's a bare `<button>`; add `render={<Button />}` |
 | `<DialogContent>`, `<DialogHeader>`, `<DialogFooter>` | `<DialogPopup>`, (nothing), `<DialogActions>` |
@@ -850,7 +850,7 @@ export function Example() {
 
 - Every component takes `ref` (React 19 `ref` prop) and passes unknown props to its main element.
 - `className` is merged with the library's classes, never replaced. On Base UI-based parts it can also be a function of state: `className={(state) => state.open ? 'open' : ''}`.
-- **Field-like components put `className` on the outer wrapper** (so width and margins work) and `ref` on the input: `Input`, `Textarea`, `DateInput`. `Select`, `Combobox`, `Search` put `className` on the field wrapper; their other props go to the Base UI Root, which renders no element.
+- **Field-like components split their props** (`Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Search`, `TimePicker`, `PinInput`): `className` and `style` go on the outer wrapper, so width and margins work; `ref`, `id`, `aria-*` and `data-*` go on the control. The control is the `<input>` / `<textarea>`, or the button for `Select` and `TimePicker`. `PinInput`'s `ref` is its group of boxes.
 - `Tooltip` puts `className` on the bubble. `FABMenu` puts it on the FAB.
 
 ## State props
@@ -951,7 +951,7 @@ Rules:
 - Custom rules: `validate={(value) => value ? null : 'Required'}` returns an error string or `null`. A failing `validate` blocks submit once it has run, so on a plain `<form>` use `validationMode="onBlur"` or `"onChange"` with it (the default is `"onSubmit"`). Keep a final check in `onSubmit` for anything that must hold.
 - Controls that work inside `Field`: `Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Checkbox`, `Switch`, `RadioGroup`, `Slider`.
 - `Button loading` disables the button, so it also blocks repeat submits.
-- `Select` with `name` submits the item's `value`, not its label.
+- `Select` with `name` submits the item's `value`, not its label. `DateInput` submits `"YYYY-MM-DD"` and `TimePicker` `"HH:mm"`, not the text they show.
 - Server errors: `<Field invalid>` plus `<FieldError match>` with your message (`match` true shows it whenever the field is invalid).
 - Values: `DateInput` and `Calendar` use `"YYYY-MM-DD"`, `TimePicker` `"HH:mm"`, `Slider` a number (or `number[]`).
 - There is no form library integration and no `Form` component. A plain `<form>` works. With react-hook-form, use controlled props (`value` + `onValueChange` / `checked` + `onCheckedChange`) in `Controller`.
@@ -1134,7 +1134,7 @@ export function Example() {
 
 # IconButton
 
-A round 40px button with only an icon. `aria-label` is required.
+A round button with only an icon. `aria-label` is required.
 
 ```ts
 import { IconButton } from 'anvilui'
@@ -1149,9 +1149,10 @@ import type { IconButtonProps } from 'anvilui'
 | `aria-label` | `string` | required | What the button does. |
 | `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
 | `color` | `ComponentColor` | `'primary'` | |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 48px, like `Button`. |
 | `disabled` | `boolean` | `false` | |
 
-Takes no `children` and has **no `size` prop** (always 40px). Also takes Base UI Button props and `<button>` attributes.
+Takes no `children`. Also takes Base UI Button props and `<button>` attributes.
 
 ## Example
 
@@ -1296,8 +1297,8 @@ import type { ToggleProps } from 'anvilui'
 | `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | Look while off. |
 | `children` | `ReactNode` | | Label (text toggle). |
 | `startIcon`, `endIcon` | `MaterialSymbol` | | Text toggle only. |
-| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | Text toggle only. |
-| `icon` | `MaterialSymbol` | | Makes it a round icon toggle. Requires `aria-label`; no children or size. |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 48px, for text and icon toggles. |
+| `icon` | `MaterialSymbol` | | Makes it a round icon toggle. Requires `aria-label`; no children. |
 | `value` | `string` | | Identifies it in a Base UI ToggleGroup. |
 
 Either `children` or `icon` + `aria-label`, not both.
@@ -1353,7 +1354,7 @@ import type { ToggleGroupProps, ToggleGroupItemProps } from 'anvilui'
 | `disabled` | `boolean` | | |
 | `aria-label` / `aria-labelledby` | `string` | | Name the group (both are passed through). |
 
-Single mode is a Base UI RadioGroup; multiple mode is a Base UI ToggleGroup. `Value` is inferred from `value`, so a union-typed `useState<'list' | 'grid'>` setter can be passed straight to `onValueChange`.
+Single mode is a Base UI RadioGroup; multiple mode is a Base UI ToggleGroup. `Value` is inferred from `value`, so a union-typed `useState<'list' | 'grid'>` setter can be passed straight to `onValueChange`. With no `value` / `defaultValue`, or in a wrapper typed with `ToggleGroupProps`, it's `unknown`: write `ToggleGroupProps<'list' | 'grid'>`.
 
 ## ToggleGroupItem props
 
@@ -1586,6 +1587,7 @@ import type { InputProps } from 'anvilui'
 | `onValueChange` | `(value: string, details) => void` | | The string. |
 | `onChange` | `ChangeEventHandler<HTMLInputElement>` | | The native event also works. |
 | `className` | `string` | | On the **wrapper** `<label>` (width, margins). |
+| `style` | `CSSProperties` | | On the wrapper too. |
 | `ref` | | | On the `<input>`. |
 | everything else | `<input>` attributes | | `type`, `name`, `placeholder`, `required`, `disabled`, `autoComplete`, … go on the `<input>`. |
 
@@ -1636,7 +1638,7 @@ import type { TextareaProps } from 'anvilui'
 | `label` | `ReactNode` | | Floating label. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `onValueChange` | `(value: string, details) => void` | | Or native `onChange`. |
-| `className` | `string` | | On the wrapper. |
+| `className`, `style` | | | On the wrapper; `ref` and other props go on the `<textarea>`. |
 
 ```tsx
 import { Textarea } from 'anvilui'
@@ -1738,9 +1740,10 @@ import type { SelectProps, SelectItemProps } from 'anvilui'
 | `name`, `required`, `disabled`, `readOnly` | | | |
 | `open` / `defaultOpen` / `onOpenChange` | | | |
 | `itemToStringLabel` | `(value) => string` | | For object values. |
-| `className` | `string` | | On the field wrapper. |
+| `className`, `style` | | | On the field wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the field's button. |
 
-Other props go to Base UI `Select.Root`, which renders no element: `id`, `style` and `ref` are not applied. Base UI docs: `node_modules/@base-ui/react/docs/react/components/select.md`.
+Everything else goes to Base UI `Select.Root`. Base UI docs: `node_modules/@base-ui/react/docs/react/components/select.md`.
 
 ## SelectItem props
 
@@ -1806,7 +1809,8 @@ import type { ComboboxProps, ComboboxItemProps } from 'anvilui'
 | `placeholder` | `string` | | |
 | `empty` | `ReactNode` | | Shown when nothing matches; without it the popup hides. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
-| `className` | `string` | | On the field wrapper. |
+| `className`, `style` | | | On the field wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the text `<input>`. |
 | `name`, `disabled`, `required`, `filter`, `limit` | | | Base UI Combobox.Root props. |
 
 ## ComboboxItem props
@@ -1862,7 +1866,7 @@ Base UI docs: `node_modules/@base-ui/react/docs/react/components/combobox.md`.
 
 # Search, SearchItem
 
-A Material 3 search bar with a suggestion list. `aria-label` is required. **Children are a render function** over `items`. The value is the typed text.
+A Material 3 search bar, with an optional suggestion list. `aria-label` is required. For suggestions, **children are a render function** over `items`; without children it's a plain search bar. The value is the typed text.
 
 ```ts
 import { Search, SearchItem } from 'anvilui'
@@ -1874,14 +1878,16 @@ import type { SearchProps, SearchItemProps } from 'anvilui'
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `aria-label` | `string` | required | |
-| `children` | `(item: Item, index: number) => ReactNode` | required | Renders one `SearchItem`. |
+| `children` | `(item: Item, index: number) => ReactNode` | | Renders one `SearchItem`. Leave out for a plain search bar. |
 | `items` | `readonly Item[]` | | Suggestions, filtered as you type. Pass `[]` for none. |
 | `value` / `defaultValue` | `string` | | The typed text. |
 | `onValueChange` | `(text: string, details) => void` | | |
 | `placeholder` | `string` | | |
 | `empty` | `ReactNode` | | Shown when nothing matches. |
+| `color` | `'surface' \| 'container'` | `'surface'` | The bar's background. Use `'container'` on a `surface` panel (drawer, sidebar) so the bar doesn't blend in. No other colors and no `fillType`. |
 | `clearLabel` | `string` | `'Clear'` | Name of the clear button. |
-| `className` | `string` | | On the bar. |
+| `className`, `style` | | | On the bar. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the text `<input>`. |
 | `itemToStringValue`, `filter`, `limit`, `openOnInputClick` | | | Base UI Autocomplete.Root props. |
 
 ## SearchItem props
@@ -1914,7 +1920,7 @@ export function Example() {
 }
 ```
 
-To filter a page's own content with no suggestion list, pass `items={[]}` and a render function that returns `null`, then filter your data with the typed text:
+To filter a page's own content, leave out `items` and children. It's then a plain search bar (with the clear button) that never opens a list; filter your data with the typed text:
 
 ```tsx
 import { useState } from 'react'
@@ -1927,9 +1933,7 @@ export function FilterExample() {
     const shown = people.filter((p) => p.toLowerCase().includes(query.toLowerCase()))
     return (
         <>
-            <Search aria-label="Filter people" placeholder="Filter people" items={[]} value={query} onValueChange={setQuery}>
-                {() => null}
-            </Search>
+            <Search aria-label="Filter people" placeholder="Filter people" value={query} onValueChange={setQuery} />
             <List>
                 {shown.map((p) => <ListItem key={p} label={p} />)}
             </List>
@@ -2079,6 +2083,23 @@ export function Example() {
 }
 ```
 
+The value type is inferred from `value` / `defaultValue`. With neither, or when you type the props yourself in a wrapper, it's `unknown`: pass the type as `RadioGroupProps<YourValue>`.
+
+```tsx
+import { Radio, RadioGroup, type RadioGroupProps } from 'anvilui'
+
+type Plan = 'free' | 'pro'
+
+export function PlanPicker(props: RadioGroupProps<Plan>) {
+    return (
+        <RadioGroup aria-label="Plan" {...props}>
+            <label><Radio value="free" /> Free</label>
+            <label><Radio value="pro" /> Pro</label>
+        </RadioGroup>
+    )
+}
+```
+
 For a compact row of 2–5 options, [ToggleGroup](toggle-group.md) looks better.
 
 ---
@@ -2105,7 +2126,7 @@ import type { SliderProps } from 'anvilui'
 | `onValueCommitted` | `(value, details) => void` | | On release. |
 | `min` / `max` / `step` | `number` | `0` / `100` / `1` | |
 | `showValue` | `boolean` | `true` | Value bubble while dragging or focused. |
-| `squiggly` | `boolean` | `false` | Wavy track (horizontal only). |
+| `squiggly` | `boolean` | `false` | Wavy track (horizontal only). Changing it animates: the wave flattens into the plain track and back, e.g. `squiggly={playing}` on a media seek bar. |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical is 160px tall; set height via `className`. |
 | `format` | `Intl.NumberFormatOptions` | | Formats the bubble. |
 | `disabled`, `name` | | | |
@@ -2154,7 +2175,8 @@ import type { DateInputProps } from 'anvilui'
 | `onValueChange` | `(value: string \| null) => void` | | `null` when cleared. |
 | `label` | `ReactNode` | | Either this or `aria-label`. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
-| `className` | `string` | | On the wrapper. |
+| `name` | `string` | | Submits `"YYYY-MM-DD"` with the form (also when the name comes from a `Field`). |
+| `className`, `style` | | | On the wrapper; `ref` and other props go on the `<input>`. |
 | `disabled`, `required`, `id`, `onBlur` | | | On the `<input>`. |
 
 No `min` / `max` / disabled dates.
@@ -2171,9 +2193,9 @@ export function Example() {
                 label="Start date"
                 value={start}
                 onValueChange={setStart}
+                name="start"
             />
-            {/* `name` on DateInput would submit the locale-formatted text; submit the ISO value like this */}
-            <input type="hidden" name="start" value={start ?? ''} />
+            {/* Submits start=2026-11-06, not the text shown in the field */}
         </form>
     )
 }
@@ -2197,7 +2219,7 @@ import type { TimePickerProps } from 'anvilui'
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` / `defaultValue` | `string \| null` | `null` | `"HH:mm"`, e.g. `"07:30"`, `"19:05"`. |
-| `onValueChange` | `(value: string) => void` | | On every change. The user can't clear it from the picker; to clear, set `value={null}` yourself (e.g. a Clear button). |
+| `onValueChange` | `(value: string \| null) => void` | | On every change. `null` when the user clears it with the picker's Clear button. |
 | `type` | `'dial' \| 'input'` | `'dial'` | |
 | `hourCycle` | `12 \| 24` | user's locale | 12 shows AM/PM. |
 | `label` | `ReactNode` | | Either this or `aria-label`. |
@@ -2205,7 +2227,8 @@ import type { TimePickerProps } from 'anvilui'
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `disabled` | `boolean` | `false` | |
 | `open` / `defaultOpen` / `onOpenChange` | | | The popup. |
-| `className`, other `<div>` props | | | On the wrapper. |
+| `ref`, `id`, `aria-*`, `data-*` | | | On the field's button. |
+| `className`, `style`, other `<div>` props | | | On the wrapper. |
 
 ```tsx
 import { useState } from 'react'
@@ -2280,7 +2303,7 @@ import type { PinInputProps } from 'anvilui'
 | `fillType` | `'filled' \| 'outlined'` | `'outlined'` | |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `name`, `disabled`, `required`, `autoSubmit` | | | |
-| `className` | `string` | | On the wrapper. |
+| `className`, `style` | | | On the wrapper; `ref` goes on the group of boxes. |
 
 ```tsx
 import { PinInput } from 'anvilui'
@@ -3865,7 +3888,7 @@ import type { ProgressProps } from 'anvilui'
 | `value` | `number \| null` | | `null` = indeterminate (spinning / sweeping). Required by Base UI: pass `null` explicitly for loading. |
 | `min` / `max` | `number` | `0` / `100` | |
 | `type` | `'linear' \| 'circular' \| 'inline'` | `'linear'` | `inline` is a ring the size of the text. |
-| `squiggly` | `boolean` | `false` | Wavy bar (linear only). |
+| `squiggly` | `boolean` | `false` | Wavy bar (linear only). Changing it animates: the wave flattens into the plain bar and back. |
 | `label` | `ReactNode` | | Visible label. Either this or `aria-label`. |
 | `aria-label` | `string` | | |
 

@@ -17,8 +17,8 @@ import type { ToggleProps } from 'anvilui'
 | `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | Look while off. |
 | `children` | `ReactNode` | | Label (text toggle). |
 | `startIcon`, `endIcon` | `MaterialSymbol` | | Text toggle only. |
-| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | Text toggle only. |
-| `icon` | `MaterialSymbol` | | Makes it a round icon toggle. Requires `aria-label`; no children or size. |
+| `size` | `'small' \| 'normal' \| 'big'` | `'normal'` | 32, 40 or 48px, for text and icon toggles. |
+| `icon` | `MaterialSymbol` | | Makes it a round icon toggle. Requires `aria-label`; no children. |
 | `value` | `string` | | Identifies it in a Base UI ToggleGroup. |
 
 Either `children` or `icon` + `aria-label`, not both.

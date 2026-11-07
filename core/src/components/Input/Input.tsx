@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Input as BaseInput } from '@base-ui/react/input'
 import { cx } from '../../utils'
 import { useContext } from 'react'
@@ -6,7 +6,12 @@ import { AnvilContext } from '../AnvilRoot/AnvilContext'
 import { checkRoot, OUTSIDE_ROOT } from '../../dev'
 import './input.css'
 
-export type InputProps = Omit<BaseInput.Props, 'className' | 'size'> & {
+export type InputProps = Omit<
+    BaseInput.Props,
+    'className' | 'style' | 'size'
+> & {
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
     /** Floating label. Sits inside the field and moves onto the border once it has focus or a value. */
     label?: ReactNode
     /**
@@ -31,6 +36,7 @@ export function Input({
     label,
     size = 'normal',
     className,
+    style,
     placeholder,
     ...props
 }: InputProps) {
@@ -40,6 +46,7 @@ export function Input({
     }
     return (
         <label
+            style={style}
             className={cx(
                 'avl-input',
                 `avl-input-size-${size}`,

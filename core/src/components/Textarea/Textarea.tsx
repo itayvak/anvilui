@@ -1,11 +1,16 @@
-import type { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, CSSProperties, ReactNode } from 'react'
 import { Input as BaseInput } from '@base-ui/react/input'
 import { cx } from '../../utils'
 import '../Input/input.css'
 import './textarea.css'
 
-export type TextareaProps = Omit<ComponentProps<'textarea'>, 'className'> &
-    Pick<BaseInput.Props, 'onValueChange'> & {
+export type TextareaProps = Omit<
+    ComponentProps<'textarea'>,
+    'className' | 'style'
+> & {
+    /** Applied to the outer wrapper, with `className`. */
+    style?: CSSProperties
+} & Pick<BaseInput.Props, 'onValueChange'> & {
         /** Floating label. Sits on the first line and moves onto the border once it has focus or a value. */
         label?: ReactNode
         /**
@@ -29,11 +34,13 @@ export function Textarea({
     label,
     size = 'normal',
     className,
+    style,
     placeholder,
     ...props
 }: TextareaProps) {
     return (
         <label
+            style={style}
             className={cx(
                 'avl-input',
                 'avl-textarea',

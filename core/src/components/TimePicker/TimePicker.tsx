@@ -1,13 +1,15 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import { useId, useRef, useState, type ReactNode, type Ref } from 'react'
 import { Icon } from '../Icon/Icon'
+import { Button } from '../Button/Button'
 import {
     Popover,
+    PopoverClose,
     PopoverPopup,
     PopoverTrigger,
     type PopoverProps,
 } from '../Popover/Popover'
 import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup/ToggleGroup'
-import { cx } from '../../utils'
+import { cx, splitControlProps } from '../../utils'
 import { parseTime, type Time } from '../../datetime'
 import '../Input/input.css'
 import '../Select/select.css'
@@ -15,7 +17,7 @@ import './time-picker.css'
 
 export type TimePickerProps = Omit<
     React.ComponentProps<'div'>,
-    'children' | 'defaultValue'
+    'children' | 'defaultValue' | 'ref'
 > &
     Pick<PopoverProps, 'open' | 'defaultOpen' | 'onOpenChange'> & {
         /**
@@ -27,8 +29,8 @@ export type TimePickerProps = Omit<
         value?: string | null
         /** Starting time when `value` isn't controlled. @default null */
         defaultValue?: string | null
-        /** Called with the new `"HH:mm"` on every change. */
-        onValueChange?: (value: string) => void
+        /** Called with the new `"HH:mm"` on every change, or `null` once it's cleared. */
+        onValueChange?: (value: string | null) => void
         /** 12 shows AM/PM. @default the user's locale */
         hourCycle?: 12 | 24
         /** @default false */
@@ -40,6 +42,8 @@ export type TimePickerProps = Omit<
         size?: 'small' | 'normal'
         /** Submits the value with a form, as `"HH:mm"`. */
         name?: string
+        /** The field's button (the part that opens the picker). */
+        ref?: Ref<HTMLButtonElement>
     } & (
         | {
               /** Floating label, like Input's. */
@@ -89,8 +93,12 @@ export function TimePicker({
     defaultOpen,
     onOpenChange,
     className,
-    ...props
+    ref,
+    id,
+    ...allProps
 }: TimePickerProps) {
+    // ARIA and data attributes, `id` and `ref` describe the button, not the wrapper
+    const { control, rest: props } = splitControlProps(allProps)
     const [internal, setInternal] = useState(defaultValue)
     const value = valueProp !== undefined ? valueProp : internal
     const time = parseTime(value)
@@ -98,8 +106,8 @@ export function TimePicker({
     const labelId = useId()
     const valueId = useId()
 
-    const setTime = (t: Time) => {
-        const next = `${pad(t.h)}:${pad(t.m)}`
+    const setTime = (t: Time | null) => {
+        const next = t && `${pad(t.h)}:${pad(t.m)}`
         setInternal(next)
         onValueChange?.(next)
     }
@@ -131,6 +139,9 @@ export function TimePicker({
                 )}
             >
                 <PopoverTrigger
+                    {...control}
+                    ref={ref}
+                    id={id}
                     disabled={disabled}
                     className="avl-input-field avl-select-trigger"
                     // select.css rests the label while this is set
@@ -168,6 +179,7 @@ export function TimePicker({
                     time={time}
                     cycle={cycle}
                     onChange={setTime}
+                    onClear={() => setTime(null)}
                 />
             </PopoverPopup>
         </Popover>
@@ -180,8 +192,9 @@ function TimePanel(props: {
     time: Time | null
     cycle: 12 | 24
     onChange: (t: Time) => void
+    onClear: () => void
 }) {
-    const { type, time, cycle, onChange } = props
+    const { type, time, cycle, onChange, onClear } = props
     const [mode, setMode] = useState<Mode>('hour')
     const pm = time ? time.h >= 12 : false
     const hourText = time ? pad(displayHour(time.h, cycle)) : '--'
@@ -274,6 +287,16 @@ function TimePanel(props: {
                     onChange={onChange}
                     onHourDone={() => setMode('minute')}
                 />
+            )}
+            {time && (
+                <div className="avl-time-picker-actions">
+                    <PopoverClose
+                        render={<Button fillType="text" size="small" />}
+                        onClick={onClear}
+                    >
+                        Clear
+                    </PopoverClose>
+                </div>
             )}
         </div>
     )

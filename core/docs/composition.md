@@ -57,7 +57,7 @@ export function Example() {
 
 - Every component takes `ref` (React 19 `ref` prop) and passes unknown props to its main element.
 - `className` is merged with the library's classes, never replaced. On Base UI-based parts it can also be a function of state: `className={(state) => state.open ? 'open' : ''}`.
-- **Field-like components put `className` on the outer wrapper** (so width and margins work) and `ref` on the input: `Input`, `Textarea`, `DateInput`. `Select`, `Combobox`, `Search` put `className` on the field wrapper; their other props go to the Base UI Root, which renders no element.
+- **Field-like components split their props** (`Input`, `Textarea`, `DateInput`, `Select`, `Combobox`, `Search`, `TimePicker`, `PinInput`): `className` and `style` go on the outer wrapper, so width and margins work; `ref`, `id`, `aria-*` and `data-*` go on the control. The control is the `<input>` / `<textarea>`, or the button for `Select` and `TimePicker`. `PinInput`'s `ref` is its group of boxes.
 - `Tooltip` puts `className` on the bubble. `FABMenu` puts it on the FAB.
 
 ## State props

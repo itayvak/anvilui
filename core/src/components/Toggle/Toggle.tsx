@@ -36,7 +36,8 @@ export type ToggleProps = Omit<BaseToggle.Props, 'children'> &
               children?: never
               startIcon?: never
               endIcon?: never
-              size?: never
+              /** 32px, 40px or 48px, like `IconButton`. @default 'normal' */
+              size?: 'small' | 'normal' | 'big'
           }
     )
 
@@ -74,7 +75,7 @@ export function Toggle({
                 cx(
                     'avl-toggle',
                     icon
-                        ? 'avl-icon-button'
+                        ? `avl-icon-button avl-icon-button-size-${size}`
                         : `avl-button avl-button-size-${size}`,
                     state.pressed
                         ? colorClass(color, 'filled')

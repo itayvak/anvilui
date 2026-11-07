@@ -17,6 +17,7 @@ import type { InputProps } from 'anvilui'
 | `onValueChange` | `(value: string, details) => void` | | The string. |
 | `onChange` | `ChangeEventHandler<HTMLInputElement>` | | The native event also works. |
 | `className` | `string` | | On the **wrapper** `<label>` (width, margins). |
+| `style` | `CSSProperties` | | On the wrapper too. |
 | `ref` | | | On the `<input>`. |
 | everything else | `<input>` attributes | | `type`, `name`, `placeholder`, `required`, `disabled`, `autoComplete`, … go on the `<input>`. |
 
