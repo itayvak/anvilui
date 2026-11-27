@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "jsx": "react-jsx",
+        "strict": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "types": ["vite/client"],
+        // Same as the Vite alias: check against core's source, not its build
+        "paths": { "anvilui": ["../core/src/index.ts"] }
+    },
+    // core's ambient declarations (process.env.NODE_ENV, CSS imports)
+    "include": ["src", "../core/src/env.d.ts", "../core/src/css.d.ts"]
+}

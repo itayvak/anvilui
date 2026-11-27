@@ -41,6 +41,7 @@ npm run dev
 | `core/`       | `npm run build`      | Builds the package and its type definitions                     |
 | `core/`       | `npm run dev`        | Rebuilds the package on every change                            |
 | `playground/` | `npm run dev`        | Runs the playground                                             |
+| `playground/` | `npm run typecheck`  | Type-checks the playground against core's source                |
 
 Using an AI coding agent? Most of them (Claude Code, Codex, Cursor, Copilot) read [AGENTS.md](AGENTS.md) at the repo root, which points them at the same rules and commands.
 
@@ -56,7 +57,7 @@ Using an AI coding agent? Most of them (Claude Code, Codex, Cursor, Copilot) rea
     npm run docs:llms
     ```
     and `npm run build` in `core/`.
-5. Open a pull request. Describe what changed and why, and add a screenshot or short clip for anything visual.
+5. Open a pull request. Describe what changed and why, and add a screenshot or short clip for anything visual. CI ([.woodpecker.yaml](.woodpecker.yaml)) runs the same checks: formatting, type-checks for core and the playground, the build, `docs:check`, and that `public/` matches the docs.
 
 A good pull request does one thing. If you notice something unrelated along the way, a separate PR (or an issue) keeps reviews quick.
 

@@ -1,0 +1,41 @@
+# CI for AnvilUI. Every check here can also be run locally; see AGENTS.md.
+# Publishing stays manual: npm's two-factor prompt needs a person.
+
+when:
+    - event: pull_request
+    - event: push
+      branch: main
+    - event: manual
+
+steps:
+    - name: install
+      image: node:24
+      commands:
+          # One install for core and the playground (npm workspaces)
+          - npm ci
+
+    - name: format
+      image: node:24
+      commands:
+          - npx prettier . --check
+
+    - name: typecheck
+      image: node:24
+      commands:
+          - npx tsc --noEmit -p core
+          - npm run typecheck -w playground
+
+    - name: build
+      image: node:24
+      commands:
+          - npm run build -w core
+
+    - name: docs
+      image: node:24
+      commands:
+          # Every docs example type-checks and renders
+          - npm run docs:check
+          # public/llms*.txt are generated: fail if they're out of date
+          - npm run docs:llms
+          - git config --global --add safe.directory "$CI_WORKSPACE"
+          - git diff --exit-code -- public/

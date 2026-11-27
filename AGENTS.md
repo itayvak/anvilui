@@ -17,6 +17,7 @@ Instructions for AI coding agents changing this repository. AnvilUI (`anvilui` o
 | After you change                            | Run                                                                                                          |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | any TypeScript in `core/`                   | `npx tsc --noEmit -p .` in `core/`                                                                           |
+| the playground, or a prop it uses           | `npm run typecheck` in `playground/`                                                                         |
 | a component's API, or any docs              | `npm run docs:check` from the root (every docs example must type-check and render), then `npm run docs:llms` |
 | anything                                    | `npm run format` from the root                                                                               |
 | before saying you're done with package code | `npm run build` in `core/`                                                                                   |
