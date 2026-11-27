@@ -6,7 +6,7 @@ import {
     type WaveSpan,
 } from '../SquigglyWave/SquigglyWave'
 import { cx, withClass } from '../../utils'
-import { checkName } from '../../dev'
+import { checkName, devError } from '../../dev'
 import '../Tooltip/tooltip.css'
 import './slider.css'
 
@@ -21,6 +21,12 @@ export type SliderProps<
      * wave and the plain track, e.g. `squiggly={playing}`. @default false
      */
     squiggly?: boolean
+    /**
+     * Names each handle of a range, e.g.
+     * `(i) => (i === 0 ? 'Minimum price' : 'Maximum price')`. Without it,
+     * every handle gets the same name.
+     */
+    getAriaLabel?: (index: number) => string
 } &
     // Something has to name the slider for screen readers
     (
@@ -50,19 +56,27 @@ export function Slider<Value extends number | readonly number[]>({
     'aria-label': ariaLabel,
     showValue = true,
     squiggly = false,
+    getAriaLabel,
     className,
     ...props
 }: SliderProps<Value>) {
-    if (process.env.NODE_ENV !== 'production' && label == null) {
-        checkName(
-            { 'aria-label': ariaLabel, ...props },
-            'Slider',
-            '<Slider label="Volume" />   // or <Slider aria-label="Volume" />',
-            'slider.md'
-        )
-    }
     const initial = props.value ?? props.defaultValue
     const thumbCount = Array.isArray(initial) ? initial.length : 1
+    if (process.env.NODE_ENV !== 'production') {
+        if (label == null)
+            checkName(
+                { 'aria-label': ariaLabel, ...props },
+                'Slider',
+                '<Slider label="Volume" />   // or <Slider aria-label="Volume" />',
+                'slider.md'
+            )
+        if (thumbCount > 1 && !getAriaLabel)
+            devError(
+                '<Slider> has several handles but no `getAriaLabel`, so screen readers give every handle the same name.',
+                "<Slider\n    label=\"Price\"\n    defaultValue={[20, 80]}\n    getAriaLabel={(i) => (i === 0 ? 'Minimum price' : 'Maximum price')}\n/>",
+                'slider.md'
+            )
+    }
     const wavy = squiggly && props.orientation !== 'vertical'
     const morph = useWaveMorph(wavy)
 
@@ -105,6 +119,7 @@ export function Slider<Value extends number | readonly number[]>({
                             key={i}
                             index={i}
                             aria-label={ariaLabel}
+                            getAriaLabel={getAriaLabel}
                             className="avl-slider-thumb"
                             // Base UI marks every handle as dragging, so mark
                             // the one being moved: only its track pinches

@@ -144,7 +144,7 @@ export function DiscoverPage() {
                         ? shown.map((a) => (
                               <div key={a.id} className="gr-skeleton-card">
                                   <Skeleton
-                                      variant="rectangular"
+                                      type="rectangular"
                                       className="gr-skeleton-cover"
                                   />
                                   <Skeleton style={{ width: '70%' }} />

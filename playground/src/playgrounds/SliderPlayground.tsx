@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Slider, Switch, Typography } from 'anvilui'
 import { Row, Section, Labeled } from '../ui'
 
+const handleName = (i: number) => (i === 0 ? 'Start' : 'End')
+
 export function SliderPlayground() {
     const [disabled, setDisabled] = useState(false)
     // Toggling shows the wave easing into the plain track and back
@@ -52,6 +54,7 @@ export function SliderPlayground() {
                 <Slider
                     disabled={disabled}
                     label="Range"
+                    getAriaLabel={handleName}
                     value={range}
                     onValueChange={setRange}
                 />
@@ -68,6 +71,7 @@ export function SliderPlayground() {
                     squiggly={wavy}
                     disabled={disabled}
                     label="Squiggly range"
+                    getAriaLabel={handleName}
                     defaultValue={[25, 70]}
                 />
                 <Slider
@@ -89,6 +93,7 @@ export function SliderPlayground() {
                     orientation="vertical"
                     disabled={disabled}
                     label="Vertical range"
+                    getAriaLabel={handleName}
                     defaultValue={[25, 75]}
                 />
                 <Slider

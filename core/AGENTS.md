@@ -12,7 +12,7 @@
 6. Callbacks get **values, not events**: `onValueChange(value)`, `onCheckedChange(checked)`, `onOpenChange(open)`, `onPressedChange(pressed)`. No `onChange` except on `Input`/`Textarea` (native).
 7. `Checkbox`, `Switch`, `Radio` have **no `label` prop**: wrap them in `<label>`. Most other controls take `label`.
 8. Titles and text often go in **`label`, not children**: `AppBar`, `ListItem`, `Tooltip`, nav items, `Input`, `Select`, `Slider`, `Progress`.
-9. Icon-only controls require `aria-label` (`IconButton`, `FAB` without `label`, icon `Toggle`, `Slider`/`Progress` without `label`, `Search`, `Carousel`).
+9. Icon-only controls require `aria-label` (`IconButton`, `FAB` without `label`, icon `Toggle`, `Slider`/`Progress` without `label`, `Search`, `Carousel`). Groups and navigation need one too: `ToggleGroup`, `RadioGroup` (or a `<fieldset>` with `<legend>`), `FloatingToolbar`, `AvatarGroup`, `NavigationBar`/`Rail`/`List`.
 10. `Button` defaults to `type="button"`. Use `type="submit"` in forms.
 11. Dates are `"YYYY-MM-DD"` strings, times `"HH:mm"` strings. Not `Date` objects.
 12. No layout components (`Box`, `Stack`, `Grid`, `Container`, `Flex`) and no `sx`. Use plain elements with `style` / CSS and theme variables like `var(--avl-spacing-x4)`.
@@ -95,10 +95,10 @@ Props marked \* are required. All components also take `className`, `style`, `re
 | `Search` | `aria-label`\*, `value`/`onValueChange(text)`, `placeholder`, `color` (`surface`/`container`); suggestions: `items` + `children` = `(item) => <SearchItem/>`, `empty` | `<Search aria-label="Filter" value={q} onValueChange={setQ} />` |
 | `Checkbox` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `indeterminate`, `name` | `<label><Checkbox checked={c} onCheckedChange={setC} /> Remember me</label>` |
 | `Switch` | `checked`/`defaultChecked`/`onCheckedChange(boolean)`, `name` | `<label><Switch defaultChecked /> Wi-Fi</label>` |
-| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`\* | `<RadioGroup defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
-| `Slider` | `label` or `aria-label`\*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format` | `<Slider label="Volume" defaultValue={50} />` |
+| `RadioGroup` / `Radio` | group: `value`/`defaultValue`/`onValueChange(value)`, `name`; radio: `value`\* | `<RadioGroup aria-label="Plan" defaultValue="a"><label><Radio value="a" /> A</label></RadioGroup>` |
+| `Slider` | `label` or `aria-label`\*, `value`/`defaultValue` (number or number[]), `onValueChange(number)`, `min`, `max`, `step`, `showValue`, `format`, `getAriaLabel(index)` (names each handle of a range) | `<Slider label="Volume" defaultValue={50} />` |
 | `DateInput` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange`, `label` or `aria-label`\* | `<DateInput label="Due" value={d} onValueChange={setD} />` |
-| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`\*, `name` | `<TimePicker label="Start" defaultValue="09:00" />` |
+| `TimePicker` | `value`/`defaultValue` `"HH:mm" \| null`, `onValueChange`, `type: 'dial'\|'input'`, `hourCycle: 12\|24`, `label` or `aria-label`\*, `name` (own, not inside `Field`) | `<TimePicker label="Start" defaultValue="09:00" />` |
 | `Calendar` | `value`/`defaultValue` `"YYYY-MM-DD" \| null`, `onValueChange` | `<Calendar value={d} onValueChange={setD} />` |
 | `PinInput` | `length`\*, `label` or `aria-label`\*, `value`/`onValueChange`, `onValueComplete`, `mask`, `validationType` | `<PinInput label="Code" length={6} />` |
 | `Field` | `name`, `validate`, `validationMode: 'onSubmit'\|'onBlur'\|'onChange'`, `invalid`, `disabled` | `<Field name="email"><Input label="Email" required /><FieldError /></Field>` |
@@ -141,12 +141,12 @@ Props marked \* are required. All components also take `className`, `style`, `re
 
 | Component | Key props | Usage |
 | --- | --- | --- |
-| `Avatar` | `name`, `src`, `icon`, `size` (32/40/56px), `color` | `<Avatar name="Ada Lovelace" src={url} />` |
+| `Avatar` | `name` (or `aria-label`), `src`, `icon`, `size` (32/40/56px), `color` | `<Avatar name="Ada Lovelace" src={url} />` |
 | `AvatarGroup` | `max`, `size`, `fan`, `aria-label` | `<AvatarGroup max={3} aria-label="Team">{avatars}</AvatarGroup>` |
 | `Badge` | `count` (omit for dot, 0 hides), `max`, `color` ('error'), wraps children | `<Badge count={3}><IconButton icon="mail" aria-label="Mail, 3 new" /></Badge>` |
 | `Icon` | `name`\* | `<Icon name="star" />` |
 | `Progress` | `value`\* (`number \| null`), `type: 'linear'\|'circular'\|'inline'`, `label` or `aria-label`\*, `squiggly` | `<Progress type="circular" value={null} aria-label="Loading" />` |
-| `Skeleton` | `variant: 'text'\|'circular'\|'rectangular'`, `animation`; size via `style` | `<Skeleton style={{ width: 120 }} />` |
+| `Skeleton` | `type: 'text'\|'circular'\|'rectangular'` (not `variant`), `animation`; size via `style` | `<Skeleton style={{ width: 120 }} />` |
 | `Sticker` | `color`, `startIcon`, `tilt` | `<Sticker>NEW</Sticker>` |
 | `AnimatedNumber` | `value`\*, `format`, `locales` | `<AnimatedNumber value={n} />` |
 | `Kbd` | `children`, `listen`, `listenFor` | `<Kbd>⌘</Kbd><Kbd>K</Kbd>` |
@@ -455,6 +455,7 @@ Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)
 | `toast('Saved')`, `<Toaster />`, `<Snackbar open>` | `const snackbar = useSnackbar(); snackbar.show({ message: 'Saved' })` |
 | `snackbar.show({ message, severity: 'success' })` | no severity; put it in the message |
 | `<Typography variant="h4">` | `<Typography type="h4">` |
+| `<Skeleton variant="circular">` | `<Skeleton type="circular">` |
 | `<AppBar title="Inbox">` / `<AppBar>Inbox</AppBar>` | `<AppBar label="Inbox" />` |
 | `<ListItem>Text</ListItem>` / `primary=` / `secondary=` | `<ListItem label="Text" description="More" />` |
 | `<ListItem onClick={…} />` expecting a button | `<ListItem label="…" render={<button type="button" onClick={…} />} />` |
@@ -474,7 +475,7 @@ Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)
 
 ## Errors you may see
 
-In development, AnvilUI logs `[anvilui] …` errors with a fix and a doc path for: a missing stylesheet, components outside `AnvilRoot`, `asChild`, `variant` on Button/IconButton/Typography, `label` on Checkbox/Switch/Radio, missing `aria-label`, non-function Combobox/Search children, a Tooltip without one element child, and parts outside their parent. Base UI's own errors look like `Base UI: MenuRootContext is missing. Menu parts must be placed within <Menu.Root>`. `<Menu.Root>` there means AnvilUI's `<Menu>` (likewise `<Tabs.Root>` → `<Tabs>`, `<Dialog.Root>` → `<Dialog>`).
+In development, AnvilUI logs `[anvilui] …` errors with a fix and a doc path for: a missing stylesheet, components outside `AnvilRoot`, `asChild`, `variant` on Button/IconButton/Typography/Skeleton, `label` on Checkbox/Switch/Radio, missing `aria-label` (also on groups and navigation), a range Slider without `getAriaLabel`, a TimePicker inside a Field, non-function Combobox/Search children, a Tooltip without one element child, and parts outside their parent. Base UI's own errors look like `Base UI: MenuRootContext is missing. Menu parts must be placed within <Menu.Root>`. `<Menu.Root>` there means AnvilUI's `<Menu>` (likewise `<Tabs.Root>` → `<Tabs>`, `<Dialog.Root>` → `<Dialog>`).
 
 ## More
 

@@ -26,6 +26,12 @@
     transition: color var(--avl-ease-length-short) linear;
 }
 
+/* The list scrolls sideways, which clips anything outside it, so the ring
+   goes inside the tab */
+.avl-tabs-tab:focus-visible {
+    outline-offset: -3px;
+}
+
 /* Icon and label, with their own tinted background on hover and press */
 .avl-tabs-tab-content {
     display: flex;

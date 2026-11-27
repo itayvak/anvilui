@@ -6,13 +6,16 @@ export function cx(...parts: (string | false | null | undefined)[]) {
 }
 
 // Base UI's className is a string or a function of the state; keep both
-// working and append the caller's after ours.
+// working and append the caller's after ours. Ours can depend on the state too.
 export function withClass<State>(
-    base: string,
+    base: string | ((state: State) => string),
     className: string | ((state: State) => string | undefined) | undefined
 ) {
     return (state: State) =>
-        cx(base, typeof className === 'function' ? className(state) : className)
+        cx(
+            typeof base === 'function' ? base(state) : base,
+            typeof className === 'function' ? className(state) : className
+        )
 }
 
 // Field-like components put `className` and `style` on their wrapper and

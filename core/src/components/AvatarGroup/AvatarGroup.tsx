@@ -3,6 +3,7 @@ import { Avatar, type AvatarProps } from '../Avatar/Avatar'
 import { AvatarGroupContext } from '../Avatar/AvatarGroupContext'
 import { AnimatedNumber } from '../AnimatedNumber/AnimatedNumber'
 import { cx } from '../../utils'
+import { checkName, UNNAMED_GROUP } from '../../dev'
 import './avatar-group.css'
 
 export type AvatarGroupProps = ComponentProps<'div'> & {
@@ -35,6 +36,15 @@ export function AvatarGroup({
     children,
     ...props
 }: AvatarGroupProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkName(
+            props,
+            'AvatarGroup',
+            '<AvatarGroup aria-label="Project members">...</AvatarGroup>',
+            'avatar-group.md',
+            UNNAMED_GROUP
+        )
+    }
     const avatars = Children.toArray(children)
     const overflow = max !== undefined && avatars.length > max
     // The counter takes the last spot

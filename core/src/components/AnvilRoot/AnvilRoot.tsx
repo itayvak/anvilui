@@ -1,4 +1,5 @@
 import {
+    ComponentProps,
     Dispatch,
     ReactNode,
     SetStateAction,
@@ -19,12 +20,13 @@ import { themeToCssVariables } from '../../themes/toCssVariables'
 import { DesignTokens } from '../../tokens/types'
 import { baseDesignTokens } from '../../tokens/baseTokens'
 import { tokensToCssVariables } from '../../tokens/toCssVariables'
-import { cx } from '../../utils'
+import { cx, mergeRefs } from '../../utils'
 import { devError } from '../../dev'
 import '../../colors/colors.css'
 import './global.css'
 
-export type AnvilRootProps = {
+// Other <div> props (style, id, ref, data-*, ...) go on the root element
+export type AnvilRootProps = Omit<ComponentProps<'div'>, 'children'> & {
     /** Your app. Every AnvilUI component must be somewhere inside. */
     children: ReactNode
     /** Extra classes for the root element, e.g. to make it fill the viewport. */
@@ -103,12 +105,25 @@ const declarations = (vars: Record<string, string>) =>
  * </AnvilRoot>
  */
 export function AnvilRoot(props: AnvilRootProps) {
+    const {
+        children,
+        className,
+        colorMode: colorModeProp,
+        defaultColorMode,
+        onColorModeChange,
+        storageKey,
+        lightTheme: lightThemeProp,
+        darkTheme: darkThemeProp,
+        tokens: tokensProp,
+        ref,
+        ...divProps
+    } = props
     // Server and first client render agree on this; the saved value is
     // applied right after (and before paint by the inline script on SSR)
     const [internalSetting, setInternalSetting] = useState<ColorModeSetting>(
-        props.defaultColorMode ?? 'system'
+        defaultColorMode ?? 'system'
     )
-    const setting = props.colorMode ?? internalSetting
+    const setting = colorModeProp ?? internalSetting
     const osMode = useSyncExternalStore<ColorType>(
         subscribeToOs,
         getOsMode,
@@ -121,32 +136,32 @@ export function AnvilRoot(props: AnvilRootProps) {
     latestSetting.current = setting
 
     useLayoutEffect(() => {
-        if (!props.storageKey) return
-        const stored = readStored(props.storageKey)
+        if (!storageKey) return
+        const stored = readStored(storageKey)
         if (stored) {
             latestSetting.current = stored
             setInternalSetting(stored)
         }
-    }, [props.storageKey])
+    }, [storageKey])
 
     const setColorMode: Dispatch<SetStateAction<ColorModeSetting>> = (next) => {
         const value =
             typeof next === 'function' ? next(latestSetting.current) : next
         latestSetting.current = value
         setInternalSetting(value)
-        props.onColorModeChange?.(value)
-        if (props.storageKey) {
+        onColorModeChange?.(value)
+        if (storageKey) {
             try {
-                localStorage.setItem(props.storageKey, value)
+                localStorage.setItem(storageKey, value)
             } catch {
                 // Not being able to remember the mode is not worth surfacing
             }
         }
     }
 
-    const tokens: DesignTokens = { ...baseDesignTokens, ...props.tokens }
-    const lightTheme = props.lightTheme || baseLightTheme
-    const darkTheme = props.darkTheme || baseDarkTheme
+    const tokens: DesignTokens = { ...baseDesignTokens, ...tokensProp }
+    const lightTheme = lightThemeProp || baseLightTheme
+    const darkTheme = darkThemeProp || baseDarkTheme
     const rootRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -181,8 +196,8 @@ export function AnvilRoot(props: AnvilRootProps) {
         `@media ${darkQuery}{${root}[data-color-mode="system"]{${dark}}}`
 
     const restoreScript =
-        props.storageKey && props.colorMode === undefined
-            ? `try{var m=localStorage.getItem(${JSON.stringify(props.storageKey)});` +
+        storageKey && colorModeProp === undefined
+            ? `try{var m=localStorage.getItem(${JSON.stringify(storageKey)});` +
               `if(m==='light'||m==='dark'||m==='system')document.currentScript.parentElement.dataset.colorMode=m}catch(e){}`
             : undefined
 
@@ -199,8 +214,9 @@ export function AnvilRoot(props: AnvilRootProps) {
             }}
         >
             <div
-                ref={rootRef}
-                className={cx('avl-root', props.className)}
+                {...divProps}
+                ref={mergeRefs(rootRef, ref)}
+                className={cx('avl-root', className)}
                 data-avl-root={id}
                 data-color-mode={setting}
                 // The inline script may change data-color-mode before hydration
@@ -225,7 +241,7 @@ export function AnvilRoot(props: AnvilRootProps) {
                 <Tooltip.Provider>
                     {/* Up to 3 snackbars stack; a 4th pushes the oldest out */}
                     <Toast.Provider limit={3}>
-                        {props.children}
+                        {children}
                         <SnackbarViewport />
                     </Toast.Provider>
                 </Tooltip.Provider>

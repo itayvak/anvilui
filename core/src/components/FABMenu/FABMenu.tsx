@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from 'react'
+import { createContext, useContext, useRef, useState, type Ref } from 'react'
 import { Menu as BaseMenu } from '@base-ui/react/menu'
 import type { MaterialSymbol } from 'material-symbols'
 import { AnvilContext } from '../AnvilRoot/AnvilContext'
@@ -9,7 +9,7 @@ import {
     type ComponentColor,
     type ComponentFillType,
 } from '../../colors/colors'
-import { cx, withClass } from '../../utils'
+import { cx, mergeRefs, withClass } from '../../utils'
 import { checkRoot } from '../../dev'
 import '../FAB/fab.css'
 import './fab-menu.css'
@@ -42,6 +42,8 @@ export type FABMenuProps = Omit<
     sticky?: boolean
     /** Extra classes for the FAB itself. */
     className?: string
+    /** The FAB's `<button>`. */
+    ref?: Ref<HTMLButtonElement>
     /** `FABMenuItem`s, listed top to bottom. */
     children: React.ReactNode
 }
@@ -67,6 +69,7 @@ export function FABMenu({
     align = 'end',
     sticky = true,
     className,
+    ref,
     children,
     ...props
 }: FABMenuProps) {
@@ -91,7 +94,7 @@ export function FABMenu({
                 }}
             >
                 <BaseMenu.Trigger
-                    ref={trigger}
+                    ref={mergeRefs(trigger, ref)}
                     aria-label={ariaLabel}
                     className={cx(
                         'avl-fab avl-fab-size-normal avl-fab-menu-trigger',

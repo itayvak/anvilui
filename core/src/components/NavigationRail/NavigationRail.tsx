@@ -11,7 +11,7 @@ import { mergeProps } from '@base-ui/react/merge-props'
 import { Icon } from '../Icon/Icon'
 import { IconButton, type IconButtonProps } from '../IconButton/IconButton'
 import { cx, withClass } from '../../utils'
-import { devError } from '../../dev'
+import { devError, checkName, UNNAMED_NAV } from '../../dev'
 import './navigation-rail.css'
 
 const RailContext = createContext<{
@@ -51,6 +51,15 @@ export function NavigationRail({
     className,
     ...props
 }: NavigationRailProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkName(
+            props,
+            'NavigationRail',
+            '<NavigationRail aria-label="Main">...</NavigationRail>',
+            'navigation-rail.md',
+            UNNAMED_NAV
+        )
+    }
     const [internal, setInternal] = useState(defaultExpanded)
     const expanded = expandedProp ?? internal
     const setExpanded = (next: boolean) => {
@@ -105,7 +114,10 @@ export function NavigationRailToggle({
 
 // A link by default. Pass `render` to use a router link instead, e.g.
 // render={<Link to="/photos" />}.
-export type NavigationRailItemProps = useRender.ComponentProps<'a'> & {
+export type NavigationRailItemProps = Omit<
+    useRender.ComponentProps<'a'>,
+    'children'
+> & {
     /** Material Symbol to show. */
     icon: MaterialSymbol
     /** Visible text, also the link's accessible name. */

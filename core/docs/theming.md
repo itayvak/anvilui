@@ -37,7 +37,7 @@ import type {
 | `darkTheme` | `Theme` | `baseDarkTheme` | Colors in dark mode. |
 | `tokens` | `Partial<DesignTokens>` | `baseDesignTokens` | Spacing, radius, fonts, motion, shadows. Each category you pass **replaces** the whole default category. |
 
-AnvilRoot renders a `<div>` and takes no other props (no `style`, `id`, `theme`).
+AnvilRoot renders a `<div>`, and other `<div>` props (`style`, `id`, `ref`, `data-*`, ...) go on it. There is no `theme` prop: use `lightTheme` / `darkTheme`.
 
 ## Color mode
 

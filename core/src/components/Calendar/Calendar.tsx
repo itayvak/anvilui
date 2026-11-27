@@ -55,6 +55,13 @@ export function Calendar({
             new Date(now.getFullYear(), now.getMonth(), now.getDate())
         )
     })
+    // A new value from outside (controlled, or picked) shows its month
+    const selectedIso = selected && toIso(selected)
+    const [shownSelection, setShownSelection] = useState(selectedIso)
+    if (selectedIso !== shownSelection) {
+        setShownSelection(selectedIso)
+        if (selected) setFocused(selected)
+    }
     const [weekStart] = useState(localeWeekStart)
     const dayRef = useRef<HTMLButtonElement>(null)
     const moveFocus = useRef(false)
@@ -94,7 +101,6 @@ export function Calendar({
     }
 
     const today = toIso(new Date())
-    const selectedIso = selected && toIso(selected)
     const focusedIso = toIso(focused)
 
     const offset = (new Date(year, month, 1).getDay() - weekStart + 7) % 7

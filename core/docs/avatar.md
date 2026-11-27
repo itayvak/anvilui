@@ -17,7 +17,7 @@ import type { AvatarProps } from 'anvilui'
 | `fillType` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | |
 | `children` | `ReactNode` | | Replaces the fallback. |
 
-No `alt` prop: use `name`. Leave `name` out when the name is shown next to it.
+No `alt` prop: use `name` (an `aria-label` also names it, without showing initials). Leave `name` out when the name is shown next to it.
 
 ```tsx
 import { Avatar } from 'anvilui'

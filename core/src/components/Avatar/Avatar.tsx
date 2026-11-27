@@ -56,14 +56,15 @@ export function Avatar({
     const groupSize = useContext(AvatarGroupContext)
     const size = sizeProp ?? groupSize ?? 'normal'
     const letters = name ? initials(name) : ''
+    // Named by `name` or the caller's own aria-label(ledby)
+    const named = !!(name || props['aria-label'] || props['aria-labelledby'])
 
     return (
         <BaseAvatar.Root
-            // With a name it's one image to screen readers, named by it;
-            // without one it's decoration
-            role={name ? 'img' : undefined}
+            // Named, it's one image to screen readers; otherwise decoration
+            role={named ? 'img' : undefined}
             aria-label={name}
-            aria-hidden={name ? undefined : true}
+            aria-hidden={named ? undefined : true}
             {...props}
             className={withClass(
                 cx(

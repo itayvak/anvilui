@@ -1,4 +1,10 @@
-import { createContext, useContext, useLayoutEffect, useRef } from 'react'
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+} from 'react'
 import { Radio as BaseRadio } from '@base-ui/react/radio'
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group'
 import { Toggle as BaseToggle } from '@base-ui/react/toggle'
@@ -7,7 +13,7 @@ import type { MaterialSymbol } from 'material-symbols'
 import { ColorProps, colorClass } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
 import { mergeRefs, withClass } from '../../utils'
-import { devError } from '../../dev'
+import { checkName, devError, inNamedFieldset, UNNAMED_GROUP } from '../../dev'
 import './toggle-group.css'
 
 type ToggleGroupCommonProps = ColorProps & {
@@ -62,6 +68,19 @@ export function ToggleGroup<Value>({
 }: ToggleGroupProps<Value>) {
     const groupRef = useRef<HTMLDivElement>(null)
     const indicatorRef = useRef<HTMLDivElement>(null)
+
+    // After mount, so a surrounding <fieldset> with a <legend> counts as its name
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') return
+        if (inNamedFieldset(groupRef.current)) return
+        checkName(
+            props,
+            'ToggleGroup',
+            '<ToggleGroup aria-label="View" defaultValue="list">...</ToggleGroup>',
+            'toggle-group.md',
+            UNNAMED_GROUP
+        )
+    }, [])
 
     // The pill follows whichever radio has [data-checked]. Watching the DOM
     // covers controlled, uncontrolled and resizes without mirroring state.
@@ -125,7 +144,7 @@ export function ToggleGroup<Value>({
                 <BaseToggleGroup
                     {...(props as BaseToggleGroup.Props<string>)}
                     multiple
-                    ref={ref}
+                    ref={mergeRefs(groupRef, ref)}
                     className={classes}
                 >
                     {children}

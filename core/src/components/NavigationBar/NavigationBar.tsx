@@ -4,6 +4,7 @@ import { useRender } from '@base-ui/react/use-render'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { Icon } from '../Icon/Icon'
 import { cx } from '../../utils'
+import { checkName, UNNAMED_NAV } from '../../dev'
 import './navigation-bar.css'
 
 /**
@@ -23,12 +24,24 @@ export type NavigationBarProps = ComponentProps<'nav'>
  * </NavigationBar>
  */
 export function NavigationBar({ className, ...props }: NavigationBarProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkName(
+            props,
+            'NavigationBar',
+            '<NavigationBar aria-label="Main">...</NavigationBar>',
+            'navigation-bar.md',
+            UNNAMED_NAV
+        )
+    }
     return <nav {...props} className={cx('avl-navigation-bar', className)} />
 }
 
 // A link by default. Pass `render` to use a router link instead, e.g.
 // render={<Link to="/photos" />}.
-export type NavigationBarItemProps = useRender.ComponentProps<'a'> & {
+export type NavigationBarItemProps = Omit<
+    useRender.ComponentProps<'a'>,
+    'children'
+> & {
     /** Material Symbol to show. */
     icon: MaterialSymbol
     /** Visible text, also the link's accessible name. */

@@ -14,7 +14,7 @@ import type { TimePickerProps } from 'anvilui'
 | `type` | `'dial' \| 'input'` | `'dial'` | |
 | `hourCycle` | `12 \| 24` | user's locale | 12 shows AM/PM. |
 | `label` | `ReactNode` | | Either this or `aria-label`. |
-| `name` | `string` | | Submits `"HH:mm"` with a form. |
+| `name` | `string` | | Submits `"HH:mm"` with a form. Put it on TimePicker itself: it doesn't work inside a `Field`. |
 | `size` | `'small' \| 'normal'` | `'normal'` | |
 | `disabled` | `boolean` | `false` | |
 | `open` / `defaultOpen` / `onOpenChange` | | | The popup. |

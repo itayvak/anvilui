@@ -14,7 +14,7 @@ import {
 | --- | --- | --- |
 | `NavigationRail` | `<nav>` (96px wide, `height: 100%`) | `aria-label`; `expanded` / `defaultExpanded` (false) / `onExpandedChange(expanded)` |
 | `NavigationRailToggle` | `IconButton` (menu icon) | `aria-label` required. Must be inside the rail. |
-| `NavigationRailItem` | `<a>` | `icon` (required), `label: string` (required), `active`, `end` (short badge text, e.g. a count), `href`, `render` |
+| `NavigationRailItem` | `<a>` | `icon` (required), `label: string` (required; not children), `active`, `end` (short badge text, e.g. a count), `href`, `render` |
 
 ```tsx
 import {

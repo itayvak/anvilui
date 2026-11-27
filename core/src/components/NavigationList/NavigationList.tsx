@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import { useRender } from '@base-ui/react/use-render'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { cx } from '../../utils'
+import { checkName, UNNAMED_NAV } from '../../dev'
 import './navigation-list.css'
 
 /**
@@ -21,12 +22,24 @@ export type NavigationListProps = ComponentProps<'nav'>
  * </NavigationList>
  */
 export function NavigationList({ className, ...props }: NavigationListProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkName(
+            props,
+            'NavigationList',
+            '<NavigationList aria-label="Settings">...</NavigationList>',
+            'navigation-list.md',
+            UNNAMED_NAV
+        )
+    }
     return <nav {...props} className={cx('avl-navigation-list', className)} />
 }
 
 // A link by default. Pass `render` to use a router link instead, e.g.
 // render={<Link to="/photos" />}.
-export type NavigationListItemProps = useRender.ComponentProps<'a'> & {
+export type NavigationListItemProps = Omit<
+    useRender.ComponentProps<'a'>,
+    'children'
+> & {
     /** Visible text, also the link's accessible name. */
     label: string
     /** The current page. Sets aria-current="page". */

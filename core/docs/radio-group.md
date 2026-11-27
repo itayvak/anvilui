@@ -14,7 +14,7 @@ import type { RadioGroupProps, RadioProps } from 'anvilui'
 | `value` / `defaultValue` | `Value` | The picked radio's value. |
 | `onValueChange` | `(value: Value, details) => void` | |
 | `name`, `required`, `disabled`, `readOnly` | | |
-| `aria-label` / `aria-labelledby` | `string` | Name the group. |
+| `aria-label` / `aria-labelledby` | `string` | Name the group, or put it in a `<fieldset>` with a `<legend>`. |
 
 ## Radio props (Base UI Radio.Root)
 

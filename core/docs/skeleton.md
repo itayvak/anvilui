@@ -8,7 +8,7 @@ import { Skeleton } from 'anvilui'
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `'text' \| 'circular' \| 'rectangular'` | `'text'` | |
+| `type` | `'text' \| 'circular' \| 'rectangular'` | `'text'` | The shape. Not `variant`. |
 | `animation` | `'pulse' \| 'none'` | `'pulse'` | |
 
 Size it with `style` (`width`, `height`). No `width` / `height` props. Renders a `<span>`.
@@ -22,7 +22,7 @@ export function Example() {
             aria-busy="true"
             style={{ display: 'flex', gap: 12, alignItems: 'center' }}
         >
-            <Skeleton variant="circular" style={{ width: 40, height: 40 }} />
+            <Skeleton type="circular" style={{ width: 40, height: 40 }} />
             <div style={{ display: 'grid', gap: 4, flex: 1 }}>
                 <Skeleton style={{ width: '40%' }} />
                 <Skeleton style={{ width: '70%' }} />

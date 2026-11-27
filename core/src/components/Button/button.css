@@ -4,7 +4,6 @@
     justify-content: center;
     gap: var(--avl-spacing-x2);
     border: none;
-    outline: none;
     cursor: pointer;
     border-radius: var(--avl-radius-button);
     background-color: var(--avl-nested-color-main);

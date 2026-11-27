@@ -9,7 +9,7 @@ import type { CalendarProps } from 'anvilui'
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value` / `defaultValue` | `string \| null` | `null` | |
+| `value` / `defaultValue` | `string \| null` | `null` | The grid shows this date's month, and moves when `value` changes. |
 | `onValueChange` | `(value: string) => void` | | |
 | other | `<div>` props | | |
 

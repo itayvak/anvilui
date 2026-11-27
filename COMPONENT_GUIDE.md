@@ -81,6 +81,9 @@ A consumer's `className` must be kept, never overwritten. Destructure it, combin
 // Base UI part: className may be a function of state, so use withClass
 <BaseSwitch.Root {...props} className={withClass('avl-switch', className)} />
 
+// your own classes depend on state too: pass a function as the base
+<BaseToggle {...props} className={withClass((state) => cx('avl-toggle', state.pressed && 'avl-toggle-on'), className)} />
+
 // plain element: use cx
 <div {...props} className={cx('avl-card-content', className)} />
 ```

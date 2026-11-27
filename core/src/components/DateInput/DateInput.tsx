@@ -85,6 +85,7 @@ export function DateInput({
     size = 'normal',
     disabled,
     id,
+    onChange,
     onBlur,
     className,
     style,
@@ -163,6 +164,7 @@ export function DateInput({
                             const typed = parseTyped(text, order)
                             if (typed) commit(typed)
                         }
+                        onChange?.(e)
                     }}
                     onBlur={(e) => {
                         // Tidy a valid entry into the locale format; keep a bad one to fix

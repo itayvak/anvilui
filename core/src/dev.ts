@@ -62,17 +62,26 @@ export function checkRoot(
     )
 }
 
-/** For controls with no visible text: their name must come from aria-label. */
+export const NO_TEXT =
+    'It shows no text, so screen readers need an `aria-label`.'
+export const UNNAMED_GROUP =
+    "Screen readers announce the group without saying what it's for: give it an `aria-label`."
+export const UNNAMED_NAV =
+    'Screen readers list it as just "navigation": give it an `aria-label` to tell it apart from other navigation.'
+
+/** A `<fieldset>` with a `<legend>` already names the group of controls inside it. */
+export function inNamedFieldset(el: Element | null) {
+    return !!el?.closest('fieldset')?.querySelector(':scope > legend')
+}
+
+/** For controls and groups with no visible name: it must come from aria-label. */
 export function checkName(
     props: { 'aria-label'?: unknown; 'aria-labelledby'?: unknown },
     component: string,
     example: string,
-    doc: string
+    doc: string,
+    reason = NO_TEXT
 ) {
     if (props['aria-label'] || props['aria-labelledby']) return
-    devError(
-        `<${component}> has no accessible name. It shows no text, so screen readers need an \`aria-label\`.`,
-        example,
-        doc
-    )
+    devError(`<${component}> has no accessible name. ${reason}`, example, doc)
 }

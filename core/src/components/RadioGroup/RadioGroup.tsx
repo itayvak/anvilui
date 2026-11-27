@@ -1,7 +1,8 @@
 import { Radio as BaseRadio } from '@base-ui/react/radio'
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group'
-import { withClass } from '../../utils'
-import { checkProp } from '../../dev'
+import { useEffect, useRef } from 'react'
+import { mergeRefs, withClass } from '../../utils'
+import { checkProp, checkName, inNamedFieldset, UNNAMED_GROUP } from '../../dev'
 import './radio-group.css'
 
 export type RadioGroupProps<Value = unknown> = BaseRadioGroup.Props<Value>
@@ -19,11 +20,26 @@ export type RadioGroupProps<Value = unknown> = BaseRadioGroup.Props<Value>
  */
 export function RadioGroup<Value>({
     className,
+    ref,
     ...props
 }: RadioGroupProps<Value>) {
+    const local = useRef<HTMLDivElement>(null)
+    // After mount, so a surrounding <fieldset> with a <legend> counts as its name
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') return
+        if (inNamedFieldset(local.current)) return
+        checkName(
+            props,
+            'RadioGroup',
+            '<RadioGroup aria-label="Plan" defaultValue="free">...</RadioGroup>\n// or inside <fieldset><legend>Plan</legend>...</fieldset>',
+            'radio-group.md',
+            UNNAMED_GROUP
+        )
+    }, [])
     return (
         <BaseRadioGroup
             {...props}
+            ref={mergeRefs(local, ref)}
             className={withClass('avl-radio-group', className)}
         />
     )

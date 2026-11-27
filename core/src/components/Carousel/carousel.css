@@ -29,6 +29,13 @@
     clip-path: inset(0 round var(--avl-radius-large));
 }
 
+/* The clip-path above would cut off a ring drawn outside, so focusable
+   content (a clickable Card filling the slide) gets it inside */
+.avl-carousel-item:focus-visible,
+.avl-carousel-item :focus-visible {
+    outline-offset: -3px;
+}
+
 .avl-carousel-item-content {
     height: 100%;
 }

@@ -1,4 +1,11 @@
-import { useId, useRef, useState, type ReactNode, type Ref } from 'react'
+import {
+    useEffect,
+    useId,
+    useRef,
+    useState,
+    type ReactNode,
+    type Ref,
+} from 'react'
 import { Icon } from '../Icon/Icon'
 import { Button } from '../Button/Button'
 import {
@@ -9,7 +16,8 @@ import {
     type PopoverProps,
 } from '../Popover/Popover'
 import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup/ToggleGroup'
-import { cx, splitControlProps } from '../../utils'
+import { cx, mergeRefs, splitControlProps } from '../../utils'
+import { devError } from '../../dev'
 import { parseTime, type Time } from '../../datetime'
 import '../Input/input.css'
 import '../Select/select.css'
@@ -105,6 +113,17 @@ export function TimePicker({
     const cycle = hourCycle ?? localeHourCycle()
     const labelId = useId()
     const valueId = useId()
+    const trigger = useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'production') return
+        if (trigger.current?.closest('.avl-field'))
+            devError(
+                "<TimePicker> is inside a <Field>, but it doesn't take the Field's `name`, `disabled` or validation.",
+                '<TimePicker label="Alarm" name="alarm" disabled={locked} />   // outside any Field',
+                'time-picker.md'
+            )
+    }, [])
 
     const setTime = (t: Time | null) => {
         const next = t && `${pad(t.h)}:${pad(t.m)}`
@@ -140,7 +159,7 @@ export function TimePicker({
             >
                 <PopoverTrigger
                     {...control}
-                    ref={ref}
+                    ref={mergeRefs(trigger, ref)}
                     id={id}
                     disabled={disabled}
                     className="avl-input-field avl-select-trigger"

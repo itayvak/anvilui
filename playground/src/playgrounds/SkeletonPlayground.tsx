@@ -47,12 +47,9 @@ export function SkeletonPlayground() {
                     <Stack>
                         <Typography type="caption">circular</Typography>
                         <Row>
+                            <Skeleton type="circular" animation={animation} />
                             <Skeleton
-                                variant="circular"
-                                animation={animation}
-                            />
-                            <Skeleton
-                                variant="circular"
+                                type="circular"
                                 animation={animation}
                                 style={{ width: 64, height: 64 }}
                             />
@@ -60,7 +57,7 @@ export function SkeletonPlayground() {
                     </Stack>
                     <Stack>
                         <Typography type="caption">rectangular</Typography>
-                        <Skeleton variant="rectangular" animation={animation} />
+                        <Skeleton type="rectangular" animation={animation} />
                     </Stack>
                 </Grid>
             </Section>
@@ -80,7 +77,7 @@ export function SkeletonPlayground() {
                                 <>
                                     <Row>
                                         <Skeleton
-                                            variant="circular"
+                                            type="circular"
                                             animation={animation}
                                         />
                                         <Skeleton
@@ -89,7 +86,7 @@ export function SkeletonPlayground() {
                                         />
                                     </Row>
                                     <Skeleton
-                                        variant="rectangular"
+                                        type="rectangular"
                                         animation={animation}
                                     />
                                     <Skeleton animation={animation} />

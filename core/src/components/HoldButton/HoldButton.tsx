@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Button, type ButtonProps } from '../Button/Button'
-import { cx } from '../../utils'
+import { cx, withClass } from '../../utils'
 import './hold-button.css'
 
 export type HoldButtonProps = Omit<ButtonProps, 'loading'> & {
@@ -73,15 +73,10 @@ export function HoldButton({
             data-hold={state === 'idle' ? undefined : state}
             // Restarts the wobble animation on each early release
             data-nudge={nudges % 2 === 0 ? 'even' : 'odd'}
-            className={(buttonState) =>
-                cx(
-                    'avl-hold-button',
-                    nudges > 0 && 'avl-hold-button-nudged',
-                    typeof className === 'function'
-                        ? className(buttonState)
-                        : className
-                )
-            }
+            className={withClass(
+                cx('avl-hold-button', nudges > 0 && 'avl-hold-button-nudged'),
+                className
+            )}
             style={(buttonState) =>
                 ({
                     '--avl-hold-duration': `${holdDuration}ms`,

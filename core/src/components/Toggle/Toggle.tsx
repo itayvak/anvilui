@@ -3,7 +3,7 @@ import { Toggle as BaseToggle } from '@base-ui/react/toggle'
 import type { MaterialSymbol } from 'material-symbols'
 import { colorClass, type ColorProps } from '../../colors/colors'
 import { Icon } from '../Icon/Icon'
-import { cx } from '../../utils'
+import { cx, withClass } from '../../utils'
 import { checkName } from '../../dev'
 import '../Button/button.css'
 import '../IconButton/icon-button.css'
@@ -71,20 +71,19 @@ export function Toggle({
     return (
         <BaseToggle
             {...props}
-            className={(state) =>
-                cx(
-                    'avl-toggle',
-                    icon
-                        ? `avl-icon-button avl-icon-button-size-${size}`
-                        : `avl-button avl-button-size-${size}`,
-                    state.pressed
-                        ? colorClass(color, 'filled')
-                        : colorClass('container', fillType),
-                    typeof className === 'function'
-                        ? className(state)
-                        : className
-                )
-            }
+            className={withClass(
+                (state) =>
+                    cx(
+                        'avl-toggle',
+                        icon
+                            ? `avl-icon-button avl-icon-button-size-${size}`
+                            : `avl-button avl-button-size-${size}`,
+                        state.pressed
+                            ? colorClass(color, 'filled')
+                            : colorClass('container', fillType)
+                    ),
+                className
+            )}
         >
             {icon ? (
                 <Icon name={icon} />

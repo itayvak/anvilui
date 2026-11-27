@@ -9,7 +9,7 @@ import { NavigationBar, NavigationBarItem } from 'anvilui'
 | Part | Renders | Props |
 | --- | --- | --- |
 | `NavigationBar` | `<nav>` | Give it `aria-label`. |
-| `NavigationBarItem` | `<a>` | `icon: MaterialSymbol` (required), `label: string` (required), `active?: boolean` (sets `aria-current="page"`), `href`, `render` (router link) |
+| `NavigationBarItem` | `<a>` | `icon: MaterialSymbol` (required), `label: string` (required; not children), `active?: boolean` (sets `aria-current="page"`), `href`, `render` (router link) |
 
 Items are links, not tabs: there's no `value` / `onValueChange`. Mark the current one with `active`.
 

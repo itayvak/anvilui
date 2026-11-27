@@ -21,6 +21,7 @@ import type { FABMenuProps, FABMenuItemProps } from 'anvilui'
 | `align` | `'start' \| 'center' \| 'end'` | `'end'` | |
 | `sticky` | `boolean` | `true` | |
 | `className` | `string` | | Goes on the FAB. |
+| `ref` | `Ref<HTMLButtonElement>` | | The FAB's `<button>`. |
 | `open` / `defaultOpen` / `onOpenChange` | | | Base UI Menu.Root state. |
 
 ## FABMenuItem props

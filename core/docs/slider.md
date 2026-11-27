@@ -13,6 +13,7 @@ import type { SliderProps } from 'anvilui'
 | --- | --- | --- | --- |
 | `label` | `ReactNode` | | Visible label above. Either this or `aria-label`. |
 | `aria-label` | `string` | | |
+| `getAriaLabel` | `(index: number) => string` | | Names each handle of a range ("Minimum price", "Maximum price"). Without it, every handle gets the same name. |
 | `value` / `defaultValue` | `number` or `number[]` | | An array makes a range with that many handles. |
 | `onValueChange` | `(value, details) => void` | | While dragging. Gets the value, not an event: `number` when `value` is a number, `number[]` when it's an array, so a `useState` setter can be passed directly. |
 | `onValueCommitted` | `(value, details) => void` | | On release. |
@@ -37,6 +38,7 @@ export function Example() {
             <Slider label="Volume" value={volume} onValueChange={setVolume} />
             <Slider
                 aria-label="Price"
+                getAriaLabel={(i) => (i === 0 ? 'Minimum price' : 'Maximum price')}
                 value={price}
                 onValueChange={setPrice}
                 min={0}

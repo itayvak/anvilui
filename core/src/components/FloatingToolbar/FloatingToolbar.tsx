@@ -1,6 +1,7 @@
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar'
 import { IconButton, type IconButtonProps } from '../IconButton/IconButton'
 import { cx, withClass } from '../../utils'
+import { checkName, UNNAMED_GROUP } from '../../dev'
 import '../Divider/divider.css'
 import './floating-toolbar.css'
 
@@ -29,6 +30,15 @@ export function FloatingToolbar({
     className,
     ...props
 }: FloatingToolbarProps) {
+    if (process.env.NODE_ENV !== 'production') {
+        checkName(
+            props,
+            'FloatingToolbar',
+            '<FloatingToolbar aria-label="Formatting">...</FloatingToolbar>',
+            'floating-toolbar.md',
+            UNNAMED_GROUP
+        )
+    }
     return (
         <BaseToolbar.Root
             {...props}
