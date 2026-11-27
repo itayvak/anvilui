@@ -77,27 +77,85 @@ const neutralRoles = [
     'inverseOnSurface',
 ]
 
+// A status color whose hue is too close to the primary's gets moved to
+// another hue, so it still stands out: green primary → blue success, red
+// primary → pink error, yellow primary → orange warning. Hues are OKLCH degrees; `from`–`to` may wrap past 0.
+const statusSwaps = [
+    {
+        roles: [
+            'success',
+            'onSuccess',
+            'successContainer',
+            'onSuccessContainer',
+        ],
+        from: 105,
+        to: 190,
+        hue: 255,
+    },
+    {
+        roles: ['error', 'onError', 'errorContainer', 'onErrorContainer'],
+        from: 10,
+        to: 60,
+        hue: 350,
+    },
+    // Only yellow/gold: past orange there's no hue left that still reads as
+    // a warning without looking like the error color
+    {
+        roles: [
+            'warning',
+            'onWarning',
+            'warningContainer',
+            'onWarningContainer',
+        ],
+        from: 75,
+        to: 105,
+        hue: 55,
+    },
+]
+
 // The base themes are the template: each role keeps its lightness, and its
 // hue and chroma move with the seed relative to the base primary. Status
-// colors (error, warning, success), shadow and scrim are copied unchanged.
+// colors (error, warning, success), shadow and scrim are copied unchanged,
+// except for the swaps above.
 const reference = toOklch(parseHex(baseLightTheme.primary))
 
 function generate(base: Theme, primary: Lch, secondary: Lch): Theme {
     const theme: Theme = { ...base }
+    const roleOf = (key: string) => toOklch(parseHex(base[key as keyof Theme]!))
+    const write = (key: string, l: number, c: number, h: number) => {
+        ;(theme as Record<string, string>)[key] = toHex(l, c, h)
+    }
     const set = (keys: string[], seed: Lch, neutral: boolean) => {
         // A grey seed gives grey accents and untinted neutrals
         const scale = seed.c / reference.c
         for (const key of keys) {
-            const role = toOklch(parseHex(base[key as keyof Theme]!))
+            const role = roleOf(key)
             const c = role.c * (neutral ? Math.min(scale, 1) : scale)
-            const h = seed.h + role.h - reference.h
-            ;(theme as Record<string, string>)[key] = toHex(role.l, c, h)
+            write(key, role.l, c, seed.h + role.h - reference.h)
         }
     }
     set(primaryRoles, primary, false)
     set(tonalRoles, secondary, false)
     set(neutralRoles, primary, true)
+
+    // A near-grey primary has no hue to clash with
+    if (primary.c >= 0.04) {
+        for (const swap of statusSwaps) {
+            if (!hueInRange(primary.h, swap.from, swap.to)) continue
+            // Rotate every role by the same amount, so the light/dark and
+            // container pairs keep their relationship
+            const shift = swap.hue - roleOf(swap.roles[0]).h
+            for (const key of swap.roles) {
+                const role = roleOf(key)
+                write(key, role.l, role.c, role.h + shift)
+            }
+        }
+    }
     return theme
+}
+
+function hueInRange(h: number, from: number, to: number) {
+    return from <= to ? h >= from && h <= to : h >= from || h <= to
 }
 
 // ---- Picking colors from an image ----------------------------------------
