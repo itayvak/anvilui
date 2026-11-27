@@ -113,6 +113,8 @@ const avl = useContext(AnvilContext)
 - Parts: `avl-<component>-<part>` (`avl-switch-thumb`, `avl-navigation-bar-item-indicator`).
 - Variants: `avl-<component>-size-<size>`. Colors come from `colorClass(color, fillType)`.
 - Use plain single classes. No IDs, no element selectors, no `!important` (the only exception is the reduced-motion override in `global.css`).
+- **The root class is public API** ([styling.md](core/docs/styling.md)): every exported component that renders an element gets its own `avl-<component-kebab>` class on the element that receives `className`, even when it borrows another component's styles (`ComboboxItem` is `avl-menu-item avl-select-item avl-combobox-item`). So are the theme and token CSS variables. Renaming any of them is a breaking change: keep the old name working for at least one minor version first.
+- Part classes, variant classes and component variables (`--avl-button-height`) are internal. Change them freely.
 
 ### Style state with attributes, not extra classes
 

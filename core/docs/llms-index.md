@@ -6,6 +6,7 @@ One line per page. Start with [../AGENTS.md](../AGENTS.md). Paths are relative t
 
 - [setup.md](setup.md): install, `anvilui/styles.css`, `AnvilRoot`, fonts, Next.js, theme CSS variables
 - [theming.md](theming.md): AnvilRoot props, color mode, `useAnvil`, `createTheme`, theme roles, design tokens
+- [styling.md](styling.md): custom CSS, which classes and CSS variables are public and stable, which are internal
 - [composition.md](composition.md): `render` instead of `asChild`, refs, className, controlled/uncontrolled props
 - [forms.md](forms.md): building forms, `Field` validation, `FormData`, submit buttons
 - [icons.md](icons.md): Material Symbols names, `Icon`, which props take icon names

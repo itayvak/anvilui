@@ -68,12 +68,23 @@ export function FloatingToolbarButton({
     // Filled means highlighted: primary stands out on the toolbar's surface
     color = fillType === 'filled' ? 'primary' : 'container',
     disabled,
+    className,
     ...props
 }: FloatingToolbarButtonProps) {
     return (
         <BaseToolbar.Button
             disabled={disabled}
-            render={<IconButton {...props} color={color} fillType={fillType} />}
+            render={
+                <IconButton
+                    {...props}
+                    color={color}
+                    fillType={fillType}
+                    className={withClass(
+                        'avl-floating-toolbar-button',
+                        className
+                    )}
+                />
+            }
         />
     )
 }

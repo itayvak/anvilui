@@ -160,7 +160,10 @@ export function ComboboxItem({
     return (
         <BaseCombobox.Item
             {...props}
-            className={withClass('avl-menu-item avl-select-item', className)}
+            className={withClass(
+                'avl-menu-item avl-select-item avl-combobox-item',
+                className
+            )}
         >
             <span className="avl-menu-item-label">{children}</span>
             <BaseCombobox.ItemIndicator className="avl-select-item-indicator">

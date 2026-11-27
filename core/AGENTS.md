@@ -423,6 +423,8 @@ There is no `Alert` or `Banner`. For a message after an action, use a snackbar (
 
 Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)`, `var(--avl-color-on-background-muted)`, `var(--avl-color-primary)`, `var(--avl-color-surface)`, `var(--avl-color-divider)`, spacing `var(--avl-spacing-x1…x20)` (4px steps), radius `var(--avl-radius-medium)`. Custom brand: `createTheme('#0B6E4F')` → `<AnvilRoot lightTheme={t.light} darkTheme={t.dark}>` ([theming.md](docs/theming.md)).
 
+Overriding a component's CSS: target only its root class (`.avl-<component>`, e.g. `.avl-card`, `.avl-menu-item`) and Base UI `data-*` state, together with your own class. Part classes (`.avl-switch-thumb`), size/color classes and component variables (`--avl-button-height`) are internal and change between releases. Details: [styling.md](docs/styling.md).
+
 ## Common mistakes
 
 | Wrong (other libraries) | Right (AnvilUI) |
@@ -456,6 +458,7 @@ Inside AnvilRoot: `var(--avl-color-background)`, `var(--avl-color-on-background)
 | `snackbar.show({ message, severity: 'success' })` | no severity; put it in the message |
 | `<Typography variant="h4">` | `<Typography type="h4">` |
 | `<Skeleton variant="circular">` | `<Skeleton type="circular">` |
+| CSS on `.avl-button-size-big`, `.avl-fill-outlined`, `.avl-switch-thumb` | props (`size`, `fillType`), or the root class (`.avl-button`) with your own class |
 | `<AppBar title="Inbox">` / `<AppBar>Inbox</AppBar>` | `<AppBar label="Inbox" />` |
 | `<ListItem>Text</ListItem>` / `primary=` / `secondary=` | `<ListItem label="Text" description="More" />` |
 | `<ListItem onClick={…} />` expecting a button | `<ListItem label="…" render={<button type="button" onClick={…} />} />` |

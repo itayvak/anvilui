@@ -90,7 +90,7 @@ export function PreviewCardPopup({
                 <BasePreviewCard.Popup
                     {...props}
                     className={withClass(
-                        'avl-menu-popup avl-popover-popup',
+                        'avl-menu-popup avl-popover-popup avl-preview-card-popup',
                         className
                     )}
                 />

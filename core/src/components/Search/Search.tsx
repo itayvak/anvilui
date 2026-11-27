@@ -166,7 +166,7 @@ export function SearchItem({
     return (
         <BaseAutocomplete.Item
             {...props}
-            className={withClass('avl-menu-item', className)}
+            className={withClass('avl-menu-item avl-search-item', className)}
         >
             {startIcon && <Icon name={startIcon} />}
             <span className="avl-menu-item-label">{children}</span>

@@ -13,6 +13,7 @@ The same docs ship inside the package at `node_modules/anvilui/AGENTS.md` and `n
 
 - [Setup](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/setup.md): install, `anvilui/styles.css`, `AnvilRoot`, fonts, Next.js, theme CSS variables
 - [Theming and color mode](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/theming.md): AnvilRoot props, color mode, `useAnvil`, `createTheme`, theme roles, design tokens
+- [Customizing styles](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/styling.md): custom CSS, which classes and CSS variables are public and stable, which are internal
 - [Composition: `render`, refs, className](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/composition.md): `render` instead of `asChild`, refs, className, controlled/uncontrolled props
 - [Forms](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/forms.md): building forms, `Field` validation, `FormData`, submit buttons
 - [Icons](https://raw.githubusercontent.com/itayvak/anvilui/main/core/docs/icons.md): Material Symbols names, `Icon`, which props take icon names

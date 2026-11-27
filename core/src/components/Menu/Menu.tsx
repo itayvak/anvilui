@@ -118,7 +118,10 @@ export function MenuSubmenuTrigger({
     return (
         <BaseMenu.SubmenuTrigger
             {...props}
-            className={withClass('avl-menu-item', className)}
+            className={withClass(
+                'avl-menu-item avl-menu-submenu-trigger',
+                className
+            )}
         >
             {startIcon && <Icon name={startIcon} />}
             <span className="avl-menu-item-label">{children}</span>

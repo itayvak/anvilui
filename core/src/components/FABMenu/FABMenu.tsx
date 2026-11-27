@@ -97,7 +97,7 @@ export function FABMenu({
                     ref={mergeRefs(trigger, ref)}
                     aria-label={ariaLabel}
                     className={cx(
-                        'avl-fab avl-fab-size-normal avl-fab-menu-trigger',
+                        'avl-fab avl-fab-size-normal avl-fab-menu avl-fab-menu-trigger',
                         colorClass(color, fillType),
                         className
                     )}
